@@ -1,0 +1,79 @@
+环境：Windows 7
+
+注：Ubuntu的配置和Ecos的编译我这边都做完了，只要安装VMware，VSPD，复制虚拟机文件，虚拟出一对串口，即可开始调试。
+
+准备虚拟机和Ubuntu
+    	下载VMware Player 5.0.1以及VMware Tools for Linux
+    	安装VMware Player 5.0.1。
+    	解压出tools-linux-9.2.2.exe。运行，静默安装，在VMware安装目录下生成linux.iso
+    	新建虚拟机，去掉Floppy等设备，安装Ubuntu12.10 重启时在DVD设备中加载Linux.iso以安装VMware Tools for Linux
+    	进入Ubuntu，删除冗余程序，如Firefox，totem等。选择源，推荐中科大的。更新系统。设置语言时区等。重启Ubuntu。
+
+安装Ecos
+	32位Ubuntu：dpkg -i libstdc++5_3.3.6-17ubuntu1_i386.deb
+        64位Ubuntu：sudo apt-get install ia32-libs
+	sudo apt-get install tcl
+	wget --passive-ftp ftp://ecos.sourceware.org/pub/ecos/ecos-install.tcl
+	sh ecos-install.tcl
+	   	服务器选择16，该服务器位于日本，连接速度较快。
+	   	工具选择i386-elf，即依次输入3，q
+  	   	安装路径自定义，默认亦可。
+
+下载Ecos源码
+    	sudo apt-get cvs
+	mkdir cvs-ecos
+	cd cvs-ecos
+	cvs -z3 -d :pserver:anoncvs@ecos.sourceware.org:/cvs/ecos co -P .
+		该过程十分漫长……泡杯茶看个剧洗个澡吃个饭睡个午觉什么的……以上是顺序记叙哦。
+
+Build Redboot
+	cvs-ecos/packages/hal/i386/pc/v3_0/current/include/pkgconf目录下的mlt_i386_pc_floppy.h/mlt_i386_pc_floppy.ldi/mlt_i386_pc_floppy.mlt，默认配置是针对普通PC的。将RAM配置从0xa0000改为0x1000000。
+	运行cos-3.0/tools/bin/configtool
+		Build->Repository，指定到cvs-ecos
+		Tools->Path->Build Tools，指定到gnutools\i386-elf\bin
+		Build->Templates，Hardware选择i386 PC target(vmWare), Packages选择Redboot
+		去掉“eCos HAL”中“platform-independent HAL options”的“Route diagnosis output to debug channel”；将“i386 PC target”启动类型改为“FLOPPY”。
+		eCos HAL/i386 architecture/i386 PC Target/Diagnostic serial port baud rate  115200
+		eCos HAL/i386 architecture/i386 PC Target/GDB serial port baud rate  115200
+		Save 命名为redboot.ecc。注意configtool或其链接所在的路径，若为系统路径，则保存时需要管理员权限。
+		Build->Library,在redboot_install/bin目录下能找到redboot.bin文件。复制到Windows中。
+
+运行Redboot
+	打开一个新的VMplayer窗口，新建虚拟机，不安装任何操作系统，一路选择Other，创建一个新的虚拟机。
+	在启动之前，Edit virtual machine settings，确认删除了IDE设备，包括光驱和硬盘。在Floppy中，勾选connect at power on, Connection中选择Use Floppy image file, Browse，在文件选择窗口将过滤选项换成All files，然后选择到redboot.bin.OK
+	启动该虚拟机，Redboot自动启动。
+
+Build Ecos
+	运行configtool
+		Build->Templates，Hardware选择i386 PC target(vmWare), Packages选择default
+		ecos HAL->ROM monitor support->Enable use of virtual vector calling interface->Initialize whole of virtual vector table,勾选
+		Save 命名为vmecos.ecc
+		Build->Library。
+
+Build 测试样例
+	打开终端。
+	sudo gedit /etc/environment
+		在Path中添加gnutools\i386-elf\bin的路径。
+	gedit ~/.profile
+		在文件末尾加入export PATH="$PATH:XXXX"，XXXX代表gnutools\i386-elf\bin的路径。
+	重启Ubuntu
+	打开终端，进入cvs-ecos/example，运行make INSTALL_DIR=XXXX，XXXX代表vmecos_install的路径。
+		生成测试样例的可执行文件
+
+Debug   
+	下载VSPD，虚拟出一对串口，例如COM1和COM2。
+	分别配置两台虚拟机，加入串口，分别选择COM1和COM2。启动两台虚拟机。
+	在Ubuntu中，打开终端。
+		sudo chmod o+rw /dev/ttyS0
+		cd lab/cvs-ecos/examples
+		i386-elf-gdb -nw hello
+			set remotebaud 115200
+			target remote /dev/ttyS0
+			load
+			开始调试吧……
+
+待解决：VSPD虚拟出一对串口以后，好像只能连一次，断开以后就再也连不了了……
+	
+
+	
+	
