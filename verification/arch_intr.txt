@@ -1,0 +1,160 @@
+======================================================================================
+----hal_arch.h-----
+======================================================================================
+
+!!!STRUCTURE!!!
+HAL_SavedRegisters
+{
+    数据寄存器 d[11] ;                           // Data regs (r0..r10)
+ 
+    cyg_uint32  fp;                               // (r11) Frame pointer
+    cyg_uint32  ip;                               // (r12)
+    栈指针      sp;                               // (r13) Stack pointer
+    链接指针    lr;                               // (r14) Link Reg
+    程序计数器  pc;                               // (r15) PC place holder
+                                                  //       (never used)
+    状态寄存器  
+            cpsr                                   // Condition Reg
+            {
+                IRQ_DISABLE
+                FIQ_DISABLE
+                USER_MODE
+                FIQ_MODE
+                SUPERVISOR_MODE
+                UNDEF_MODE                             
+            };
+            
+    // These are only saved for exceptions and interrupts
+    异常向量号  vector;                           // Vector number
+    异常发生前的链接指针  svc_lr;                           // saved svc mode lr
+    异常发生前的栈指针  svc_sp;                           // saved svc mode sp
+}
+
+
+系统初始（默认）状态：{IRQ_DISABLE, FIQ_DISABLE, SUPERVISOR_MODE}
+线程初始（默认）状态：THREAD_INITIAL:{SUPERVISOR_MODE, FIQ_DISABLE}
+
+!!!FUNCTIONAL MACROS!!!
+    (1) HAL_LSBIT_INDEX(index, mask)
+        功能：执行后，index的值是mask中不为0的最低位位数
+    (2) HAL_MSBIT_INDEX(index, mask)
+        功能：执行后，index的值是mask中不为0的最高位位数
+    (3) HAL_THREAD_INIT_CONTEXT(_sparg_, _thread_, _entry_, _id_)
+        功能：执行后，在内存中构造出新的线程上下文结构
+        {
+            d[11]   // d[00] = 新线程对象地址
+            fp
+            ip
+            sp      // sp = 结构创建完整后的栈顶指针
+            lr      // lr = 线程的入口
+            pc      // pc = 线程的入口（实际上是执行时的第一条指令位置）
+            cpsr    // cpsr = THREAD_INITIAL = {SUPERVISOR_MODE, FIQ_DISABLE}
+            vector
+            svc_lr
+            svc_sp
+        }
+    (4) HAL_THREAD_SWITCH_CONTEXT(_fspptr_, _tspptr_)
+        功能：将寄存器中的值保存到_fspptr_中
+              将_tspptr_指向的savedregisters结构内容load到寄存器中
+    (5) HAL_THREAD_LOAD_CONTEXT(_tspptr_)
+        功能：将_tspptr_指向的savedregisters结构内容load到寄存器中
+
+存疑：
+#define HAL_ARM_RESET_VECTOR			0x00
+#define HAL_ARM_UNDEFINED_VECTOR		0x04
+#define HAL_ARM_SWI_VECTOR			0x08
+#define HAL_ARM_PREFETCH_VECTOR			0x0C
+#define HAL_ARM_ABORT_VECTOR			0x10
+#define HAL_ARM_RESERVED_VECTOR			0x14
+#define HAL_ARM_IRQ_VECTOR			0x18
+#define HAL_ARM_FIQ_VECTOR			0x1C
+
+#define HAL_ARM_RESET_VECTOR_ADDR		0x20
+#define HAL_ARM_UNDEFINED_VECTOR_ADDR		0x24
+#define HAL_ARM_SWI_VECTOR_ADDR			0x28
+#define HAL_ARM_PREFETCH_VECTOR_ADDR		0x2C
+#define HAL_ARM_ABORT_VECTOR_ADDR		0x30
+#define HAL_ARM_RESERVED_VECTOR_ADDR		0x34
+#define HAL_ARM_IRQ_VECTOR_ADDR			0x38
+#define HAL_ARM_FIQ_VECTOR_ADDR			0x3C
+
+以上两段的区别（第二段存在的意义。。）
+
+
+======================================================================================
+----hal_intr.h-----
+======================================================================================
+!!!STRUCTURE!!!
+中断向量号：（问樊老师是否确定）
+#define CYGNUM_HAL_VECTOR_RESET                0
+#define CYGNUM_HAL_VECTOR_UNDEF_INSTRUCTION    1
+#define CYGNUM_HAL_VECTOR_SOFTWARE_INTERRUPT   2
+#define CYGNUM_HAL_VECTOR_ABORT_PREFETCH       3
+#define CYGNUM_HAL_VECTOR_ABORT_DATA           4
+#define CYGNUM_HAL_VECTOR_reserved             5
+#define CYGNUM_HAL_VECTOR_IRQ                  6
+#define CYGNUM_HAL_VECTOR_FIQ                  7
+
+//语义不同
+#define CYGNUM_HAL_EXCEPTION_ILLEGAL_INSTRUCTION CYGNUM_HAL_VECTOR_UNDEF_INSTRUCTION
+#define CYGNUM_HAL_EXCEPTION_INTERRUPT           CYGNUM_HAL_VECTOR_SOFTWARE_INTERRUPT
+#define CYGNUM_HAL_EXCEPTION_CODE_ACCESS         CYGNUM_HAL_VECTOR_ABORT_PREFETCH
+#define CYGNUM_HAL_EXCEPTION_DATA_ACCESS         CYGNUM_HAL_VECTOR_ABORT_DATA
+
+#define CYGNUM_HAL_EXCEPTION_MIN                 CYGNUM_HAL_EXCEPTION_ILLEGAL_INSTRUCTION
+#define CYGNUM_HAL_EXCEPTION_MAX                 CYGNUM_HAL_EXCEPTION_DATA_ACCESS
+#define CYGNUM_HAL_EXCEPTION_COUNT               (CYGNUM_HAL_EXCEPTION_MAX - \
+                                                     CYGNUM_HAL_EXCEPTION_MIN + 1)
+中断向量表的数据结构？每个元素的含义是什么？
+ISR table的数据结构：
+//CYGNUM_HAL_ISR_COUNT：中断向量个数，与平台相关，可直接当成常量抽象
+hal_interrupt_handlers[CYGNUM_HAL_ISR_COUNT]
+hal_interrupt_data[CYGNUM_HAL_ISR_COUNT]
+hal_interrupt_objects[CYGNUM_HAL_ISR_COUNT]
+//中断向量表
+hal_vsr_table[CYGNUM_HAL_VSR_COUNT]
+//
+下一次时钟中断的间隔（cycles）：_period_      //没有找到代码中的原始定义，但是这个量是存在的，需要被刻画
+
+!!!FUNCTIONAL MACROS!!!
+    （1） HAL_DISABLE_INTERRUPTS(_old_)
+          功能：更新CPSR寄存器，使其与当前设置保持同步，将原CPSR输出到_old_
+    （2） HAL_ENABLE_INTERRUPTS
+          功能：更新CPSR寄存器，清除其中的DISABLE标志
+    （3） HAL_RESTORE_INTERRUPTS(_old_)
+          功能：恢复_old_表示的中断允许状态，更新CPSR寄存器
+    （4） HAL_QUERY_INTERRUPTS(_old_)
+          功能：查询当前中断允许状态，保存在_old_中
+    （5） 只更改FIQ允许状态，与上面四个宏功能对应
+            #define HAL_DISABLE_FIQ(_old_) _old_ = hal_disable_FIQ()
+            #define HAL_ENABLE_FIQ() hal_enable_FIQ()
+            #define HAL_RESTORE_FIQ(_old_) hal_restore_FIQ(_old_)
+            #define HAL_QUERY_FIQ(_old_) _old_ = hal_query_FIQ()
+    （6） 这个不知道要干啥。。
+            #define HAL_TRANSLATE_VECTOR(_vector_,_index_) (_index_) = (_vector_)
+    （7） HAL_INTERRUPT_IN_USE( _vector_, _state_)
+          功能：执行后，若_vector_对应的isr是default_isr，则_state_为0,否则为1
+    （8） HAL_INTERRUPT_ATTACH(_vector_, _isr_, _data_, _object_)
+          功能：如果_vector_对应的isr仍然是default_isr，则将新的isr和与其对应的data、object（we don't know what this "object" refers to...)存入对应的中断向量表数据结构。
+    （9） HAL_INTERRUPT_DETACH( _vector_, _isr_ )
+          功能：如果_vector_对应的isr与_isr_相等，则将_vector_对应的isr清空，设为default_isr
+    （10）HAL_VSR_GET( _vector_, _pvsr_ )
+          功能：将_vector_对应的vsr指针存入_pvsr_中，_pvsr_是个指针
+    （11）HAL_VSR_SET( _vector_, _vsr_, _poldvsr_ )
+          功能：首先将_vector_原来对应的vsr保存在_poldvsr_指向的空间，然后将_vector_对应的vsr设置为新的_vsr_
+    （12）HAL_CLOCK_INITIALIZE( _period_ )
+          功能：将下一次发生中断的时间设置为 当前时间 + _period_
+    （13）HAL_CLOCK_RESET( _vec_, _period_ )
+          功能：将下一次发生中断的时间重新初始化为 当前时间 + _period_
+    （14）HAL_CLOCK_READ( _pvalue_ )
+          功能：读取上一次时钟中断到现在为止的cycle数，存入_pvalue_指向的地址。
+    （15）HAL_CLOCK_LATENCY( _pvalue_ )
+          功能：= HAL_CLOCK_READ( (cyg_uint32 *)_pvalue_ )   check一下为何要定义两次？
+
+存疑：
+//找不到实现
+externC void hal_interrupt_mask(int);
+externC void hal_interrupt_unmask(int);
+externC void hal_interrupt_acknowledge(int);
+externC void hal_interrupt_configure(int, int, int);
+externC void hal_interrupt_set_level(int, int);
