@@ -3,49 +3,49 @@ items：
 Cyg_Scheduler: scheduler
 {
     /* 继承自Cyg_Scheduler_Implementation
-    cyg_sched_bitmap    queue_map;                                      // Mask of which run queues have ready threads 
-    Cyg_RunQueue        run_queue[CYGNUM_KERNEL_SCHED_PRIORITIES];      // Each run queue is a double linked circular list of threads.
+    cyg_sched_bitmap(unsigned int)        queue_map;                                      // Mask of which run queues have ready threads 
+    Cyg_RunQueue(见下一栏)    run_queue[CYGNUM_KERNEL_SCHED_PRIORITIES];      // Each run queue is a double linked circular list of threads.
                                                                         // These pointers point to the head element of each list.
     #ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
-         static cyg_ucount32 timeslice_count[CYGNUM_KERNEL_CPU_MAX]     // Timeslice counter. This is decremented on each clock tick
+         static cyg_ucount32(unsigned int) timeslice_count[CYGNUM_KERNEL_CPU_MAX]     // Timeslice counter. This is decremented on each clock tick
                                                                         // and a timeslice is performed each time it zeroes. 
     #endif
     /*继承自Cyg_Scheduler_Base
-    static Cyg_Thread * volatile     current_thread[CYGNUM_KERNEL_CPU_MAX];                 // Current running thread    
-    static volatile cyg_bool         need_reschedule   [CYGNUM_KERNEL_CPU_MAX];             // Set when reschedule needed
-    static volatile cyg_ucount32     thread_switches[CYGNUM_KERNEL_CPU_MAX];                // Count of number of thread switches
+    static Cyg_Thread(类) * volatile     current_thread[CYGNUM_KERNEL_CPU_MAX];                 // Current running thread    
+    static volatile cyg_bool(bool)         need_reschedule   [CYGNUM_KERNEL_CPU_MAX];             // Set when reschedule needed
+    static volatile cyg_ucount32(unsigned int)     thread_switches[CYGNUM_KERNEL_CPU_MAX];                // Count of number of thread switches
     
     /*继承自Cyg_Scheduler_SchedLock
-    static volatile cyg_ucount32 sched                             // lock counter
+    static volatile cyg_ucount32(unsigned int) sched                             // lock counter
 }
 
 当CYGNUM_KERNEL_CPU_MAX==1时， 简化版的
 Cyg_Scheduler:scheduler
 {
     /* 继承自Cyg_Scheduler_Implementation
-    cyg_sched_bitmap    queue_map;                                      // Mask of which run queues have ready threads 
-    Cyg_RunQueue        run_queue[CYGNUM_KERNEL_SCHED_PRIORITIES];      // Each run queue is a double linked circular list of threads.
+    cyg_sched_bitmap(unsigned int)    queue_map;                                      // Mask of which run queues have ready threads 
+    Cyg_RunQueue(见下一栏)  run_queue[CYGNUM_KERNEL_SCHED_PRIORITIES];     // Each run queue is a double linked circular list of threads.
                                                                         // These pointers point to the head element of each list.
     #ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
-         static cyg_ucount32 timeslice_count                            // Timeslice counter. This is decremented on each clock tick
+         static cyg_ucount32(unsigned int) timeslice_count                            // Timeslice counter. This is decremented on each clock tick
                                                                         // and a timeslice is performed each time it zeroes. 
     #endif
     /*继承自Cyg_Scheduler_Base
-    static Cyg_Thread * volatile     current_thread;                    // Current running thread    
-    static volatile cyg_bool         need_reschedule;                   // Set when reschedule needed
-    static volatile cyg_ucount32     thread_switches;                   // Count of number of thread switches
+    static Cyg_Thread(类) * volatile     current_thread;                    // Current running thread    
+    static volatile cyg_bool(bool)         need_reschedule;                   // Set when reschedule needed
+    static volatile cyg_ucount32(unsigned int)     thread_switches;                   // Count of number of thread switches
 
     /*继承自Cyg_Scheduler_SchedLock
-    static volatile cyg_ucount32 sched_lock                             // lock counter
+    static volatile cyg_ucount32(unsigned int) sched_lock                             // lock counter
 }
 
 --------------------------------------------
 typedef Cyg_CList_T<Cyg_Thread> Cyg_RunQueue;
-//虽然以Cyg_Thread为类型参数，但是存储时实际存储的还是Cyg_DNode，函数调用时才进行强制类型转换。
+//虽然以Cyg_Thread为类型参数，但是存储时实际存储的还是Cyg_DNode（类），函数调用时才进行强制类型转换。
 Cyg_CList_T<Cyg_Thread> {
     Cyg_DNode   *head {
-        Cyg_DNode   *next;
-        Cyg_DNode   *prev;
+        Cyg_DNode(类)   *next;
+        Cyg_DNode(类)   *prev;
     }
 }
 
@@ -53,25 +53,25 @@ Cyg_CList_T<Cyg_Thread> {
 Cyg_Thread{
 
 /*继承自 Cyg_DNode
-    Cyg_DNode   *next;
-    Cyg_DNode   *prev;
+    Cyg_DNode(类)   *next;
+    Cyg_DNode(类)   *prev;
 
 /*继承自 Cyg_SchedThread_Implementation
-    cyg_priority                     priority;                             // current thread priority
-    cyg_ucount32                 timeslice_count;
+    cyg_priority(signed int)                     priority;                             // current thread priority
+    cyg_ucount32(unsigned int)                 timeslice_count;
     #ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE   
-        cyg_bool                timeslice_enabled;                         // This defines whether this thread is subject to timeslicing.
+        cyg_bool(bool)                timeslice_enabled;                         // This defines whether this thread is subject to timeslicing.
     #endif                                                                 // If false, timeslice expiry has no effect on the thread.
 
 /*继承自Cyg_SchedThread
-    Cyg_ThreadQueue     *queue;
-    cyg_count32         mutex_count;                                       // For all priority inversion protocols we need to keep track of how
+    Cyg_ThreadQueue(类)     *queue;
+    cyg_count32(signed int)         mutex_count;                                       // For all priority inversion protocols we need to keep track of how
                                                                            // many mutexes we have locked, including one which we are waiting to
                                                                            // lock, because we can inherit priority while sleeping just prior to
                                                                            // wakeup.
      
-    cyg_priority        original_priority;                                 // our original priority
-    cyg_bool            priority_inherited;                                // have we inherited? 
+    cyg_priority(signed int)        original_priority;                                 // our original priority
+    cyg_bool(bool)            priority_inherited;                                // have we inherited? 
 
 /*来自本土
     enum {                                                         // Thread state values
@@ -86,13 +86,13 @@ Cyg_Thread{
        // This is the set of bits that must be cleared by a generic wake() or release().
         SLEEPSET   = (SLEEPING | COUNTSLEEP)
     };
-    cyg_uint32          state;                                 // Current thread state, a logical OR of the above values. Only if this word is zero can the thread execute.
-    cyg_ucount32        suspend_count;                         // Suspension counter, if > 0, the thread is suspended
-    cyg_ucount32        wakeup_count;                          // Wakeup counter, if > 0, sleep will not sleep, just decrement
-    CYG_ADDRWORD        wait_info;                             // A word of data used in syncronization object to communicate information between sleepers and wakers.
-    cyg_uint16          unique_id;                             // Unique thread id assigned on creation
+    cyg_uint32(unsigned int)          state;             // Current thread state, a logical OR of the above values. Only if this word is zero can the thread execute.
+    cyg_ucount32(unsigned int)        suspend_count;                         // Suspension counter, if > 0, the thread is suspended
+    cyg_ucount32(unsigned int)        wakeup_count;                          // Wakeup counter, if > 0, sleep will not sleep, just decrement
+    CYG_ADDRWORD(unsigned int)        wait_info;          // A word of data used in syncronization object to communicate information between sleepers and wakers.
+    cyg_uint16(unsigned short)          unique_id;                             // Unique thread id assigned on creation
 
-    Cyg_Exception_Control       exception_control;
+    Cyg_Exception_Control(类)       exception_control;
 
     enum cyg_reason {                          // sleep/wakeup reason codes
         NONE,                                  // No recorded reason
@@ -105,18 +105,18 @@ Cyg_Thread{
         DONE                                   // Wait/delay complete
     };
     
-    cyg_reason          sleep_reason;                                                  // reason for sleeping
-    cyg_reason          wake_reason;                                                   // reason for waking
+    cyg_reason(enum)          sleep_reason;                                                  // reason for sleeping
+    cyg_reason(enum)          wake_reason;                                                   // reason for waking
     char                *name;  
 
-    static cyg_uint16 next_unique_id = 1;                                              // Global thread id counter. Maintained by system.
+    static cyg_uint16(unsigned short) next_unique_id = 1;                                              // Global thread id counter. Maintained by system.
    
     /*继承自 Cyg_HardwareThread
-    CYG_ADDRESS         stack_base;                                                    // pointer to base of stack area
-    cyg_uint32          stack_size;                                                    // size of stack area in bytes
-    CYG_ADDRESS         stack_ptr;                                                     // pointer to saved state on stack
-    cyg_thread_entry    *entry_point;                                                  // main entry point (code pointer!)
-    CYG_ADDRWORD        entry_data;                                                    // entry point argument
+    CYG_ADDRESS(unsigned int)         stack_base;                                                    // pointer to base of stack area
+    cyg_uint32(unsigned int)          stack_size;                                                    // size of stack area in bytes
+    CYG_ADDRESS(unsigned int)         stack_ptr;                                                     // pointer to saved state on stack
+    cyg_thread_entry(typedef void cyg_thread_entry(CYG_ADDRWORD data);)    *entry_point;              // main entry point (code pointer!)
+    CYG_ADDRWORD(unsigned int)        entry_data;                                                    // entry point argument
 }
 
 -----------------------------------------
@@ -124,8 +124,8 @@ Cyg_ThreadQueue : Cyg_ThreadQueue_Implementation : Cyg_CList_T<Cyg_Thread> : Cyg
 -----------------------------------------
 Cyg_ThreadQueue {
     Cyg_DNode   *head {
-        Cyg_DNode   *next;
-        Cyg_DNode   *prev;
+        Cyg_DNode(类)   *next;
+        Cyg_DNode(类)   *prev;
     }
 }
 
@@ -135,9 +135,9 @@ class Cyg_Exception_Control {
     
     // Handler function
     cyg_exception_handler   *exception_handler {
-        CYG_ADDRWORD        data,                   // user supplied data
-        cyg_code            exception_number,       // exception being raised
-        CYG_ADDRWORD        exception_info          // any exception specific info
+        CYG_ADDRWORD(unsigned int)        data,                   // user supplied data
+        cyg_code(signed int)              exception_number,       // exception being raised
+        CYG_ADDRWORD(unsigned int)        exception_info          // any exception specific info
     }
-    CYG_ADDRWORD            exception_data;         // Handler data
+    CYG_ADDRWORD(unsigned int)            exception_data;         // Handler data
 }
