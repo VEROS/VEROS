@@ -19,9 +19,10 @@ Definition set_priority (r : SchedThread_Implementation) (p : nat) :=
 Definition set_enable (r : SchedThread_Implementation) (en : bool) :=
   mkSTI (priority r) en (timeslice_count r).
 
-Variable set_count : 
-  SchedThread_Implementation -> nat -> SchedThread_Implementation.
+Definition set_count (r : SchedThread_Implementation) (c : nat) := 
+  mkSTI (priority r) (timeslice_enable r) c.
 
-Variable SchedThread_Implementation_cstr :
-  nat -> SchedThread_Implementation.
+Definition SchedThread_Implementation_cstr (p : nat) :=
+  mkSTI p true 0.
+
 
