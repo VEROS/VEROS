@@ -1,5 +1,6 @@
 Set Implicit Arguments.
 
+Variable CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS : nat.
 
 Record SchedThread_Implementation := mkSTI {
 
@@ -24,4 +25,28 @@ Variable set_count :
 
 Variable SchedThread_Implementation_cstr :
   nat -> SchedThread_Implementation.
+
+(*TODO: function 'yield'*)
+
+(*TODO : function 'rotate_queue'*)
+
+(*TODO : function 'to_queue_head'*)
+
+(*TODO : Definition timeslice_save*)
+
+(*TODO : timeslice_restore*)
+
+Definition timeslice_reset (r : SchedThread_Implementation) 
+  (count : nat) :=
+  mkSTI (priority r) (timeslice_enable r) count.
+
+Variable timeslice_enable_fun : SchedThread_Implementation ->
+  SchedThread_Implementation.
+
+Variable timeslice_disable_fun : SchedThread_Implementation ->
+  SchedThread_Implementation.
+
+
+
+
 
