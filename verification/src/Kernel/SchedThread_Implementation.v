@@ -41,11 +41,9 @@ Definition timeslice_reset (r : SchedThread_Implementation)
   (count : nat) :=
   mkSTI (priority r) (timeslice_enable r) count.
 
-Variable timeslice_enable_fun : SchedThread_Implementation ->
-  SchedThread_Implementation.
+Definition timeslice_enable_fun (r: SchedThread_Implementation) := set_enable r true.
 
-Variable timeslice_disable_fun : SchedThread_Implementation ->
-  SchedThread_Implementation.
+Definition timeslice_disable_fun (r : SchedThread_Implementation) := set_enable r false.
 
 
 
