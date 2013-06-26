@@ -1,8 +1,6 @@
 Set Implicit Arguments.
 
-
-
-Parameter ThreadQueue : Set.
+Require Import SchedThread_Implementation.
 
 Inductive ThreadState : Set :=
 | RUNNING : ThreadState
@@ -22,43 +20,29 @@ Inductive Reason : Set :=
 | EXIT : Reason
 | DONE : Reason.
 
-
-
-Record Thread := mkthread{
-
-  
-
-  (*Inherited from SchedThread*)
-  queue : ThreadQueue;
-
-  mutex_count : nat;
-  (*CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL is on*)
-
-  original_priority : nat;
-  priority_inherited : bool;
-
-
- (*Inhabited in Thread itself*)
-  unique_id : nat;
- 
-  state : ThreadState;
-
-  supend_count : nat;
-  wakeup_count : nat;
-
-  wait_info : nat;
+Record SleepWakeup := mkSW{
 
   sleep_reason : Reason;
   wake_reason : Reason;
-
-  (*Inherited from SchedThread_Implementation*)
-  priority : nat;
-  timeslice_count : nat;
-  timeslice_enabled : bool
-
-  (*TODO : duel direct list, add pred + next*)
+  supend_count : nat;
+  wakeup_count : nat
 
 }.
 
 
-(*Need to add a check function : check this*)
+Record Thread := mkThread{
+
+  unique_id : nat;
+ 
+  state : ThreadState;
+
+  wait_info : nat;
+
+  sleep_wakeup : SleepWakeup;
+
+  (*Inherited from SchedThread_Implementation*)
+  sched_thread : SchedThread_Implementation
+
+
+}.
+
