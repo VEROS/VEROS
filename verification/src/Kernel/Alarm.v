@@ -1,3 +1,5 @@
+Require Import List.
+
 Set Implicit Arguments.
 
 Record Alarm := mkALM{
@@ -8,13 +10,18 @@ Record Alarm := mkALM{
 }.
 
 (*DO : Alarm construct func, ignore counter alarm data*)
-<<<<<<< HEAD
+Definition Alarm_cstr (uid t i : nat)(e : bool) : Alarm := mkALM uid t i e.
 
 
 Definition AlarmList := list Alarm.
 
-(*TODO : functions operating the list*)
+(*DO : functions operating the list*)
 
-=======
-Definition Alarm_cstr (uid t i : nat)(e : bool) : Alarm := mkALM uid t i e.
->>>>>>> a79dfd8f04ffa9fb98920cd200179e0321bf0dbb
+(*Definition get_head(l : AlarmList) : Alarm := .
+
+Definition get_tail()
+
+Definition rem_head()
+
+Definition rem_tail()
+*)
