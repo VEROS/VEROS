@@ -12,3 +12,8 @@ Record Alarm := mkALM{
 
 (*DO : Alarm construct func, ignore counter alarm data*)
 
+
+Definition AlarmList := list Alarm.
+
+(*TODO : functions operating the list*)
+
