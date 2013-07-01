@@ -50,4 +50,6 @@ revert m; induction n as [|n rec]; intros.
 
   exact (rec (Bhigh n bv) m).
 Defined.
- 
+
+Definition nth n (bv : Bvector n) (m : nat) :=
+  nth_rec bv (n-m).
