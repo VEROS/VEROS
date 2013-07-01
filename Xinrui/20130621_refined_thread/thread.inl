@@ -461,20 +461,20 @@ inline void Cyg_Thread::set_timer(
     cyg_reason          reason
 )
 {
-#ifdef CYGFUN_KERNEL_THREADS_TIMER
+
     self()->sleep_reason = reason;
     self()->wake_reason = NONE;
     self()->timer.initialize( trigger);
-#endif
+
 }
 
 // -------------------------------------------------------------------------
 
 inline void Cyg_Thread::clear_timer()
 {
-#ifdef CYGFUN_KERNEL_THREADS_TIMER
+
     self()->timer.disable();
-#endif
+
 }
 
 // -------------------------------------------------------------------------

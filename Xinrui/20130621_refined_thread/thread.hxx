@@ -153,7 +153,14 @@ public:
 
     cyg_uint32 get_stack_size();
 
+#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT    
+    // Allocate some memory at the lower end of the stack
+    // by moving the stack limit pointer.
 
+    void *increment_stack_limit( cyg_ucount32 size);
+    
+    CYG_ADDRESS get_stack_limit();
+#endif    
 
 #ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
 
@@ -171,7 +178,7 @@ public:
 // Per-thread timer support class.
 // This is only included when required.
 
-#ifdef CYGFUN_KERNEL_THREADS_TIMER
+//#ifdef CYGFUN_KERNEL_THREADS_TIMER
 
 class Cyg_ThreadTimer
     : public Cyg_Alarm
@@ -193,7 +200,7 @@ class Cyg_ThreadTimer
 
 };
 
-#endif
+//#endif
 
 // -------------------------------------------------------------------------
 // Main Thread class.
@@ -242,6 +249,40 @@ private:
     // Unique thread id assigned on creation
     cyg_uint16                  unique_id;
 
+#ifdef CYGPKG_KERNEL_EXCEPTIONS  //ON but don't care
+
+    // If exceptions are supported, define an exception control
+    // object that will be used to manage and deliver them. If
+    // exceptions are global there is a single static instance
+    // of this object, if they are per-thread then there is one
+    // for each thread.
+private:
+
+#ifdef CYGSEM_KERNEL_EXCEPTIONS_GLOBAL
+    static
+#endif
+    Cyg_Exception_Control       exception_control;
+
+public:
+
+    static void register_exception(
+        cyg_code                exception_number,       // exception number
+        cyg_exception_handler   handler,                // handler function
+        CYG_ADDRWORD            data,                   // data argument
+        cyg_exception_handler   **old_handler,          // handler function
+        CYG_ADDRWORD            *old_data               // data argument
+        );
+
+    static void deregister_exception(
+        cyg_code                exception_number        // exception number
+        );
+    
+    void deliver_exception(
+        cyg_code            exception_number,       // exception being raised
+        CYG_ADDRWORD        exception_info          // exception specific info
+        );
+
+#endif
 
     
 public:
@@ -281,10 +322,10 @@ public:
 
     static void         counted_sleep();// Decrement counter or put
                                         // thread to sleep
-#ifdef CYGFUN_KERNEL_THREADS_TIMER
+//#ifdef CYGFUN_KERNEL_THREADS_TIMER
     static void         counted_sleep( cyg_tick_count delay );
                                         // ...for delay ticks
-#endif
+//#endif
     
     static void         exit();         // Terminate thread
 
@@ -355,15 +396,15 @@ public:
     
 private:
 
-#ifdef CYGFUN_KERNEL_THREADS_TIMER
+//#ifdef CYGFUN_KERNEL_THREADS_TIMER
     Cyg_ThreadTimer     timer;          // per-thread timer
-#endif
+//#endif
 
     cyg_reason          sleep_reason;   // reason for sleeping
 
     cyg_reason          wake_reason;    // reason for waking
     
-#ifdef CYGIMP_THREAD_PRIORITY
+//#ifdef CYGIMP_THREAD_PRIORITY
 
 public:
 
@@ -380,12 +421,66 @@ public:
     // scheduling algorithms.
     cyg_priority get_current_priority();    
     
+//#endif
+
+#ifdef CYGVAR_KERNEL_THREADS_DATA  //ON but don't care
+
+private:
+    // Array of single word entries for each index. 
+    CYG_ADDRWORD        thread_data[CYGNUM_KERNEL_THREADS_DATA_MAX];
+
+    // Map of free thread_data indexes. Each bit represents an index
+    // and is 1 if that index is free, and 0 if it is in use.
+    static cyg_ucount32        thread_data_map;
+
+public:
+    
+    typedef cyg_count32 cyg_data_index;
+
+    static CYG_ADDRWORD get_data( cyg_data_index index );
+
+    static CYG_ADDRWORD *get_data_ptr( cyg_data_index index );
+
+    void                set_data( cyg_data_index index, CYG_ADDRWORD data );
+
+    // returns -1 if no more indexes available
+    static cyg_data_index new_data_index();
+
+    static void         free_data_index( cyg_data_index index );
+
 #endif
 
 
+#ifdef CYGVAR_KERNEL_THREADS_NAME  //ON but don't care
 
+private:
+    // An optional thread name string, for humans to read
+    char                        *name;
 
+public:    
+    // function to get the name string
+    char                        *get_name();
+    
+#endif
+    
 
+#ifdef CYGVAR_KERNEL_THREADS_LIST  //ON but don't care
+
+        // Housekeeping list that tracks all threads
+private:
+    Cyg_Thread                  *list_next;
+    static Cyg_Thread           *thread_list;
+
+    void                        add_to_list(      void );
+    void                        remove_from_list( void );
+public:
+
+    static Cyg_Thread           *get_list_head();
+    
+    Cyg_Thread                  *get_list_next();
+    
+#endif
+    
 public:
     
     // Set sleep reason to reason and wake reason to NONE
