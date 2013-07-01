@@ -18,5 +18,11 @@ Record Clock := mkclk{
 }.
 
 
-(**)
+(*DO : Clock_cstr*)
+
+(*DO : set_resolution*)
+
+(*DO : get_resolution*)
+
+
   
