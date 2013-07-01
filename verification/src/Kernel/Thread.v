@@ -32,18 +32,23 @@ Record SleepWakeup := mkSW{
 
 Record Thread := mkThread{
 
-  unique_id : nat;
- 
+  unique_id : nat; 
   state : ThreadState;
-
   wait_info : nat;
-
   sleep_wakeup : SleepWakeup;
 
   (*Inherited from SchedThread_Implementation*)
   sched_thread : SchedThread_Implementation
 
 }.
+
+
+
+
+Definition ThreadQueue := list Thread.
+
+
+Definition RunQueue := list Thread.
 
 
 
