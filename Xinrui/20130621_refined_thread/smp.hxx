@@ -95,7 +95,7 @@
 // This single CPU version simply goes through the motions of setting
 // and clearing the lock variable for debugging purposes. 
 
-#ifdef __cplusplus
+//#ifdef __cplusplus
 
 class Cyg_SpinLock
 {
@@ -208,7 +208,7 @@ protected:
 #define CYGIMP_KERNEL_SCHED_LOCK_DEFINITIONS                    \
 volatile cyg_ucount32 Cyg_Scheduler_SchedLock::sched_lock = 1;
 
-#endif // __cplusplus
+//#endif // __cplusplus
 
 #endif // defined(CYGSEM_KERNEL_SMP_SUPPORT) && (CYGSEM_HAL_SMP_SUPPORT)
 
