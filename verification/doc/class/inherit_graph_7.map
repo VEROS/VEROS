@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_cyg___scheduler___sched_lock.html" title="Cyg_Scheduler_SchedLock" alt="" coords="6,5,189,32"/>
+<area shape="rect" id="node2" href="$class_cyg___scheduler___base.html" title="Cyg_Scheduler_Base" alt="" coords="237,5,384,32"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler___implementation.html" title="Cyg_Scheduler_Implementation" alt="" coords="432,5,637,32"/>
+<area shape="rect" id="node4" href="$class_cyg___scheduler.html" title="Cyg_Scheduler" alt="" coords="686,5,797,32"/>
+</map>
