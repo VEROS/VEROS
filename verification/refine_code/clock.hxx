@@ -77,15 +77,10 @@ class Cyg_Counter
 
     friend class Cyg_Alarm;
 
-#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST)
+//#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST)
 
     Cyg_Alarm_List      alarm_list;     // Linear list of Alarms
 
-#elif defined(CYGIMP_KERNEL_COUNTERS_MULTI_LIST)
-
-    Cyg_Alarm_List      alarm_list[CYGNUM_KERNEL_COUNTERS_MULTI_LIST_SIZE];
-    
-#endif
 
     volatile cyg_tick_count counter;    // counter value
 
@@ -187,13 +182,13 @@ public:
     static cyg_tick_count convert( cyg_tick_count value,
                                    struct converter *pcc );
         
-#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK 
+//#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK
     
     // There is a system supplied real time clock...
 
     static Cyg_Clock *real_time_clock;
 
-#endif    
+//#endif
         
 };
 

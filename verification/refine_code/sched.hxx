@@ -62,11 +62,6 @@
 // -------------------------------------------------------------------------
 // Miscellaneous types
 
-#ifdef CYGSEM_KERNEL_SCHED_ASR_SUPPORT
-
-typedef void Cyg_ASR( CYG_ADDRWORD data );      // ASR type signature
-
-#endif
 
 __externC void cyg_scheduler_set_need_reschedule();
 
@@ -218,7 +213,6 @@ public:
     void remove();
 
 
-
 public:
     
     // Even when we do not have ASRs enabled, we keep these functions
@@ -227,9 +221,80 @@ public:
     inline void set_asr_inhibit() { }
     inline void clear_asr_inhibit() { }
     
+#ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL
 
+private:
+
+    // For all priority inversion protocols we need to keep track of how
+    // many mutexes we have locked, including one which we are waiting to
+    // lock, because we can inherit priority while sleeping just prior to
+    // wakeup.
     
+    cyg_count32         mutex_count;
 
+protected:
+    // These are implementation functions that are common to all protocols.
+        
+    // Inherit the given priority. If thread is non-NULL the priority is
+    // being inherited from it, otherwise it has come from the mutex.
+    void set_inherited_priority( cyg_priority pri, Cyg_Thread *thread = 0 );
+
+    // Relay the priority of the ex-owner thread or from the queue if it
+    // has a higher priority than ours.
+    void relay_inherited_priority( Cyg_Thread *ex_owner, Cyg_ThreadQueue *pqueue);
+
+    // Lose priority inheritance
+    void clear_inherited_priority();
+    
+public:    
+    // Count and uncount the number of mutexes held by
+    // this thread.
+    void count_mutex() { mutex_count++; };
+    void uncount_mutex() { mutex_count--; };
+
+#if defined(CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_SIMPLE)
+    
+protected:    
+
+    // The simple priority inversion protocols simply needs
+    // somewhere to store the base priority of the current thread.
+    
+    cyg_priority        original_priority;      // our original priority
+
+    cyg_bool            priority_inherited;     // have we inherited?
+
+#endif
+
+#ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_INHERIT
+    
+public:
+
+    // Inherit the priority of the provided thread if it
+    // has higher priority than this.
+    void inherit_priority( Cyg_Thread *thread);
+
+    // Relay the priority of the ex-owner thread or from the queue if it
+    // has a higher priority than ours.
+    void relay_priority( Cyg_Thread *ex_owner, Cyg_ThreadQueue *pqueue);
+
+    // Lose priority inheritance
+    void disinherit_priority();
+    
+#endif
+
+#ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_CEILING
+
+public:
+
+    // Set the priority of this thread to the given ceiling.
+    void set_priority_ceiling( cyg_priority pri );
+
+    // Clear the ceiling, if necessary.
+    void clear_priority_ceiling();
+    
+#endif    
+
+#endif
     
 };
 
