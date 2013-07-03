@@ -1,0 +1,3 @@
+1. ThreadQueue vs. RunQueue : A thread can't be in two queues.
+
+2. Missed classes? revised the class graph, check one by one.
