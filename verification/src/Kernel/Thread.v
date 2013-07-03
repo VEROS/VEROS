@@ -1,6 +1,8 @@
 Set Implicit Arguments.
 
+Require Import SchedThread.
 Require Import SchedThread_Implementation.
+Require Import Queue.
 
 Inductive ThreadState : Set :=
 | RUNNING : ThreadState
@@ -42,13 +44,9 @@ Record Thread := mkThread{
 
 }.
 
+Definition ThreadQueue := queue Thread.
 
-
-
-Definition ThreadQueue := list Thread.
-
-
-Definition RunQueue := list Thread.
+Definition RunQueue := queue Thread.
 
 
 

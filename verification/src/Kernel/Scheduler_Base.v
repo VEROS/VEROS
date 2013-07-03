@@ -4,12 +4,12 @@ Require Import Scheduler_SchedLock.
 Require Import Thread.
 
 Record Scheduler_Base := mksb{
-
   sched_lock : Scheduler_SchedLock;
-  current_thread : Thread;
+  (*the unique_id of a thread*)
+  current_thread : nat; 
   need_reschedule : bool
-  (*thread_switches is abandoned*)
 
+  (*thread_switches is abandoned*)
 }.
 
 (*DO : get_curreent_thread*)

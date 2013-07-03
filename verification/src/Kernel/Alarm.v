@@ -1,6 +1,6 @@
 Set Implicit Arguments.
 
-Require Import List.
+Require Import Queue.
 
 Record Alarm := mkALM{
   unique_id : nat;
@@ -13,7 +13,7 @@ Record Alarm := mkALM{
 Definition Alarm_cstr (uid t i : nat)(e : bool) : Alarm := 
   mkALM uid t i e.
 
-Definition AlarmList := list Alarm.
+Definition AlarmList := queue Alarm.
 
 (*DO : functions operating the list*)
 

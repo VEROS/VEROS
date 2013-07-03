@@ -1,8 +1,9 @@
 Set Implicit Arguments.
 
-Require Import Scheduler_Base.
 Require Import BitVector.
 Import Bvector.
+
+Require Import Scheduler_Base.
 Require Import Thread.
 
 

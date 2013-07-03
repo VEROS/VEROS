@@ -1,6 +1,4 @@
 Set Implicit Arguments.
-Require Import Scheduler_Implementation.
-
 
 Variable CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS : nat.
 
