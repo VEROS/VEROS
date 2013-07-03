@@ -13,3 +13,9 @@ Require Import List.
 (*DO : remove*)
 
 (*DO : empty*)
+
+(*DO : insert*)
+
+(*DO : add_tail*)
+
+(*DO : get_head*)

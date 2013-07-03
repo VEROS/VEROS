@@ -21,6 +21,8 @@ Record Scheduler_Base := mksb{
 (*DO : get_need_reschedule*)
 
 (*DO : get_sched_lock*)
+Definition get_sched_lock (sb : Scheduler_Base) :=
+  (Scheduler_SchedLock.get_sched_lock (sched_lock sb)).
 
 (*DO : clear_need_reschedule*)
 

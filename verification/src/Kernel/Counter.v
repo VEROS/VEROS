@@ -17,8 +17,7 @@ Record Counter := mkcounter{
 (*DO : Counter_cstr*)
 
 (*DO : current_value*)
-
-(*DO : current_value*)
+Definition current_value (c : Counter) := (counter c).
 
 (*DO : current_value_lo*)
 

@@ -1,4 +1,6 @@
 Set Implicit Arguments.
+Require Import Scheduler_Implementation.
+
 
 Variable CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS : nat.
 
@@ -33,9 +35,9 @@ Definition SchedThread_Implementation_cstr (p : nat) :=
 
 (*TODO : function 'to_queue_head'*)
 
-(*TODO : Definition timeslice_save*)
+(*DO : Definition timeslice_save*)
 
-(*TODO : timeslice_restore*)
+(*DO : timeslice_restore*)
 
 Definition timeslice_reset (r : SchedThread_Implementation) 
   (count : nat) :=

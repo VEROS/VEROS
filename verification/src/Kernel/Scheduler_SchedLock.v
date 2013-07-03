@@ -16,4 +16,5 @@ Record Scheduler_SchedLock := mkss{
 (*DO : set_sched_lock*)
 
 (*DO : get_sched_lock*)
-
+Definition get_sched_lock (ss : Scheduler_SchedLock) :=
+  sched_lock ss.
