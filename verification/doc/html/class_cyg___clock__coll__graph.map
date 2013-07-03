@@ -1,0 +1,7 @@
+<map id="Cyg_Clock" name="Cyg_Clock">
+<area shape="rect" id="node2" href="$class_cyg___counter.html" title="Cyg_Counter" alt="" coords="234,280,331,307"/>
+<area shape="rect" id="node8" href="$struct_cyg___clock_1_1cyg__resolution.html" title="Cyg_Clock::cyg_resolution" alt="" coords="369,280,545,307"/>
+<area shape="rect" id="node5" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Alarm \&gt;" alt="" coords="183,176,367,203"/>
+<area shape="rect" id="node6" href="$class_cyg___c_list.html" title="Cyg_CList" alt="" coords="233,99,316,125"/>
+<area shape="rect" id="node7" href="$class_cyg___d_node.html" title="Cyg_DNode" alt="" coords="229,7,320,33"/>
+</map>

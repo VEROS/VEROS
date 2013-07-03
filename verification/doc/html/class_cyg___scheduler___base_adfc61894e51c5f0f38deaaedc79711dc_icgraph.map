@@ -1,0 +1,5 @@
+<map id="Cyg_Scheduler_Base::set_current_thread" name="Cyg_Scheduler_Base::set_current_thread">
+<area shape="rect" id="node2" href="$class_cyg___scheduler.html#a206a7cbdee2753ea8198944f749f1bd2" title="Cyg_Scheduler::start_cpu" alt="" coords="201,5,373,32"/>
+<area shape="rect" id="node4" href="$class_cyg___scheduler.html#a2dfdb7b0a2485dc61e7b6cd92c193f7d" title="Cyg_Scheduler::thread\l_entry" alt="" coords="209,57,364,98"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler.html#a3e083d831d4fb9542d511099949890bc" title="Cyg_Scheduler::start" alt="" coords="421,5,565,32"/>
+</map>

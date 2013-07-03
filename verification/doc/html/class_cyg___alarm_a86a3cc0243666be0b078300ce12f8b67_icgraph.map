@@ -1,0 +1,5 @@
+<map id="Cyg_Alarm::initialize" name="Cyg_Alarm::initialize">
+<area shape="rect" id="node2" href="$class_cyg___thread.html#a7e92402378d90c942fd050ac77610c05" title="Cyg_Thread::set_timer" alt="" coords="195,41,349,68"/>
+<area shape="rect" id="node3" href="$class_cyg___thread.html#ae26681ed39ae0e34088fd925be8f3484" title="Cyg_Thread::counted\l_sleep" alt="" coords="398,5,543,46"/>
+<area shape="rect" id="node4" href="$class_cyg___thread.html#a5bea2b207ab7788d560fa2bc98334b7d" title="Cyg_Thread::delay" alt="" coords="405,71,536,97"/>
+</map>

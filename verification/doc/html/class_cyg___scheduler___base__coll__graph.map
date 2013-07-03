@@ -1,0 +1,17 @@
+<map id="Cyg_Scheduler_Base" name="Cyg_Scheduler_Base">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___sched_lock.html" title="Cyg_Scheduler_SchedLock" alt="" coords="1657,6,1839,33"/>
+<area shape="rect" id="node13" href="$class_cyg___sched_thread___implementation.html" title="Cyg_SchedThread_Implementation" alt="" coords="1409,391,1631,418"/>
+<area shape="rect" id="node6" href="$class_cyg___thread.html" title="Cyg_Thread" alt="" coords="2209,330,2300,357"/>
+<area shape="rect" id="node22" href="$class_cyg___thread_timer.html" title="Cyg_ThreadTimer" alt="" coords="2628,375,2751,402"/>
+<area shape="rect" id="node7" href="$class_cyg___hardware_thread.html" title="Cyg_HardwareThread" alt="" coords="1867,207,2013,234"/>
+<area shape="rect" id="node23" href="$class_cyg___alarm.html" title="Cyg_Alarm" alt="" coords="2211,626,2298,653"/>
+<area shape="rect" id="node26" href="$class_cyg___counter.html" title="Cyg_Counter" alt="" coords="1891,758,1989,785"/>
+<area shape="rect" id="node12" href="$class_cyg___sched_thread.html" title="Cyg_SchedThread" alt="" coords="1876,391,2004,418"/>
+<area shape="rect" id="node14" href="$class_cyg___d_node___t.html" title="Cyg_DNode_T\&lt; Cyg_Thread \&gt;" alt="" coords="286,391,485,418"/>
+<area shape="rect" id="node15" href="$class_cyg___d_node.html" title="Cyg_DNode" alt="" coords="5,470,96,497"/>
+<area shape="rect" id="node21" href="$class_cyg___c_list.html" title="Cyg_CList" alt="" coords="179,518,261,545"/>
+<area shape="rect" id="node18" href="$class_cyg___thread_queue.html" title="Cyg_ThreadQueue" alt="" coords="1455,474,1585,501"/>
+<area shape="rect" id="node19" href="$class_cyg___thread_queue___implementation.html" title="Cyg_ThreadQueue_Implementation" alt="" coords="931,518,1155,545"/>
+<area shape="rect" id="node20" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Thread \&gt;" alt="" coords="509,518,699,545"/>
+<area shape="rect" id="node28" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Alarm \&gt;" alt="" coords="723,710,907,737"/>
+</map>

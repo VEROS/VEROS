@@ -1,0 +1,9 @@
+<map id="Cyg_Scheduler_Implementation::timeslice_cpu" name="Cyg_Scheduler_Implementation::timeslice_cpu">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___base.html#a32d18e404cb32e320a3cc0a2b99a54c3" title="Cyg_Scheduler_Base\l::get_current_thread" alt="" coords="288,5,435,46"/>
+<area shape="rect" id="node3" href="$class_cyg___c_list___t.html#a8a550e09751307bcc988ffa2f0a03c36" title="Cyg_CList_T::get_head" alt="" coords="283,71,440,97"/>
+<area shape="rect" id="node4" href="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20" title="Cyg_Scheduler_Base\l::get_sched_lock" alt="" coords="288,122,435,163"/>
+<area shape="rect" id="node6" href="$class_cyg___thread.html#a52938df206abb7c04b8359bce61bd01b" title="Cyg_Thread::get_state" alt="" coords="285,188,438,215"/>
+<area shape="rect" id="node7" href="$class_cyg___c_list.html#a0e3f8908a35f8d596f1d3436f28c9e72" title="Cyg_CList::rotate" alt="" coords="300,239,423,265"/>
+<area shape="rect" id="node8" href="$class_cyg___scheduler___implementation.html#a891a2a6e80c1d8c36d1546da91bfb1b8" title="Cyg_Scheduler_Implementation\l::set_need_reschedule" alt="" coords="259,290,464,331"/>
+<area shape="rect" id="node5" href="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac" title="Cyg_Scheduler_SchedLock\l::get_sched_lock" alt="" coords="513,122,695,163"/>
+</map>

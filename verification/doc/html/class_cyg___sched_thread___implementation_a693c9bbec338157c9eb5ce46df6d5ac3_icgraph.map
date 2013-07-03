@@ -1,0 +1,7 @@
+<map id="Cyg_SchedThread_Implementation::timeslice_reset" name="Cyg_SchedThread_Implementation::timeslice_reset">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___implementation.html#ad6a05d4eeef2a3f196c57aaad0de70d1" title="Cyg_Scheduler_Implementation\l::add_thread" alt="" coords="287,5,492,46"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler.html#a2dfdb7b0a2485dc61e7b6cd92c193f7d" title="Cyg_Scheduler::thread\l_entry" alt="" coords="312,70,467,111"/>
+<area shape="rect" id="node4" href="$class_cyg___sched_thread___implementation.html#a74789ffbf16253a8a98f285bc16fc5cd" title="Cyg_SchedThread_Implementation\l::yield" alt="" coords="278,135,501,177"/>
+<area shape="rect" id="node5" href="$class_cyg___thread.html#a9e4d6dc7268a1c87fc4875bc0d3e0ba5" title="Cyg_Thread::yield" alt="" coords="550,143,677,169"/>
+<area shape="rect" id="node6" href="$thread_8cxx.html#ab41818e0f3d9ad7695412191d8d01f2d" title="idle_thread_main" alt="" coords="725,143,845,169"/>
+</map>

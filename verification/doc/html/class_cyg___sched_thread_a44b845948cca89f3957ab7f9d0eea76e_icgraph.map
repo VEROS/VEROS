@@ -1,0 +1,6 @@
+<map id="Cyg_SchedThread::get_current_queue" name="Cyg_SchedThread::get_current_queue">
+<area shape="rect" id="node2" href="$class_cyg___thread.html#abdd74d18178c8e11cd8668e35d98ddf3" title="Cyg_Thread::reinitialize" alt="" coords="241,5,399,32"/>
+<area shape="rect" id="node3" href="$class_cyg___thread.html#ab102fd5044377146d5cd67337f2d3383" title="Cyg_Thread::set_priority" alt="" coords="239,56,401,83"/>
+<area shape="rect" id="node4" href="$class_cyg___sched_thread___implementation.html#aee50d5d34fb606e54d3652ed9a234c37" title="Cyg_SchedThread_Implementation\l::to_queue_head" alt="" coords="209,107,431,149"/>
+<area shape="rect" id="node5" href="$class_cyg___thread.html#a7c193f2e0eaaf194ae0238de80f9f52a" title="Cyg_Thread::to_queue_head" alt="" coords="480,115,667,141"/>
+</map>

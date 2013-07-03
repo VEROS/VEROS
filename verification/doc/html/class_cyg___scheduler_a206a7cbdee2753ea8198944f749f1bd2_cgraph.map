@@ -1,0 +1,4 @@
+<map id="Cyg_Scheduler::start_cpu" name="Cyg_Scheduler::start_cpu">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___base.html#a6d90dadb5d732756eb2f1acdedb54aa2" title="Cyg_Scheduler_Base\l::clear_need_reschedule" alt="" coords="227,5,389,46"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler___base.html#adfc61894e51c5f0f38deaaedc79711dc" title="Cyg_Scheduler_Base\l::set_current_thread" alt="" coords="235,70,381,111"/>
+</map>

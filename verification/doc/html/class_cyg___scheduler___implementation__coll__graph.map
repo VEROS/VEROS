@@ -1,0 +1,18 @@
+<map id="Cyg_Scheduler_Implementation" name="Cyg_Scheduler_Implementation">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___base.html" title="Cyg_Scheduler_Base" alt="" coords="2664,201,2811,228"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler___sched_lock.html" title="Cyg_Scheduler_SchedLock" alt="" coords="1657,87,1839,113"/>
+<area shape="rect" id="node14" href="$class_cyg___sched_thread___implementation.html" title="Cyg_SchedThread_Implementation" alt="" coords="1409,484,1631,511"/>
+<area shape="rect" id="node7" href="$class_cyg___thread.html" title="Cyg_Thread" alt="" coords="2257,351,2348,377"/>
+<area shape="rect" id="node23" href="$class_cyg___thread_timer.html" title="Cyg_ThreadTimer" alt="" coords="2676,396,2799,423"/>
+<area shape="rect" id="node8" href="$class_cyg___hardware_thread.html" title="Cyg_HardwareThread" alt="" coords="1867,241,2013,268"/>
+<area shape="rect" id="node24" href="$class_cyg___alarm.html" title="Cyg_Alarm" alt="" coords="2259,655,2346,681"/>
+<area shape="rect" id="node27" href="$class_cyg___counter.html" title="Cyg_Counter" alt="" coords="1891,733,1989,760"/>
+<area shape="rect" id="node13" href="$class_cyg___sched_thread.html" title="Cyg_SchedThread" alt="" coords="1876,519,2004,545"/>
+<area shape="rect" id="node15" href="$class_cyg___d_node___t.html" title="Cyg_DNode_T\&lt; Cyg_Thread \&gt;" alt="" coords="286,521,485,548"/>
+<area shape="rect" id="node16" href="$class_cyg___d_node.html" title="Cyg_DNode" alt="" coords="5,644,96,671"/>
+<area shape="rect" id="node22" href="$class_cyg___c_list.html" title="Cyg_CList" alt="" coords="179,707,261,733"/>
+<area shape="rect" id="node19" href="$class_cyg___thread_queue.html" title="Cyg_ThreadQueue" alt="" coords="1455,535,1585,561"/>
+<area shape="rect" id="node20" href="$class_cyg___thread_queue___implementation.html" title="Cyg_ThreadQueue_Implementation" alt="" coords="931,600,1155,627"/>
+<area shape="rect" id="node21" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Thread \&gt;" alt="" coords="509,707,699,733"/>
+<area shape="rect" id="node29" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Alarm \&gt;" alt="" coords="723,793,907,820"/>
+</map>

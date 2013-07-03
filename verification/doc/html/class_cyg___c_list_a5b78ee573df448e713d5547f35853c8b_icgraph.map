@@ -1,0 +1,14 @@
+<map id="Cyg_CList::add_tail" name="Cyg_CList::add_tail">
+<area shape="rect" id="node2" href="$class_cyg___counter.html#a964f56902eff1382331ab0757e13857e" title="Cyg_Counter::add_alarm" alt="" coords="219,56,384,83"/>
+<area shape="rect" id="node10" href="$class_cyg___scheduler___implementation.html#ad6a05d4eeef2a3f196c57aaad0de70d1" title="Cyg_Scheduler_Implementation\l::add_thread" alt="" coords="199,107,404,149"/>
+<area shape="rect" id="node11" href="$class_cyg___thread_queue___implementation.html#a8ddfaba28e55464dfb8e34159e1298b9" title="Cyg_ThreadQueue_Implementation\l::enqueue" alt="" coords="189,173,413,214"/>
+<area shape="rect" id="node3" href="$class_cyg___counter.html#a94149bfbd4ec7069dc703c5a158b4f9f" title="Cyg_Counter::tick" alt="" coords="491,5,618,32"/>
+<area shape="rect" id="node5" href="$class_cyg___alarm.html#a86a3cc0243666be0b078300ce12f8b67" title="Cyg_Alarm::initialize" alt="" coords="484,56,625,83"/>
+<area shape="rect" id="node9" href="$class_cyg___alarm.html#a5fc26af76b09d9ca69afaaf894979fd9" title="Cyg_Alarm::enable" alt="" coords="489,107,621,133"/>
+<area shape="rect" id="node4" href="$thread_8cxx.html#ab41818e0f3d9ad7695412191d8d01f2d" title="idle_thread_main" alt="" coords="717,5,837,32"/>
+<area shape="rect" id="node6" href="$class_cyg___thread.html#a7e92402378d90c942fd050ac77610c05" title="Cyg_Thread::set_timer" alt="" coords="701,56,854,83"/>
+<area shape="rect" id="node7" href="$class_cyg___thread.html#ae26681ed39ae0e34088fd925be8f3484" title="Cyg_Thread::counted\l_sleep" alt="" coords="907,19,1053,61"/>
+<area shape="rect" id="node8" href="$class_cyg___thread.html#a5bea2b207ab7788d560fa2bc98334b7d" title="Cyg_Thread::delay" alt="" coords="915,85,1045,112"/>
+<area shape="rect" id="node12" href="$class_cyg___thread_queue.html#ad027d33c49fd318522b7e3a092891943" title="Cyg_ThreadQueue::enqueue" alt="" coords="461,180,648,207"/>
+<area shape="rect" id="node13" href="$class_cyg___thread.html#ab102fd5044377146d5cd67337f2d3383" title="Cyg_Thread::set_priority" alt="" coords="696,180,859,207"/>
+</map>

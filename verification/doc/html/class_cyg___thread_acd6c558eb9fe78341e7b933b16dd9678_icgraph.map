@@ -1,0 +1,10 @@
+<map id="Cyg_Thread::clear_timer" name="Cyg_Thread::clear_timer">
+<area shape="rect" id="node2" href="$class_cyg___thread.html#ae26681ed39ae0e34088fd925be8f3484" title="Cyg_Thread::counted\l_sleep" alt="" coords="217,5,362,46"/>
+<area shape="rect" id="node3" href="$class_cyg___thread.html#a5bea2b207ab7788d560fa2bc98334b7d" title="Cyg_Thread::delay" alt="" coords="419,67,549,93"/>
+<area shape="rect" id="node4" href="$class_cyg___thread.html#a1325e6829eb67a7c584cee48d81cc371" title="Cyg_Thread::exit" alt="" coords="229,125,349,152"/>
+<area shape="rect" id="node5" href="$class_cyg___hardware_thread.html#af951e39bf5d2fcc71329274afd3f7ae3" title="Cyg_HardwareThread\l::thread_entry" alt="" coords="411,118,557,159"/>
+<area shape="rect" id="node8" href="$class_cyg___thread.html#aaf9b4fc5afa2c960f564b6701287663c" title="Cyg_Thread::counted\l_sleep" alt="" coords="411,183,557,225"/>
+<area shape="rect" id="node9" href="$class_cyg___thread.html#aa2ccfc563049b0f7e77ebbafb5df7eca" title="Cyg_Thread::kill" alt="" coords="427,249,541,276"/>
+<area shape="rect" id="node6" href="$class_cyg___hardware_thread.html#aee6c6a52409a0882697917ec16875260" title="Cyg_HardwareThread\l::init_context" alt="" coords="606,118,751,159"/>
+<area shape="rect" id="node7" href="$class_cyg___thread.html#a13efd27904ba3f891eeb1fc56d7c1865" title="Cyg_Thread::Cyg_Thread" alt="" coords="800,125,968,152"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Cyg_Interrupt::call_pending_DSRs" name="Cyg_Interrupt::call_pending_DSRs">
+<area shape="rect" id="node2" href="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20" title="Cyg_Scheduler_Base\l::get_sched_lock" alt="" coords="181,5,328,46"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac" title="Cyg_Scheduler_SchedLock\l::get_sched_lock" alt="" coords="377,5,559,46"/>
+</map>

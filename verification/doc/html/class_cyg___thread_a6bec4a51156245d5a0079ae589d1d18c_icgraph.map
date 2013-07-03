@@ -1,0 +1,6 @@
+<map id="Cyg_Thread::wake" name="Cyg_Thread::wake">
+<area shape="rect" id="node2" href="$class_cyg___thread_timer.html#ab355d2d23288714dcddad7dea458d991" title="Cyg_ThreadTimer::alarm" alt="" coords="195,5,357,32"/>
+<area shape="rect" id="node3" href="$class_cyg___thread.html#a4912b6ba316818edc0f1c36a9b51e201" title="Cyg_Thread::counted_wake" alt="" coords="185,56,367,83"/>
+<area shape="rect" id="node4" href="$class_cyg___thread.html#aa2ccfc563049b0f7e77ebbafb5df7eca" title="Cyg_Thread::kill" alt="" coords="219,107,333,133"/>
+<area shape="rect" id="node5" href="$class_cyg___thread.html#a78079e3efa67760bc216a5d103bbfe0a" title="Cyg_Thread::release" alt="" coords="205,157,347,184"/>
+</map>

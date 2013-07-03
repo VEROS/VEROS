@@ -1,0 +1,7 @@
+<map id="Cyg_SchedThread::remove" name="Cyg_SchedThread::remove">
+<area shape="rect" id="node2" href="$class_cyg___thread_queue.html#ad2dfa40e1e134507e5bb6efc8ea279bd" title="Cyg_ThreadQueue::remove" alt="" coords="232,12,411,39"/>
+<area shape="rect" id="node3" href="$class_cyg___thread_queue___implementation.html#a5c149fba525e2c584ce264a23ee4f092" title="Cyg_ThreadQueue_Implementation\l::remove" alt="" coords="459,5,683,46"/>
+<area shape="rect" id="node4" href="$class_cyg___c_list.html#acc2872b42b5e9fcb3a393ea6551bf231" title="Cyg_CList::remove" alt="" coords="731,12,861,39"/>
+<area shape="rect" id="node5" href="$class_cyg___c_list.html#ae70cdd6b3ab6b83d92612fd17309fcf5" title="Cyg_CList::rem_head" alt="" coords="909,12,1056,39"/>
+<area shape="rect" id="node6" href="$class_cyg___d_node.html#a6e537a727a9ecf9cefaee27058633cdb" title="Cyg_DNode::unlink" alt="" coords="1104,12,1237,39"/>
+</map>

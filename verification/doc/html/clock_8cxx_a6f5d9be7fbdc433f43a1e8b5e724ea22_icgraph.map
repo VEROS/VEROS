@@ -1,0 +1,4 @@
+<map id="construct_converter" name="construct_converter">
+<area shape="rect" id="node2" href="$class_cyg___clock.html#ad6ff002aea2981b88e6199a0679cc93d" title="Cyg_Clock::get_clock\l_to_other_converter" alt="" coords="189,5,339,46"/>
+<area shape="rect" id="node3" href="$class_cyg___clock.html#aff333d29c31f4d22ebf93e28cce5ebcd" title="Cyg_Clock::get_other\l_to_clock_converter" alt="" coords="191,70,337,111"/>
+</map>

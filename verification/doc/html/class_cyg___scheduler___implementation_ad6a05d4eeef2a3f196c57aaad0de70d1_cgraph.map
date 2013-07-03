@@ -1,0 +1,13 @@
+<map id="Cyg_Scheduler_Implementation::add_thread" name="Cyg_Scheduler_Implementation::add_thread">
+<area shape="rect" id="node2" href="$class_cyg___c_list.html#a5b78ee573df448e713d5547f35853c8b" title="Cyg_CList::add_tail" alt="" coords="303,5,438,32"/>
+<area shape="rect" id="node4" href="$class_cyg___c_list.html#aa3a14467bff2cc99f72d1c7139282d17" title="Cyg_CList::empty" alt="" coords="307,56,434,83"/>
+<area shape="rect" id="node5" href="$class_cyg___sched_thread.html#aad25cbc77cdd7f04cde9171951535b99" title="Cyg_SchedThread::remove" alt="" coords="282,107,459,133"/>
+<area shape="rect" id="node11" href="$class_cyg___scheduler___implementation.html#a93b5e2ef78926c9472ecd57d0ad90fd2" title="Cyg_Scheduler_Implementation\l::set_need_reschedule" alt="" coords="268,158,473,199"/>
+<area shape="rect" id="node12" href="$class_cyg___sched_thread___implementation.html#a693c9bbec338157c9eb5ce46df6d5ac3" title="Cyg_SchedThread_Implementation\l::timeslice_reset" alt="" coords="259,223,482,265"/>
+<area shape="rect" id="node3" href="$class_cyg___d_node.html#af06f745246ea0f74a57135e192b19108" title="Cyg_DNode::insert" alt="" coords="555,5,685,32"/>
+<area shape="rect" id="node6" href="$class_cyg___thread_queue.html#ad2dfa40e1e134507e5bb6efc8ea279bd" title="Cyg_ThreadQueue::remove" alt="" coords="531,107,709,133"/>
+<area shape="rect" id="node7" href="$class_cyg___thread_queue___implementation.html#a5c149fba525e2c584ce264a23ee4f092" title="Cyg_ThreadQueue_Implementation\l::remove" alt="" coords="757,99,981,141"/>
+<area shape="rect" id="node8" href="$class_cyg___c_list.html#acc2872b42b5e9fcb3a393ea6551bf231" title="Cyg_CList::remove" alt="" coords="1029,107,1160,133"/>
+<area shape="rect" id="node9" href="$class_cyg___c_list.html#ae70cdd6b3ab6b83d92612fd17309fcf5" title="Cyg_CList::rem_head" alt="" coords="1208,107,1355,133"/>
+<area shape="rect" id="node10" href="$class_cyg___d_node.html#a6e537a727a9ecf9cefaee27058633cdb" title="Cyg_DNode::unlink" alt="" coords="1403,107,1536,133"/>
+</map>

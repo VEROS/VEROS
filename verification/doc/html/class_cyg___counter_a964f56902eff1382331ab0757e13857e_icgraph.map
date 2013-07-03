@@ -1,0 +1,9 @@
+<map id="Cyg_Counter::add_alarm" name="Cyg_Counter::add_alarm">
+<area shape="rect" id="node2" href="$class_cyg___alarm.html#a5fc26af76b09d9ca69afaaf894979fd9" title="Cyg_Alarm::enable" alt="" coords="223,5,355,32"/>
+<area shape="rect" id="node3" href="$class_cyg___alarm.html#a86a3cc0243666be0b078300ce12f8b67" title="Cyg_Alarm::initialize" alt="" coords="219,56,360,83"/>
+<area shape="rect" id="node7" href="$class_cyg___counter.html#a94149bfbd4ec7069dc703c5a158b4f9f" title="Cyg_Counter::tick" alt="" coords="226,107,353,133"/>
+<area shape="rect" id="node4" href="$class_cyg___thread.html#a7e92402378d90c942fd050ac77610c05" title="Cyg_Thread::set_timer" alt="" coords="409,56,562,83"/>
+<area shape="rect" id="node5" href="$class_cyg___thread.html#ae26681ed39ae0e34088fd925be8f3484" title="Cyg_Thread::counted\l_sleep" alt="" coords="611,19,757,61"/>
+<area shape="rect" id="node6" href="$class_cyg___thread.html#a5bea2b207ab7788d560fa2bc98334b7d" title="Cyg_Thread::delay" alt="" coords="619,85,749,112"/>
+<area shape="rect" id="node8" href="$thread_8cxx.html#ab41818e0f3d9ad7695412191d8d01f2d" title="idle_thread_main" alt="" coords="425,107,545,133"/>
+</map>

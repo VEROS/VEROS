@@ -1,0 +1,10 @@
+<map id="Cyg_Counter::add_alarm" name="Cyg_Counter::add_alarm">
+<area shape="rect" id="node2" href="$class_cyg___c_list.html#a5b78ee573df448e713d5547f35853c8b" title="Cyg_CList::add_tail" alt="" coords="234,5,369,32"/>
+<area shape="rect" id="node4" href="$class_cyg___c_list___t.html#a8a550e09751307bcc988ffa2f0a03c36" title="Cyg_CList_T::get_head" alt="" coords="223,56,380,83"/>
+<area shape="rect" id="node5" href="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20" title="Cyg_Scheduler_Base\l::get_sched_lock" alt="" coords="228,158,375,199"/>
+<area shape="rect" id="node7" href="$class_cyg___c_list.html#a8a0ed64f53e1079b44d8156f8186c144" title="Cyg_CList::insert" alt="" coords="240,107,363,133"/>
+<area shape="rect" id="node8" href="$class_cyg___alarm.html#a5213ebb268f9a6777da34849ad1e8116" title="Cyg_Alarm::synchronize" alt="" coords="219,225,383,252"/>
+<area shape="rect" id="node3" href="$class_cyg___d_node.html#af06f745246ea0f74a57135e192b19108" title="Cyg_DNode::insert" alt="" coords="459,55,589,81"/>
+<area shape="rect" id="node6" href="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac" title="Cyg_Scheduler_SchedLock\l::get_sched_lock" alt="" coords="433,155,615,197"/>
+<area shape="rect" id="node9" href="$class_cyg___counter.html#adea936eedb752723b52c6e7fe9b7d6a2" title="Cyg_Counter::current\l_value" alt="" coords="451,221,597,262"/>
+</map>
