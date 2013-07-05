@@ -1,0 +1,34 @@
+clock.cxx:
+define CYGIMP_KERNEL_COUNTERS_SINGLE_LIST   //counter上的alarm_list以单一一条链表显示
+ndefine CYGIMP_KERNEL_COUNTERS_MULTI_LIST   //counter上的alarm_list以多链表显示
+clock.hxx:
+define CYGVAR_KERNEL_COUNTERS_CLOCK         //内核使用计时器
+
+mlqueue.cxx
+define CYGSEM_KERNEL_SCHED_MLQUEUE    //采用Multi-Level queue调度策略
+define CYGSEM_KERNEL_SCHED_TIMESLICE  //时间片轮转法
+ndefine CYGPKG_KERNEL_SMP_SUPPORT     //多核支持
+ndefine CYGDBG_KERNEL_TRACE_TIMESLICE //调试相关
+define CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE //允许指定线程是否受时间片轮转控制
+
+mlqueue.hxx
+define CYGNUM_KERNEL_SCHED_BITMAP_SIZE 32  //优先级个数
+ndefine CYGSEM_KERNEL_SCHED_ASR_SUPPORT    //Asynchronous Service Routine.MVBC没有用到。
+define CYGIMP_KERNEL_INTERRUPTS_DSRS       //使用DSR中断机制
+
+thread.cxx
+define CYGFUN_KERNEL_THREADS_TIMER         //每个线程具有自己的时钟
+define CYGIMP_THREAD_PRIORITY              //线程有优先级
+
+thread.hxx
+ndefine CYGPKG_KERNEL_THREADS_DESTRUCTORS  //线程有自己的销毁函数
+
+
+
+=========
+项目中开启但目前看来没有用，被忽略的配置：
+thread.hxx
+CYGPKG_KERNEL_EXCEPTIONS       //允许异常
+CYGVAR_KERNEL_THREADS_DATA     //线程独立数据
+CYGVAR_KERNEL_THREADS_NAME     //线程名，方便调试
+CYGVAR_KERNEL_THREADS_LIST     //统一线程列表
