@@ -65,12 +65,12 @@
 #include <cyg/kernel/thread.inl>       // thread inlines
 #include <cyg/kernel/sched.inl>        // scheduler inlines
 
-
+//#ifdef CYGSEM_KERNEL_SCHED_MLQUEUE
 
 //==========================================================================
 // Cyg_Scheduler_Implementation class static members
 
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
 
 cyg_ucount32 Cyg_Scheduler_Implementation::timeslice_count[CYGNUM_KERNEL_CPU_MAX];
 
@@ -338,11 +338,9 @@ Cyg_Scheduler_Implementation::timeslice_cpu(void)
     CYG_ASSERT( queue_map != 0, "Run queue empty");
     CYG_ASSERT( queue_map & (1<<CYG_THREAD_MIN_PRIORITY), "Idle thread vanished!!!");
 
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
     if( thread->timeslice_enabled &&
         timeslice_count[cpu_this] == 0 )
-
-    if( timeslice_count[cpu_this] == 0 )
 
     {
         CYG_INSTRUMENT_SCHED(TIMESLICE,0,0);
@@ -378,9 +376,7 @@ Cyg_Scheduler_Implementation::timeslice_cpu(void)
     
     CYG_ASSERT( queue_map & (1<<CYG_THREAD_MIN_PRIORITY), "Idle thread vanished!!!");
     CYG_ASSERT( !run_queue[CYG_THREAD_MIN_PRIORITY].empty(), "Idle thread vanished!!!");
-#ifdef CYGDBG_KERNEL_TRACE_TIMESLICE
-    CYG_REPORT_RETURN();
-#endif
+
 }
 
 // -------------------------------------------------------------------------
@@ -406,7 +402,7 @@ Cyg_SchedThread_Implementation::Cyg_SchedThread_Implementation
     // Set priority to the supplied value.
     priority = (cyg_priority)sched_info;
 
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
     // If timeslice_enabled exists, set it true by default
     timeslice_enabled = true;
 

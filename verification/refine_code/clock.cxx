@@ -151,7 +151,7 @@ void Cyg_Counter::tick( cyg_uint32 ticks )
 
         Cyg_Alarm_List *alarm_list_ptr;     // pointer to list
 
-
+//#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST)
 
         alarm_list_ptr = &alarm_list;
 

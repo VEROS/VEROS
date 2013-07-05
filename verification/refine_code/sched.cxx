@@ -125,8 +125,7 @@ volatile cyg_ucount32   Cyg_Scheduler_Base::thread_switches[CYGNUM_KERNEL_CPU_MA
 // same state it was in before.
 
 //unlock_inner
-//鍙橀噺锛氭瘡涓嚎绋嬭嚜宸辩淮鎶ょ殑scheduler閿佺殑鍊�
-//娑夊強鍒扮殑kernel鏁版嵁缁撴瀯锛歭ock锛宑urrent_thread
+
 void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
 {
 #ifdef CYGDBG_KERNEL_TRACE_UNLOCK_INNER
@@ -134,9 +133,7 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
 #endif    
 
     do {
-    	//鏂伴攣鐨勫�鍙互鏄�
-    	//0锛氬嵆褰诲簳閲婃斁閿�
-    	//>=0锛氫笌褰撳墠閿佸�鐩稿悓锛屾垨鑰呮瘮褰撳墠閿佸�灏忎竴銆傚墠鑰呭搴旓紵鍚庤�瀵瑰簲浜庨噴鏀句竴閲嶉攣銆�
+
         CYG_PRECONDITION( new_lock==0 ? get_sched_lock() == 1 :
                           ((get_sched_lock() == new_lock) || (get_sched_lock() == new_lock+1)),
                           "sched_lock not at expected value" );
@@ -146,26 +143,21 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
         // Call any pending DSRs. Do this here to ensure that any
         // threads that get awakened are properly scheduled.
 
-        //鑻ラ攣瀹屽叏閲婃斁锛屽垯姝ゆ椂闇�灏唒endingDSR鍏ㄩ儴鍞ら啋鎵ц銆�
         if( new_lock == 0 && Cyg_Interrupt::DSRs_pending() )
             Cyg_Interrupt::call_pending_DSRs();
 #endif
-        //current锛氳〃绀哄綋鍓嶆鍦ㄨ繍琛岀殑绾跨▼锛屼篃灏辨槸璋冨害鎴栬�瑙﹀彂浜唘nlock_inner()鍑芥暟鐨勭嚎绋�
+
         Cyg_Thread *current = get_current_thread();
-        //纭褰撳墠绾跨▼鏄ソ鐨勶紙浠�箞鏄ソ鐨勶紵锛燂紵锛燂級
+
         CYG_ASSERTCLASS( current, "Bad current thread" );
 
-//姝ゅ涓ょ閰嶇疆锛屾垨鑰呮鏌ユ墍鏈夌殑绾跨▼鏍堬紝鎴栬�鍙鏌ョ嚎绋嬫爤
 #ifdef CYGFUN_KERNEL_ALL_THREADS_STACK_CHECKING
         // should have  CYGVAR_KERNEL_THREADS_LIST
-        //閬嶅巻褰撳墠绾跨▼鍒楄〃锛屾鏌ユ爤鏈夋病鏈夊嚭閿欙紙锛燂紵锛燂紵锛燂紵锛�
-        //current琚綋鎴愪竴涓复鏃跺彉閲忔潵浣跨敤
         current = Cyg_Thread::get_list_head();
         while ( current ) {
             current->check_stack();
             current = current->get_list_next();
         }
-        //current鍙堥噸鏂版仮澶嶄负鐪熸鐨勫綋鍓嶇嚎绋嬨�锛堣繖鏄负浜嗗噺灏戝唴瀛樼敵璇凤紵锛燂級
         current = get_current_thread();
 #endif
 
@@ -176,44 +168,30 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
         // If the current thread is going to sleep, or someone
         // wants a reschedule, choose another thread to run
 
-        //涓や釜鏉′欢锛�
-        //褰撳墠绾跨▼杩愯鐘舵�涓嶅啀鏄痳unning
-        //杩欎釜unlock_inner()鏄敱鍏朵粬绾跨▼鎴朿pu寮曡捣鐨�
         if( current->state != Cyg_Thread::RUNNING || get_need_reschedule() ) {
-        	//杩欏彧鏄竴鍙ユ帶鍒跺彴鎵撳嵃淇℃伅鐢ㄧ殑锛屼箣鍚庝笉鍐嶈В閲娿�
+
             CYG_INSTRUMENT_SCHED(RESCHEDULE,0,0);
             
             // Get the next thread to run from scheduler
-            //scheduler杩斿洖涓�釜鎺ヤ笅鏉ラ�鍚堣繍琛岀殑绾跨▼銆�
             Cyg_Thread *next = scheduler.schedule();
 
-            //妫�煡next鏄惁鏄釜鍚堟硶绾跨▼
             CYG_CHECK_DATA_PTR( next, "Invalid next thread pointer");
             CYG_ASSERTCLASS( next, "Bad next thread" );
 
-            //鑻ext涓嶅啀鏄綋鍓峜urrent绾跨▼
-            //锛堝疄闄呬笂鐢ㄤ簬姝nlock_inner()鐢卞叾浠栫嚎绋嬫垨鑰卌pu寮曡捣鐨勬儏鍐�
-            //鍚﹀垯绾跨▼鏈潵宸茬粡鏃犳硶杩愯锛屼篃涓嶄細琚玸cheduler璋冨害涓簄ext锛�
             if( current != next )
             {
 
                 CYG_INSTRUMENT_THREAD(SWITCH,current,next);
 
                 // Count this thread switch
-                //thread_switches璁板綍姣忎釜cpu鐨勪笂涓嬫枃鍒囨崲娆℃暟
                 thread_switches[CYG_KERNEL_CPU_THIS()]++;
 
-                //妫�煡鏍堢姸鍐�
 #ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
                 next->check_stack(); // before running it
 #endif
-
-                //灏嗗綋鍓嶇嚎绋嬬殑杩愯鏃堕棿淇濆瓨
-                //褰撹繑鍥炴椂浠嶆棫浠庤繖涓�椂闂村紑濮嬭繍琛�
                 current->timeslice_save();
                 
                 // Switch contexts
-                //HAL灞傝礋璐ｅ皢瀵勫瓨鍣ㄤ俊鎭帇鏍堝嚭鏍�
                 HAL_THREAD_SWITCH_CONTEXT( &current->stack_ptr,
                                            &next->stack_ptr );
 
@@ -233,28 +211,24 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
 
                 CYG_CHECK_DATA_PTR( current, "Invalid current thread pointer");
                 CYG_ASSERTCLASS( current, "Bad current thread" );
-                //current_thread鏁扮粍閲嶆柊璁板綍褰撳墠绾跨▼涓篶urrent銆�
+
                 current_thread[CYG_KERNEL_CPU_THIS()] = current;   // restore current thread pointer
-                //鎭㈠杩愯鏃堕棿鐗�
+
                 current->timeslice_restore();
             }
-            //rescheduling娓呴櫎浜嗐�
-            //锛堜絾鏄痭eed_reschedule鏄瓨鍦ㄤ粈涔堝湴鏂圭殑浠�箞鍙橀噺鍟娿�銆傘�銆傘�銆傦級
+
             clear_need_reschedule();    // finished rescheduling
         }
-        //鏂伴攣鐨勫�涓�
+       
         if( new_lock == 0 )
         {
-//ASR鏆傛椂鏃犳硶鎼炲畾銆傘�銆�
-            
-            //杩欎釜鍑芥暟涓嶇煡閬撴槸骞插槢鐨勩�
+
             HAL_REORDER_BARRIER(); // Make sure everything above has happened
                                    // by this point
-            //閿佹竻闆�
             zero_sched_lock();     // Clear the lock
             HAL_REORDER_BARRIER();
                 
-#ifdef CYGIMP_KERNEL_INTERRUPTS_DSRS
+//#ifdef CYGIMP_KERNEL_INTERRUPTS_DSRS
 
             // Now check whether any DSRs got posted during the thread
             // switch and if so, go around again. Making this test after
@@ -262,13 +236,12 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
             // a DSR could have been posted during a reschedule, but would
             // not be run until the _next_ time we release the sched lock.
 
-            //閿佸凡缁忔竻闆朵簡锛屾鏃惰閲嶆柊妫�煡DSR
             if( Cyg_Interrupt::DSRs_pending() ) {
                 inc_sched_lock();   // reclaim the lock
                 continue;           // go back to head of loop
             }
 
-#endif
+
             // Otherwise the lock is zero, we can return.
 
 //            CYG_POSTCONDITION( get_sched_lock() == 0, "sched_lock not zero" );
@@ -276,14 +249,14 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
 
 
         }
-        //閿佹病鏈夊畬鍏ㄩ噴鏀撅紝鍙槸鍑忎簡涓�噸
+        
         else
         {
             // If new_lock is non-zero then we restore the sched_lock to
             // the value given.
             
             HAL_REORDER_BARRIER();
-            //璁剧疆鏂伴攣鐨勫�銆�
+           
             set_sched_lock(new_lock);
             
             HAL_REORDER_BARRIER();            
@@ -464,8 +437,6 @@ void Cyg_SchedThread::set_inherited_priority( cyg_priority pri, Cyg_Thread *thre
 
         priority_inherited = false;     // so that set_prio DTRT
 
-        //self:褰撳墠绾跨▼
-        //pri锛�
         self->set_priority( pri );            
 
         if( !already_inherited )
