@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_cyg___c_list.html" title="Cyg_CList" alt="" coords="5,56,88,83"/>
-<area shape="rect" id="node2" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; T \&gt;" alt="" coords="167,5,294,32"/>
-<area shape="rect" id="node3" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Alarm \&gt;" alt="" coords="139,56,323,83"/>
-<area shape="rect" id="node4" href="$class_cyg___c_list___t.html" title="Cyg_CList_T\&lt; Cyg_Thread \&gt;" alt="" coords="136,107,325,133"/>
-<area shape="rect" id="node5" href="$class_cyg___thread_queue___implementation.html" title="Cyg_ThreadQueue_Implementation" alt="" coords="373,107,597,133"/>
-<area shape="rect" id="node6" href="$class_cyg___thread_queue.html" title="Cyg_ThreadQueue" alt="" coords="646,107,775,133"/>
-</map>
