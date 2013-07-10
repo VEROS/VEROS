@@ -9,8 +9,8 @@ Record Alarm := mkALM{
 }.
 
 (*DO : Alarm construct func, ignore counter alarm data*)
-Definition Alarm_cstr (uid t i : nat)(e : bool) : Alarm := 
-  mkALM uid t i e.
+Definition Alarm_cstr (uid t : nat) : Alarm := 
+  mkALM uid t 0 0 false.
 
 Definition AlarmList := queue Alarm.
 
