@@ -1,10 +1,14 @@
 Set Implicit Arguments.
 
-Require Import Alarm.
+
+Require Import EqNat.
+Require Import ThreadTimer.
+Require Import DLClist.
 
 Record Counter := mkcounter{
   
-  Alarm_List : AlarmList;
+  unique_counter_id : nat;
+  threadtimer_list : ThreadTimerList;
   counter : nat;
   increment : nat
 
@@ -17,7 +21,7 @@ Record Counter := mkcounter{
 (*DO : Counter_cstr*)
 
 (*DO : current_value*)
-Definition current_value (c : Counter) := (counter c).
+Definition current_value (c : Counter) := c.(counter).
 
 (*DO : current_value_lo*)
 

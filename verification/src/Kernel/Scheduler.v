@@ -1,3 +1,6 @@
-Require Import Scheduler_SchedLock.
+Require Import Scheduler_Implementation.
 
-(*DO : FUNC lock*)
+Record Scheduler := mkS {
+  sched_imp : Scheduler_Implementation
+}.
+

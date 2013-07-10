@@ -2,6 +2,9 @@ Set Implicit Arguments.
 
 Require Import SchedThread_Implementation.
 
-(*TODO : ThreadQueue queue*)
+Record SchedThread := mkst {
+  
+  schedthread_imp : SchedThread_Implementation
 
-(*TODO : wait for real configuration*)
+}.
+

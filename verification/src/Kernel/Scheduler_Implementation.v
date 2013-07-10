@@ -13,7 +13,7 @@ Record Scheduler_Implementation := mkSI{
   
   queue_map : Bvector 32;
 
-  run_queue : list ThreadQueue;
+  run_queue : list RunQueue;
 
   timeslice_count : nat
 

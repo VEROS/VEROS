@@ -1,27 +1,13 @@
 Set Implicit Arguments.
 
-Require Import Queue.
-
 Record Alarm := mkALM{
   unique_id : nat;
+  counter_id : nat;
   trigger : nat;
   interval : nat;
   enable : bool
 }.
 
 (*DO : Alarm construct func, ignore counter alarm data*)
-Definition Alarm_cstr (uid t i : nat)(e : bool) : Alarm := 
-  mkALM uid t i e.
-
-Definition AlarmList := queue Alarm.
-
-(*DO : functions operating the list*)
-
-(*Definition get_head(l : AlarmList) : Alarm := .
-
-Definition get_tail()
-
-Definition rem_head()
-
-Definition rem_tail()
-*)
+Definition Alarm_cstr (uid cid : nat) : Alarm := 
+  mkALM uid cid 0 0 false.

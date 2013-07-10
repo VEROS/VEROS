@@ -1,15 +1,13 @@
 Set Implicit Arguments.
 
 Require Import Scheduler_SchedLock.
-Require Import Thread.
 
 Record Scheduler_Base := mksb{
   sched_lock : Scheduler_SchedLock;
   (*the unique_id of a thread*)
   current_thread : nat; 
-  need_reschedule : bool
-
-  (*thread_switches is abandoned*)
+  need_reschedule : bool;
+  thread_switches : nat
 }.
 
 (*DO : get_curreent_thread*)
