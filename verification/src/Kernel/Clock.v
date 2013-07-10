@@ -17,12 +17,11 @@ Record Clock := mkclk{
 
 }.
 
+Definition Clock_cstr (c :  Counter)(r: Resolution) : Clock := mkclk c r.
 
-(*DO : Clock_cstr*)
+Definition set_resolution (c : Clock)(r : Resolution) : Clock := mkclk (counter c) r.
 
-(*DO : set_resolution*)
-
-(*DO : get_resolution*)
+Definition get_resolution (c : Clock) : Resolution := resolution c.
 
 
   

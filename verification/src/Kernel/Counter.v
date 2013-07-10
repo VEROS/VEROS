@@ -10,6 +10,8 @@ Record Counter := mkcounter{
 
 }.
 
+Print Alarm.
+
 (*DO : add_alarm*)
 
 (*DO : rem_alarm*)
