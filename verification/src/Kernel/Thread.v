@@ -1,8 +1,8 @@
 Set Implicit Arguments.
 
+Require Import EqNat.
 Require Import SchedThread.
-Require Import SchedThread_Implementation.
-Require Import Queue.
+Require Import DLClist.
 
 Inductive ThreadState : Set :=
 | RUNNING : ThreadState
@@ -35,19 +35,30 @@ Record SleepWakeup := mkSW{
 Record Thread := mkThread{
 
   unique_id : nat; 
+  timer_id : nat;
   state : ThreadState;
   wait_info : nat;
   sleep_wakeup : SleepWakeup;
 
   (*Inherited from SchedThread_Implementation*)
-  sched_thread : SchedThread_Implementation
+  sched_thread : SchedThread
 
 }.
 
-Definition ThreadQueue := queue Thread.
-
-Definition RunQueue := queue Thread.
 
 
+(********************************************************)
+(*The double linked cycled list of thread*)
 
+Module Thread_Obj <: DNode.
 
+  Definition Obj := Thread.
+
+  Definition eq_Obj (x y : Thread) :=
+    beq_nat x.(unique_id) y.(unique_id).
+
+End Thread_Obj.
+
+Module TO := CList Thread_Obj.
+
+Definition RunQueue := TO.CList Thread.

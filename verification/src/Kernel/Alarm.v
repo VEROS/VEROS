@@ -1,9 +1,8 @@
 Set Implicit Arguments.
 
-Require Import Queue.
-
 Record Alarm := mkALM{
   unique_id : nat;
+  counter_id : nat;
   trigger : nat;
   interval : nat;
   enable : bool
@@ -51,3 +50,4 @@ Fixpoint rem_tail(l : AlarmList) : AlarmList :=
               |_ :: _ => a :: rem_tail l'
               end
   end.
+

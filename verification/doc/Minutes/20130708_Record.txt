@@ -1,0 +1,12 @@
+﻿Conclusions:
+
+SchedThread::queue 用于在优先级反转处理过程中记录被sleeping的高优先级线程(Bold Guess)
+Scheduler_Implementation :: run_queue (The Actual Queue)用于记录不同优先级上Runnable的线程队列
+
+TODO:
+pxm:重新组织函数位置信息和调用关系
+gxr:研究优先级反转代码
+wq:在coq中对每个类的基础操作函数建模
+lsp:封装子类中调用的父类函数
+
+wq：Project Management Tools/Techniques.
