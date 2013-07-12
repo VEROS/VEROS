@@ -187,6 +187,36 @@
 
 \draw[line] (5.5cm, -8.5cm) -- (7.5,-8.5);
 
+\begin{scope}[shift={(-2.5cm, -6.5cm)},start chain=1 going right,
+              node distance=-0.2mm]
+  \foreach \x in {1,2,...,10} {
+    \x \node [on chain=1, array] {};
+  }
+  \node (cl) [on chain=1, queue, draw=none, fill=none] {clock\_list};
+\end{scope}
+
+\draw (0cm, -6.5cm) node[coordinate] (tmp1) {}; 
+\draw[line] (tmp1) -- (tmp1 |- clock.north);
+
+\draw[fill=gray!20] (21,-2.5) rectangle (27.5,-6.5);
+\draw[myarrow] (21.2, -3) -- (22.2, -3) node[right]{:\quad Class Inheritation};
+\draw[line] (21.2, -4) -- (22.2, -4) node[right]{:\quad Pointer};
+\begin{scope}[shift={(21.5cm, -5cm)},start chain=1 going right,
+              node distance=-0.2mm]
+  \foreach \x in {1,2} {
+    \x \node [on chain=1, array] {};
+  }
+  \node () [on chain=1, array, draw=none, fill=none] {:\quad array};
+\end{scope}
+
+\begin{scope}[shift={(21.5cm, -6cm)},start chain=1 going right,
+              node distance=-0.2mm]
+  \foreach \x in {1,2} {
+    \x \node [on chain=1, queue] {};
+  }
+  \node () [on chain=1, queue, draw=none, fill=none] {:\quad queue};
+\end{scope}
+
 \end{tikzpicture}
 \endpgfgraphicnamed
 

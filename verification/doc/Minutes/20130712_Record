@@ -8,8 +8,8 @@ TODO:
 2.pxm: re-run programs
        construct a naming regulation
        re-organize all the documentation except coq codes
-2.wq: Add a Clock/Counter list to statepic-f.pdf
-      Add legend to the graph
+2.wq: Add a Clock/Counter list to statepic-f.pdf                          DONE
+      Add legend to the graph                                             DONE 
 3.lsp: complete coq code accoring to all
 4.cx: investigate conference and journal about operating system
       Hot spot in investigation of operation system
