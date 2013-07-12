@@ -92,9 +92,8 @@ Cyg_Scheduler_Implementation::Cyg_Scheduler_Implementation()
 
     for( int i = 0; i < CYGNUM_KERNEL_CPU_MAX; i++ )
     {
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
         timeslice_count[i] = CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS;
-
         need_reschedule[i] = true;
     }
     
@@ -115,6 +114,7 @@ Cyg_Scheduler_Implementation::schedule(void)
     CYG_ASSERT( queue_map != 0, "Run queue empty");
     CYG_ASSERT( queue_map & (1<<CYG_THREAD_MIN_PRIORITY), "Idle thread vanished!!!");
     CYG_ASSERT( !run_queue[CYG_THREAD_MIN_PRIORITY].empty(), "Idle thread vanished!!!");
+
 
 
     register cyg_uint32 index;
@@ -187,6 +187,7 @@ Cyg_Scheduler_Implementation::add_thread(Cyg_Thread *thread)
     
     thread->timeslice_reset();
     
+
     
     CYG_ASSERT( thread->queue == NULL , "Runnable thread on a queue!");
     CYG_ASSERT( queue_map != 0, "Run queue empty");
@@ -216,6 +217,7 @@ Cyg_Scheduler_Implementation::rem_thread(Cyg_Thread *thread)
     
     CYG_ASSERT( pri != CYG_THREAD_MIN_PRIORITY, "Idle thread trying to sleep!");
     CYG_ASSERT( !run_queue[CYG_THREAD_MIN_PRIORITY].empty(), "Idle thread vanished!!!");
+
 
         
     CYG_ASSERT( queue_map & (1<<pri), "Queue map bit not set for pri");
@@ -248,10 +250,12 @@ Cyg_Scheduler_Implementation::rem_thread(Cyg_Thread *thread)
 
 void Cyg_Scheduler_Implementation::set_need_reschedule(Cyg_Thread *thread)
 {
+//#ifndef CYGPKG_KERNEL_SMP_SUPPORT
 
     if( current_thread[0]->priority > thread->priority ||
         current_thread[0]->get_state() != Cyg_Thread::RUNNING )
         need_reschedule[0] = true;
+    
 
 }
 
@@ -267,6 +271,7 @@ void Cyg_Scheduler_Implementation::set_idle_thread( Cyg_Thread *thread, HAL_SMP_
     // This will insert the thread in the run queues and make it
     // available to execute.
     thread->resume();
+
 
 }
 
@@ -310,18 +315,25 @@ Cyg_Scheduler_Implementation::unique( cyg_priority priority)
 //==========================================================================
 // Support for timeslicing option
 
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
 
 // -------------------------------------------------------------------------
 
 void
 Cyg_Scheduler_Implementation::timeslice(void)
 {
+//#ifdef CYGDBG_KERNEL_TRACE_TIMESLICE
+    CYG_REPORT_FUNCTION();
 
 
 
     if( --timeslice_count[CYG_KERNEL_CPU_THIS()] == 0 )
         timeslice_cpu();
     
+
+
+//#ifdef CYGDBG_KERNEL_TRACE_TIMESLICE
+    CYG_REPORT_RETURN();
 
 }
 
@@ -338,10 +350,10 @@ Cyg_Scheduler_Implementation::timeslice_cpu(void)
     CYG_ASSERT( queue_map != 0, "Run queue empty");
     CYG_ASSERT( queue_map & (1<<CYG_THREAD_MIN_PRIORITY), "Idle thread vanished!!!");
 
-//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
-    if( thread->timeslice_enabled &&
-        timeslice_count[cpu_this] == 0 )
 
+#else    
+    if( timeslice_count[cpu_this] == 0 )
+#endif
     {
         CYG_INSTRUMENT_SCHED(TIMESLICE,0,0);
 
@@ -386,7 +398,7 @@ __externC void cyg_scheduler_timeslice_cpu(void)
     Cyg_Scheduler::scheduler.timeslice_cpu();
 }
 
-#endif
+
 
 //==========================================================================
 // Cyg_SchedThread_Implementation class members
@@ -402,9 +414,6 @@ Cyg_SchedThread_Implementation::Cyg_SchedThread_Implementation
     // Set priority to the supplied value.
     priority = (cyg_priority)sched_info;
 
-//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
-    // If timeslice_enabled exists, set it true by default
-    timeslice_enabled = true;
 
     
     CYG_REPORT_RETURN();
@@ -444,9 +453,10 @@ Cyg_SchedThread_Implementation::yield(void)
         cyg_priority pri    = thread->priority;
         Cyg_RunQueue *queue = &sched->run_queue[pri];
 
-
+            
             queue->rotate();
 
+        
         if( queue->get_head() != thread )
             sched->set_need_reschedule();
         else
@@ -460,13 +470,15 @@ Cyg_SchedThread_Implementation::yield(void)
     }
     
     // Unlock the scheduler and switch threads
-#ifdef CYGDBG_USE_ASSERTS
+/*ON BUT DON'T CARE
+    #ifdef CYGDBG_USE_ASSERTS
     // This test keeps the assertions in unlock_inner() happy if
     // need_reschedule was not set above.
     if( !Cyg_Scheduler::get_need_reschedule() )
         Cyg_Scheduler::unlock();
     else 
-#endif    
+#endif
+*/
     Cyg_Scheduler::unlock_reschedule();
 
     
@@ -554,74 +566,10 @@ Cyg_ThreadQueue_Implementation::enqueue(Cyg_Thread *thread)
 
     CYG_INSTRUMENT_MLQ( ENQUEUE, this, thread );
     
-#ifdef CYGIMP_KERNEL_SCHED_SORTED_QUEUES
 
-    // Insert the thread into the queue in priority order.
-
-    Cyg_Thread *qhead = get_head();
-
-    if( qhead == NULL ) add_tail( thread );
-    else if( qhead == qhead->get_next() )
-    {
-        // There is currently only one thread in the queue, join it
-        // and adjust the queue pointer to point to the highest
-        // priority of the two. If they are the same priority,
-        // leave the pointer pointing to the oldest.
-
-        qhead->insert( thread );
-
-        if( thread->priority < qhead->priority )
-            to_head(thread);
-    }
-    else
-    {
-        // There is more than one thread in the queue. First check
-        // whether we are of higher priority than the head and if
-        // so just jump in at the front. Also check whether we are
-        // lower priority than the tail and jump onto the end.
-        // Otherwise we really have to search the queue to find
-        // our place.
-
-        if( thread->priority < qhead->priority )
-        {
-            qhead->insert( thread );
-            to_head(thread);
-        }
-        else if( thread->priority > get_tail()->priority )
-        {
-            // We are lower priority than any thread in the queue,
-            // go in at the end.
-
-            add_tail( thread );
-        }
-        else
-        {
-            // Search the queue. We do this backwards so that we
-            // always add new threads after any that have the same
-            // priority.
-
-            // Because of the previous tests we know that this
-            // search will terminate before we hit the head of the
-            // queue, hence we do not need to check for that
-            // condition.
-                
-            Cyg_Thread *qtmp = get_tail();
-
-            // Scan the queue until we find a higher or equal
-            // priority thread.
-
-            while( qtmp->priority > thread->priority )
-                qtmp = qtmp->get_prev();
-
-            // Append ourself after the node pointed to by qtmp.
-                
-            qtmp->append( thread );
-        }
-    }
-#else
     // Just add the thread to the tail of the list
     add_tail( thread );
-#endif
+
     
     thread->queue = CYG_CLASSFROMBASE(Cyg_ThreadQueue,
                                       Cyg_ThreadQueue_Implementation,
@@ -686,7 +634,6 @@ Cyg_ThreadQueue_Implementation::set_thread_queue(Cyg_Thread *thread,
 
 // -------------------------------------------------------------------------
 
-#endif
 
 // -------------------------------------------------------------------------
 // EOF sched/mlqueue.cxx

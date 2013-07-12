@@ -78,6 +78,7 @@
 // scheduler bitmap should contain. It is derived from the number of prioirity
 // levels defined by the configuration.
 
+//#elif CYGNUM_KERNEL_SCHED_BITMAP_SIZE <= 32
 typedef cyg_ucount32 cyg_sched_bitmap;
 
 // -------------------------------------------------------------------------
@@ -152,7 +153,7 @@ class Cyg_Scheduler_Implementation
 
 protected:
     
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
 
     // Timeslice counter. This is decremented on each
     // clock tick, and a timeslice is performed each
@@ -195,7 +196,7 @@ protected:
 public:
     void set_idle_thread( Cyg_Thread *thread, HAL_SMP_CPU_TYPE cpu );
     
-
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
 
     // If timeslicing is enbled, define a scheduler
     // entry points to do timeslicing. This will be
@@ -203,7 +204,6 @@ public:
 public:    
     void timeslice();
     void timeslice_cpu();
-
 
 
 };
@@ -232,7 +232,7 @@ protected:
 
     cyg_priority        priority;       // current thread priority
 
-
+    
     Cyg_SchedThread_Implementation(CYG_ADDRWORD sched_info);
 
     void yield();                       // Yield CPU to next thread
@@ -253,23 +253,6 @@ protected:
     void timeslice_restore();
     
     void timeslice_reset();
-
-	//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
-
-    // This defines whether this thread is subject to timeslicing.
-    // If false, timeslice expiry has no effect on the thread.
-    
-    	cyg_bool            timeslice_enabled;
-
-	public:
-    
-    	void timeslice_enable();
-
-    	void timeslice_disable();
-    
-	//#endif
-
-
        
 };
 
@@ -292,22 +275,6 @@ inline void Cyg_SchedThread_Implementation::timeslice_reset()
 {
     timeslice_count = CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS;
 }
-
-//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE_ENABLE
-
-inline void Cyg_SchedThread_Implementation::timeslice_enable()
-{
-    timeslice_enabled = true;
-}
-
-inline void Cyg_SchedThread_Implementation::timeslice_disable()
-{
-    timeslice_enabled = false;
-}
-
-//#endif
-
-//#endif
 
 
 // -------------------------------------------------------------------------

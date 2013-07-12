@@ -101,8 +101,8 @@ Cyg_HardwareThread::thread_entry( Cyg_Thread *thread )
 
 // -------------------------------------------------------------------------
 // Statics and thread list functions
-
-#ifdef CYGVAR_KERNEL_THREADS_LIST //On but don't care
+/* ON BUT DON'T CARE
+#ifdef CYGVAR_KERNEL_THREADS_LIST
 
 // List of all extant threads
 Cyg_Thread *Cyg_Thread::thread_list = 0;
@@ -155,7 +155,7 @@ Cyg_Thread::remove_from_list( void )
 }
 
 #endif
-
+*/
 static cyg_uint16 next_unique_id = 1;
 
 // -------------------------------------------------------------------------
@@ -180,7 +180,7 @@ Cyg_Thread::Cyg_Thread(
     Cyg_SchedThread(this, sched_info)
 //#ifdef CYGFUN_KERNEL_THREADS_TIMER
     ,timer(this)
-//#endif
+
 {
     CYG_REPORT_FUNCTION();
 
@@ -198,16 +198,13 @@ Cyg_Thread::Cyg_Thread(
     // Assign a 16 bit id to the thread.
     unique_id           = next_unique_id++;
 
+/*ON BUT DON'T CARE
 #ifdef CYGVAR_KERNEL_THREADS_DATA
     // Zero all per-thread data entries.
     for( int i = 0; i < CYGNUM_KERNEL_THREADS_DATA_MAX; i++ )
         thread_data[i] = 0;
 #endif
-#ifdef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-    for (int j=0; j<CYGNUM_KERNEL_THREADS_DESTRUCTORS; j++) {
-        destructors[j].fn = NULL;
-    }
-#endif
+
 #ifdef CYGVAR_KERNEL_THREADS_NAME
     name = name_arg;
 #endif
@@ -215,7 +212,7 @@ Cyg_Thread::Cyg_Thread(
     // Add thread to housekeeping list
     add_to_list();
 #endif    
-    
+*/
     Cyg_Scheduler::scheduler.register_thread(this);
     
     init_context(this);
@@ -243,13 +240,13 @@ Cyg_Thread::reinitialize()
     // Clear the timeout. It is irrelevant whether there was
     // actually a timeout pending.
     timer.disable();
-//#endif
+
 
     // Ensure the scheduler has let go of us.
     Cyg_Scheduler::scheduler.deregister_thread(this);
 
     cyg_priority pri = get_priority();
-#ifdef CYGVAR_KERNEL_THREADS_NAME //On but don't care.
+#ifdef CYGVAR_KERNEL_THREADS_NAME //ON BUT DON'T CARE
     char * name_arg = name;
 #else
     char * name_arg = NULL;
@@ -275,11 +272,12 @@ Cyg_Thread::~Cyg_Thread()
 
     Cyg_Scheduler::scheduler.deregister_thread(this);
 
-#ifdef CYGVAR_KERNEL_THREADS_LIST //On but don't care
+/* ON BUT DON'T CARE
+#ifdef CYGVAR_KERNEL_THREADS_LIST
     // Remove thread from housekeeping list.
     remove_from_list();
 #endif 
-    
+ */
     // Zero the unique_id to render this thread inconsistent.
     unique_id = 0;
     
@@ -288,7 +286,7 @@ Cyg_Thread::~Cyg_Thread()
 
 // -------------------------------------------------------------------------
 // Thread consistency checker.
-
+/* ON BUT DON'T CARE
 #ifdef CYGDBG_USE_ASSERTS
 
 cyg_bool
@@ -324,7 +322,7 @@ Cyg_Thread::check_this( cyg_assert_class_zeal zeal) const
 }
 
 #endif
-
+*/
 // -------------------------------------------------------------------------
 // Put the thread to sleep.
 // This can only be called by the current thread on itself, hence
@@ -496,7 +494,7 @@ Cyg_Thread::counted_sleep( cyg_tick_count delay )
 
     CYG_REPORT_RETURN();
 }
-//#endif
+
 
 // -------------------------------------------------------------------------
 // Awaken the thread from sleep.
@@ -518,12 +516,12 @@ Cyg_Thread::counted_wake()
         wake_reason = DONE;
         wake();                         // and awaken the thread
     }
-
+/*ON BUT DON'T CARE
 #ifdef CYGNUM_KERNEL_MAX_COUNTED_WAKE_COUNT_ASSERT
     CYG_ASSERT( CYGNUM_KERNEL_MAX_COUNTED_WAKE_COUNT_ASSERT > wakeup_count,
                 "wakeup_count overflow" );
 #endif
-
+*/
     // Unlock the scheduler and maybe switch threads
     Cyg_Scheduler::unlock();
 
@@ -568,11 +566,12 @@ Cyg_Thread::suspend()
 
     suspend_count++;
     
+/*ON BUT DON'T CARE
 #ifdef CYGNUM_KERNEL_MAX_SUSPEND_COUNT_ASSERT
     CYG_ASSERT( CYGNUM_KERNEL_MAX_SUSPEND_COUNT_ASSERT > suspend_count,
                 "suspend_count overflow" );
 #endif
-
+*/
     // If running, remove from run qs
     if( state == RUNNING )
         Cyg_Scheduler::scheduler.rem_thread(this);
@@ -722,12 +721,6 @@ Cyg_Thread::release()
 // -------------------------------------------------------------------------
 // Exit thread. This puts the thread into EXITED state.
 
-#ifdef CYGPKG_KERNEL_THREADS_DESTRUCTORS
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-Cyg_Thread::Cyg_Destructor_Entry
-Cyg_Thread::destructors[ CYGNUM_KERNEL_THREADS_DESTRUCTORS ];
-#endif
-#endif
 
 void
 Cyg_Thread::exit()
@@ -737,21 +730,6 @@ Cyg_Thread::exit()
     // The thread should never return from this function.
 
     Cyg_Thread *self = Cyg_Thread::self();
-
-#ifdef CYGPKG_KERNEL_THREADS_DESTRUCTORS
-    cyg_ucount16 i;
-    for (i=0; i<CYGNUM_KERNEL_THREADS_DESTRUCTORS; i++) {
-        if (NULL != self->destructors[i].fn) {
-            destructor_fn fn = self->destructors[i].fn;
-            CYG_ADDRWORD data = self->destructors[i].data;
-            fn(data);
-        }        
-    }
-#endif
-#ifdef CYGDBG_KERNEL_THREADS_STACK_MEASUREMENT_VERBOSE_EXIT
-    diag_printf( "Stack usage for thread %08x: %d\n", self,
-		 self->measure_stack_usage() );
-#endif
 
     Cyg_Scheduler::lock();
 
@@ -796,7 +774,7 @@ Cyg_Thread::kill()
 //#ifdef CYGFUN_KERNEL_THREADS_TIMER
     timer.disable();                    // and make sure the timer
                                         // does not persist.
-//#endif
+
 
     if ( EXIT != wake_reason ) switch( sleep_reason ) {
         // Only do any of this if the thread is not in pending death already:
@@ -880,19 +858,10 @@ Cyg_Thread::set_priority( cyg_priority new_priority )
 
     Cyg_Scheduler::scheduler.deregister_thread(this);
     
-#if CYGINT_KERNEL_SCHEDULER_UNIQUE_PRIORITIES
+// !CYGINT_KERNEL_SCHEDULER_UNIQUE_PRIORITIES
 
-    // Check that there are no other threads at this priority.
-    // If so, leave is as it is.
-
-    CYG_ASSERT( Cyg_Scheduler::scheduler.unique(new_priority), "Priority not unique");
-    
-    if( Cyg_Scheduler::scheduler.unique(new_priority) )
-        priority = new_priority;
-
-#else // !CYGINT_KERNEL_SCHEDULER_UNIQUE_PRIORITIES
-
-#ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_SIMPLE
+/*
+    #ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_SIMPLE
 
     // When we have priority inheritance, we must update the original
     // priority and not the inherited one.  If the new priority is
@@ -908,6 +877,7 @@ Cyg_Thread::set_priority( cyg_priority new_priority )
     else priority = new_priority;
     
 #else    
+*/
 
     priority = new_priority;
 
@@ -949,7 +919,7 @@ Cyg_Thread::set_priority( cyg_priority new_priority )
     CYG_REPORT_RETURN();
 }
 
-//#endif
+
 
 
 // -------------------------------------------------------------------------
@@ -988,13 +958,13 @@ Cyg_Thread::delay( cyg_tick_count delay)
     default:
         break;
     }
-//#endif
+
     CYG_REPORT_RETURN();
 }
 
 // -------------------------------------------------------------------------
 //
-
+/*
 #ifdef CYGPKG_KERNEL_EXCEPTIONS
 
 void
@@ -1032,10 +1002,11 @@ Cyg_Thread::deliver_exception(
 }
 
 #endif
+*/
 
 // -------------------------------------------------------------------------
 // Per-thread data support
-
+/*
 #ifdef CYGVAR_KERNEL_THREADS_DATA
 
 // Set the data map bits for each free slot in the data array.
@@ -1076,56 +1047,12 @@ void Cyg_Thread::free_data_index( Cyg_Thread::cyg_data_index index )
 
 
 #endif
-
+*/
 // -------------------------------------------------------------------------
 // Allocate some memory at the lower end of the stack
 // by moving the stack limit pointer.
 
-#if defined(CYGFUN_KERNEL_THREADS_STACK_LIMIT) && \
-    defined(CYGFUN_KERNEL_THREADS_STACK_CHECKING)
-// if not doing stack checking, implementation can be found in thread.inl
-// This implementation puts the magic buffer area (to watch for overruns
-// *above* the stack limit, i.e. there is no official demarcation between
-// the stack and the buffer. But that's okay if you think about it... having
-// a demarcation would not accomplish anything more.
-void *Cyg_HardwareThread::increment_stack_limit( cyg_ucount32 size )
-{
-    void *ret = (void *)stack_limit;
 
-    // First lock the scheduler because we're going to be tinkering with
-    // the check data
-    Cyg_Scheduler::lock();
-
-    // if we've inc'd the limit before, it will be off by the check data
-    // size, so lets correct it
-    if (stack_limit != stack_base)
-        stack_limit -= CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE;
-    stack_limit += size;
-
-    // determine base of check data by rounding up to nearest word aligned
-    // address if not already aligned
-    cyg_uint32 *p = (cyg_uint32 *)((stack_limit + 3) & ~3);
-    // i.e. + sizeof(cyg_uint32)-1) & ~(sizeof(cyg_uint32)-1);
-    cyg_ucount32 i;
-    cyg_uint32 sig = (cyg_uint32)this;
-    
-    for ( i = 0;
-          i < CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE/sizeof(cyg_uint32);
-          i++ ) {
-        p[i] = (sig ^ (i * 0x01010101));
-    }
-
-    // increment limit by the check size. Note this will not necessarily
-    // reach the end of the check data. But that doesn't really matter.
-    // Doing this allows better checking of the saved stack pointer in
-    // Cyg_Thread::check_this()
-    stack_limit += CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE;
-
-    Cyg_Scheduler::unlock();
-    
-    return ret;
-}
-#endif
     
 // =========================================================================
 // Cyg_ThreadTimer member functions
@@ -1186,7 +1113,7 @@ Cyg_ThreadTimer::alarm(
     CYG_REPORT_RETURN();
 }
 
-//#endif
+
 
 // =========================================================================
 // The Idle thread
@@ -1236,12 +1163,12 @@ idle_thread_main( CYG_ADDRESS data )
         
         Cyg_Clock::real_time_clock->tick();
 #endif
-#ifdef CYGIMP_IDLE_THREAD_YIELD
+//#ifdef CYGIMP_IDLE_THREAD_YIELD
         // In single priority and non-preemptive systems,
         // the idle thread should yield repeatedly to
         // other threads.
         Cyg_Thread::yield();
-#endif
+
     }
 }
 

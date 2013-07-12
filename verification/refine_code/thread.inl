@@ -89,7 +89,7 @@ Cyg_HardwareThread::get_stack_size()
 
 // -------------------------------------------------------------------------
 // Check the stack bounds of this thread:
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
 inline void Cyg_HardwareThread::check_stack(void)
 {
     cyg_uint32 sig = (cyg_uint32)this;
@@ -124,7 +124,7 @@ inline void Cyg_HardwareThread::check_stack(void)
         }
     }            
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
     // we won't have added check data above the stack limit if it hasn't
     // been incremented
     if (stack_limit != stack_base) {
@@ -148,33 +148,13 @@ inline void Cyg_HardwareThread::check_stack(void)
             }
         }
     }
-#endif
+
 }
-#endif
+
 
 // -------------------------------------------------------------------------
 // Measure the stack usage of the thread
-#ifdef CYGFUN_KERNEL_THREADS_STACK_MEASUREMENT
-inline cyg_uint32 Cyg_HardwareThread::measure_stack_usage(void)
-{
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
-    CYG_WORD *base = (CYG_WORD *)stack_limit;
-    cyg_uint32 size = (stack_size - (stack_limit-stack_base))/sizeof(CYG_WORD);
-#else
-    CYG_WORD *base = (CYG_WORD *)stack_base;
-    cyg_uint32 size = stack_size/sizeof(CYG_WORD);
-#endif
-    cyg_ucount32 i;
 
-    // Work up the stack comparing with the preset value
-    // We assume the stack grows downwards, hmm...
-    for (i=0; i<size; i++) {
-	if (base[i] != 0xDEADBEEF)
-	  break;
-    }
-    return (size - i)*sizeof(CYG_WORD);
-}
-#endif
 
 // -------------------------------------------------------------------------
 // Attach a stack to this thread. If there is a HAL defined macro to
@@ -186,62 +166,12 @@ inline void Cyg_HardwareThread::attach_stack(CYG_ADDRESS s_base, cyg_uint32 s_si
                 "Stack size too small");
 #endif
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
-    {
-        cyg_uint32 sig = (cyg_uint32)this;
-        cyg_uint32 *base = (cyg_uint32 *)s_base;
-        cyg_uint32 *top =  (cyg_uint32 *)(s_base + s_size -
-            CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE);
 
-        unsigned int i;
-
-        CYG_INSTRUMENT_THREAD(ATTACH_STACK, base, top );
-        
-        CYG_ASSERT( NULL != base, "stack base non-NULL" );
-        CYG_ASSERT( 0 == ((sizeof(CYG_WORD)-1) & (cyg_uint32)base), "stack base alignment" );
-        CYG_ASSERT( 0 == ((sizeof(CYG_WORD)-1) & (cyg_uint32)top),  "stack  top alignment" );
-
-        for ( i = 0;
-              i < CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE/sizeof(cyg_uint32);
-              i++ ) {
-            base[i] = (sig ^ (i * 0x01010101));
-             top[i] = (sig ^ (i * 0x10101010));
-        }            
-        // This check for overlap of the two signature areas also detects
-        // wrap round zero of the size in the unsigned subtraction below.
-        CYG_ASSERT( &base[i] < &top[0], "Stack is so small size wrapped" );
-        // Use this 'i' expression to round correctly to whole words.
-        s_base += i * sizeof(cyg_uint32);
-        s_size -= i * sizeof(cyg_uint32) * 2;
-        // This is a complete guess, the 256; the point is to assert early that
-        // this might go badly wrong.  It would not detect wrap of unsigned size.
-        CYG_ASSERT( s_size >= 256,
-                    "Stack size too small after allocating checking buffer");
-    }
-#endif
-#ifdef CYGFUN_KERNEL_THREADS_STACK_MEASUREMENT
-    {
-	CYG_WORD *base = (CYG_WORD *)s_base;
-	cyg_uint32 size = s_size/sizeof(CYG_WORD);
-	cyg_ucount32 i;
-
-	// initialize all of stack with known value - don't choose 0
-	// could do with pseudo value as above, but this way, checking
-	// is faster
-	for (i=0; i<size; i++) {
-		base[i] = 0xDEADBEEF;
-	}
-	// Don't bother about the case when the stack isn't a multiple of
-	// CYG_WORD in size. Since it's at the top of the stack, it will
-	// almost certainly be overwritten the instant the thread starts
-	// anyway.
-    }
-#endif
     stack_base = s_base;
     stack_size = s_size;
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
     stack_limit = s_base;
-#endif
+
     
 #ifdef HAL_THREAD_ATTACH_STACK
 
@@ -253,6 +183,7 @@ inline void Cyg_HardwareThread::attach_stack(CYG_ADDRESS s_base, cyg_uint32 s_si
 
 #endif
 
+//I don't know where this macro come from...But it seems irrelevant.
 #ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
     check_stack();
 #endif
@@ -348,15 +279,7 @@ inline CYG_ADDRWORD Cyg_HardwareThread::get_entry_data()
 
 #ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
 
-#ifndef CYGFUN_KERNEL_THREADS_STACK_CHECKING
-// if stack checking, implementation is in thread.cxx
-inline void *Cyg_HardwareThread::increment_stack_limit( cyg_ucount32 size )
-{
-    void *ret = (void *)stack_limit;
-    stack_limit += size;
-    return ret;
-}
-#endif
+
     
 inline CYG_ADDRESS
 Cyg_HardwareThread::get_stack_limit()
@@ -403,6 +326,7 @@ Cyg_Thread::to_queue_head( void )
 
 inline cyg_priority Cyg_Thread::get_priority()
 {
+/*
 #ifdef CYGSEM_KERNEL_SYNCH_MUTEX_PRIORITY_INVERSION_PROTOCOL_SIMPLE
 
     // If we have an inherited priority, return our original
@@ -411,7 +335,7 @@ inline cyg_priority Cyg_Thread::get_priority()
     if( priority_inherited ) return original_priority;
 
 #endif
-
+*/
     return priority;
 }
 
@@ -461,7 +385,7 @@ inline void Cyg_Thread::set_timer(
     cyg_reason          reason
 )
 {
-
+//#ifdef CYGFUN_KERNEL_THREADS_TIMER
     self()->sleep_reason = reason;
     self()->wake_reason = NONE;
     self()->timer.initialize( trigger);
@@ -472,13 +396,13 @@ inline void Cyg_Thread::set_timer(
 
 inline void Cyg_Thread::clear_timer()
 {
-
+//#ifdef CYGFUN_KERNEL_THREADS_TIMER
     self()->timer.disable();
 
 }
 
 // -------------------------------------------------------------------------
-
+/*ON BUT DON'T CARE
 #ifdef CYGVAR_KERNEL_THREADS_DATA
 
 inline CYG_ADDRWORD Cyg_Thread::get_data( Cyg_Thread::cyg_data_index index )
@@ -513,9 +437,9 @@ inline void Cyg_Thread::set_data( Cyg_Thread::cyg_data_index index,
 }
 
 #endif
-
+*/
 // -------------------------------------------------------------------------
-
+/*
 #ifdef CYGVAR_KERNEL_THREADS_NAME
 
 inline char *Cyg_Thread::get_name()
@@ -524,9 +448,9 @@ inline char *Cyg_Thread::get_name()
 }
 
 #endif
-
+*/
 // -------------------------------------------------------------------------
-
+/*
 #ifdef CYGVAR_KERNEL_THREADS_LIST
 
 inline Cyg_Thread *Cyg_Thread::get_list_head()
@@ -540,10 +464,10 @@ inline Cyg_Thread *Cyg_Thread::get_list_next()
 }
 
 #endif
-
+*/
 
 // -------------------------------------------------------------------------
-
+/*
 #ifdef CYGPKG_KERNEL_EXCEPTIONS
 
 inline void Cyg_Thread::register_exception(
@@ -573,12 +497,12 @@ inline void Cyg_Thread::deregister_exception(
 }
 
 #endif
-
+*/
 //==========================================================================
 // Inlines for Cyg_ThreadTimer class
 
 // -------------------------------------------------------------------------
-#if defined(CYGFUN_KERNEL_THREADS_TIMER) && defined(CYGVAR_KERNEL_COUNTERS_CLOCK)
+//#if defined(CYGFUN_KERNEL_THREADS_TIMER) && defined(CYGVAR_KERNEL_COUNTERS_CLOCK)
 
 inline Cyg_ThreadTimer::Cyg_ThreadTimer(
     Cyg_Thread  *th
@@ -591,7 +515,7 @@ inline Cyg_ThreadTimer::Cyg_ThreadTimer(
     thread = th;
 }
 
-#endif
+
 
 //==========================================================================
 // Inlines for Cyg_ThreadQueue class
@@ -631,59 +555,6 @@ inline cyg_bool Cyg_ThreadQueue::empty()
 }
 
 // -------------------------------------------------------------------------
-
-#ifdef CYGPKG_KERNEL_THREADS_DESTRUCTORS
-
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-# include <cyg/kernel/sched.inl>
-#endif
-
-// Add and remove destructors. Returns true on success, false on failure.
-inline cyg_bool
-Cyg_Thread::add_destructor( destructor_fn fn, CYG_ADDRWORD data )
-{
-    cyg_ucount16 i;
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-    Cyg_Scheduler::lock();
-#endif
-    for (i=0; i<CYGNUM_KERNEL_THREADS_DESTRUCTORS; i++) {
-        if (NULL == destructors[i].fn) {
-            destructors[i].data = data;
-            destructors[i].fn = fn;
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-            Cyg_Scheduler::unlock();
-#endif
-            return true;
-        }
-    }
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-    Cyg_Scheduler::unlock();
-#endif
-    return false;
-}
-
-inline cyg_bool
-Cyg_Thread::rem_destructor( destructor_fn fn, CYG_ADDRWORD data )
-{
-    cyg_ucount16 i;
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-    Cyg_Scheduler::lock();
-#endif
-    for (i=0; i<CYGNUM_KERNEL_THREADS_DESTRUCTORS; i++) {
-        if (destructors[i].fn == fn && destructors[i].data == data) {
-            destructors[i].fn = NULL;
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-            Cyg_Scheduler::unlock();
-#endif
-            return true;
-        }
-    }
-#ifndef CYGSEM_KERNEL_THREADS_DESTRUCTORS_PER_THREAD
-    Cyg_Scheduler::unlock();
-#endif
-    return false;
-}
-#endif
 
 // -------------------------------------------------------------------------
 

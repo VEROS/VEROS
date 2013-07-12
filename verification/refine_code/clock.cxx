@@ -69,11 +69,11 @@
 // -------------------------------------------------------------------------
 // Static variables
 
-#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK
+//#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK
 
 Cyg_Clock *Cyg_Clock::real_time_clock = NULL;   // System real time clock
 
-#endif
+
 
 //==========================================================================
 // Constructor for counter object
@@ -101,7 +101,7 @@ Cyg_Counter::~Cyg_Counter()
 
 // -------------------------------------------------------------------------
 // 
-
+/*
 #ifdef CYGDBG_USE_ASSERTS
 
 cyg_bool Cyg_Counter::check_this( cyg_assert_class_zeal zeal) const
@@ -125,7 +125,7 @@ cyg_bool Cyg_Counter::check_this( cyg_assert_class_zeal zeal) const
 }
 
 #endif
-
+*/
 // -------------------------------------------------------------------------
 // Counter tick function
 
@@ -156,47 +156,11 @@ void Cyg_Counter::tick( cyg_uint32 ticks )
         alarm_list_ptr = &alarm_list;
 
 
-
         // Now that we have the list pointer, we can use common code for
         // both list organizations.
 
-#ifdef CYGIMP_KERNEL_COUNTERS_SORT_LIST
+// CYGIMP_KERNEL_COUNTERS_SORT_LIST is not defined
 
-        // With a sorted alarm list, we can simply pick alarms off the
-        // front of the list until we find one that is in the future.
-
-        while( !alarm_list_ptr->empty() )
-        {
-            Cyg_Alarm *alarm = alarm_list_ptr->get_head();
-        
-            CYG_ASSERTCLASS(alarm, "Bad alarm in counter list" );
-            
-            if( alarm->trigger <= counter )
-            {
-                // remove alarm from list
-                alarm_list_ptr->rem_head();
-
-                if( alarm->interval != 0 )
-                {
-                    // The alarm has a retrigger interval.
-                    // Reset the trigger time and requeue
-                    // the alarm.
-                    alarm->trigger += alarm->interval;
-                    add_alarm( alarm );
-                }
-                else alarm->enabled = false;
-
-                CYG_INSTRUMENT_ALARM( CALL, this, alarm );
-                
-                // call alarm function
-                alarm->alarm(alarm, alarm->data);
-
-                // all done, loop
-            }
-            else break;
-            
-        } 
-#else
 
         // With unsorted lists we must scan the whole list for
         // candidates. However, we must be careful here since it is
@@ -257,7 +221,7 @@ void Cyg_Counter::tick( cyg_uint32 ticks )
 
         }
         
-#endif        
+
         Cyg_Scheduler::unlock();
 
     }
@@ -319,42 +283,13 @@ void Cyg_Counter::add_alarm( Cyg_Alarm *alarm )
 
     Cyg_Alarm_List *alarm_list_ptr;     // pointer to list
 
-
+//#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST)
 
     alarm_list_ptr = &alarm_list;
 
 
 
-#ifdef CYGIMP_KERNEL_COUNTERS_SORT_LIST
-        
-    // Now that we have the list pointer, we can use common code for
-    // both list organizations.
 
-    Cyg_Alarm *list_alarm = alarm_list_ptr->get_head();
-
-    if( list_alarm != NULL )
-    {
-        do
-        {
-            CYG_ASSERTCLASS(list_alarm, "Bad alarm in counter list" );
-
-            // The alarms are in ascending trigger order. If we
-            // find an alarm that triggers later than us, we go
-            // in front of it.
-        
-            if( list_alarm->trigger > alarm->trigger )
-            {
-                alarm_list_ptr->insert( list_alarm, alarm );
-                return;
-            }
-
-            list_alarm = list_alarm->get_next();
-            
-        } while( list_alarm != alarm_list_ptr->get_head() );
-        // a lower or equal alarm time was not found, so drop through
-        // so it is added to the list tail
-    }
-#endif
 
     alarm_list_ptr->add_tail( alarm );
 }
@@ -372,7 +307,7 @@ void Cyg_Counter::rem_alarm( Cyg_Alarm *alarm )
     
     Cyg_Alarm_List *alarm_list_ptr;     // pointer to list
 
-
+//#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST)
 
     alarm_list_ptr = &alarm_list;
 
@@ -411,7 +346,7 @@ Cyg_Clock::~Cyg_Clock()
 
 // -------------------------------------------------------------------------
 // 
-
+/*
 #ifdef CYGDBG_USE_ASSERTS
 
 cyg_bool Cyg_Clock::check_this( cyg_assert_class_zeal zeal) const
@@ -434,7 +369,7 @@ cyg_bool Cyg_Clock::check_this( cyg_assert_class_zeal zeal) const
     return true;
 }
 
-#endif
+#endif*/
 
 // -------------------------------------------------------------------------
 // 
@@ -467,11 +402,12 @@ static void construct_converter( Cyg_Clock::converter *pcc,
     // allow calculations with a number of ticks that may be large.
     upper = m1 * m2;
     lower = d1 * d2;
+/*
 #ifdef CYGDBG_USE_ASSERTS
     cyg_uint64 save_upper = upper;
     cyg_uint64 save_lower = lower;
 #endif
-
+*/
  retry_rounding:
     // First strip out common powers of 2
     while ( (0 == (1 & upper)) && ( 0 == (1 & lower)) ) {
@@ -635,7 +571,7 @@ Cyg_Alarm::~Cyg_Alarm()
 
 // -------------------------------------------------------------------------
 // 
-
+/*
 #ifdef CYGDBG_USE_ASSERTS
 
 cyg_bool Cyg_Alarm::check_this( cyg_assert_class_zeal zeal) const
@@ -660,6 +596,7 @@ cyg_bool Cyg_Alarm::check_this( cyg_assert_class_zeal zeal) const
 }
 
 #endif
+*/
 
 // -------------------------------------------------------------------------
 // Initialize Alarm and enable
@@ -771,7 +708,7 @@ void Cyg_Alarm::get_times(
 //==========================================================================
 // System clock object
 
-#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK
+//#ifdef CYGVAR_KERNEL_COUNTERS_CLOCK
 
 class Cyg_RealTimeClock
     : public Cyg_Clock
@@ -819,12 +756,6 @@ cyg_int32 max_clock_latency = 0;
 bool measure_clock_latency = false;
 #endif
 
-#if defined(CYGVAR_KERNEL_COUNTERS_CLOCK_DSR_LATENCY)
-cyg_tick_count total_clock_dsr_latency, total_clock_dsr_calls;
-cyg_int32 min_clock_dsr_latency = 0x7FFFFFFF;
-cyg_int32 max_clock_dsr_latency = 0;
-cyg_uint32 clock_dsr_start = 0;
-#endif
 
 // -------------------------------------------------------------------------
 
@@ -853,9 +784,6 @@ cyg_uint32 Cyg_RealTimeClock::isr(cyg_vector vector, CYG_ADDRWORD data)
 
     Cyg_Interrupt::acknowledge_interrupt(CYGNUM_HAL_INTERRUPT_RTC);
 
-#if defined(CYGVAR_KERNEL_COUNTERS_CLOCK_DSR_LATENCY)
-    HAL_CLOCK_READ(&clock_dsr_start);
-#endif    
     return Cyg_Interrupt::CALL_DSR|Cyg_Interrupt::HANDLED;
 }
 
@@ -889,7 +817,7 @@ void Cyg_RealTimeClock::dsr(cyg_vector vector, cyg_ucount32 count, CYG_ADDRWORD 
                           
     rtc->tick( count );
 
-#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
+//#ifdef CYGSEM_KERNEL_SCHED_TIMESLICE
 #if    0 == CYGINT_KERNEL_SCHEDULER_UNIQUE_PRIORITIES
 
     // If timeslicing is enabled, call the scheduler to
@@ -898,7 +826,7 @@ void Cyg_RealTimeClock::dsr(cyg_vector vector, cyg_ucount32 count, CYG_ADDRWORD 
     Cyg_Scheduler::scheduler.timeslice();
 
 #endif
-#endif
+
 
     CYG_INSTRUMENT_CLOCK( TICK_END,
                           rtc->current_value_lo(),

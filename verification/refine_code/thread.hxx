@@ -81,9 +81,9 @@ protected:
 
     cyg_uint32          stack_size;     // size of stack area in bytes
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
     CYG_ADDRESS         stack_limit;    // movable stack limit
-#endif    
+
 
     CYG_ADDRESS         stack_ptr;      // pointer to saved state on stack
 
@@ -91,11 +91,11 @@ protected:
 
     CYG_ADDRWORD        entry_data;     // entry point argument
 
-#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT
+//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT
 
     HAL_SavedRegisters  *saved_context; // If non-zero, this points at a more
                                         // interesting context than stack_ptr.
-#endif
+
     
     Cyg_HardwareThread(
         cyg_thread_entry        *entry_point,   // entry point function
@@ -140,38 +140,33 @@ public:
 
     CYG_ADDRWORD get_entry_data();
 
-#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT    
+//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT
     // Return the current saved state for this thread.
     HAL_SavedRegisters *get_saved_context();
 
     // Set the saved context pointer.
     void set_saved_context(HAL_SavedRegisters *ctx);
-#endif
+
 
     // get the size/base of this thread's stack
     CYG_ADDRESS get_stack_base();
 
     cyg_uint32 get_stack_size();
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT    
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
     // Allocate some memory at the lower end of the stack
     // by moving the stack limit pointer.
 
     void *increment_stack_limit( cyg_ucount32 size);
     
     CYG_ADDRESS get_stack_limit();
-#endif    
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
 
     inline void check_stack(void);
 
 #endif
-#ifdef CYGFUN_KERNEL_THREADS_STACK_MEASUREMENT
 
-    inline cyg_uint32 measure_stack_usage(void);
-
-#endif
 };
 
 // -------------------------------------------------------------------------
@@ -200,7 +195,7 @@ class Cyg_ThreadTimer
 
 };
 
-//#endif
+
 
 // -------------------------------------------------------------------------
 // Main Thread class.
@@ -249,7 +244,8 @@ private:
     // Unique thread id assigned on creation
     cyg_uint16                  unique_id;
 
-#ifdef CYGPKG_KERNEL_EXCEPTIONS  //ON but don't care
+/* ON BUT DON'T CARE FOR THE MOMENT
+#ifdef CYGPKG_KERNEL_EXCEPTIONS
 
     // If exceptions are supported, define an exception control
     // object that will be used to manage and deliver them. If
@@ -283,7 +279,7 @@ public:
         );
 
 #endif
-
+*/
     
 public:
 
@@ -325,7 +321,7 @@ public:
 //#ifdef CYGFUN_KERNEL_THREADS_TIMER
     static void         counted_sleep( cyg_tick_count delay );
                                         // ...for delay ticks
-//#endif
+
     
     static void         exit();         // Terminate thread
 
@@ -398,7 +394,7 @@ private:
 
 //#ifdef CYGFUN_KERNEL_THREADS_TIMER
     Cyg_ThreadTimer     timer;          // per-thread timer
-//#endif
+
 
     cyg_reason          sleep_reason;   // reason for sleeping
 
@@ -421,9 +417,9 @@ public:
     // scheduling algorithms.
     cyg_priority get_current_priority();    
     
-//#endif
 
-#ifdef CYGVAR_KERNEL_THREADS_DATA  //ON but don't care
+/* ON BUT DON'T CARE
+#ifdef CYGVAR_KERNEL_THREADS_DATA
 
 private:
     // Array of single word entries for each index. 
@@ -449,9 +445,11 @@ public:
     static void         free_data_index( cyg_data_index index );
 
 #endif
+*/
 
 
-#ifdef CYGVAR_KERNEL_THREADS_NAME  //ON but don't care
+/*ON BUT DON'T CARE
+#ifdef CYGVAR_KERNEL_THREADS_NAME
 
 private:
     // An optional thread name string, for humans to read
@@ -462,9 +460,10 @@ public:
     char                        *get_name();
     
 #endif
-    
+*/
 
-#ifdef CYGVAR_KERNEL_THREADS_LIST  //ON but don't care
+/*ON BUT DON'T CARE
+#ifdef CYGVAR_KERNEL_THREADS_LIST
 
         // Housekeeping list that tracks all threads
 private:
@@ -480,6 +479,7 @@ public:
     Cyg_Thread                  *get_list_next();
     
 #endif
+*/
     
 public:
     

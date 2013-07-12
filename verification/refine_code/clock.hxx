@@ -188,7 +188,7 @@ public:
 
     static Cyg_Clock *real_time_clock;
 
-//#endif
+
         
 };
 
@@ -197,9 +197,9 @@ public:
 // called when the trigger value is reached.
 
 class Cyg_Alarm
-#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST) || defined(CYGIMP_KERNEL_COUNTERS_MULTI_LIST)
+//#if defined(CYGIMP_KERNEL_COUNTERS_SINGLE_LIST) || defined(CYGIMP_KERNEL_COUNTERS_MULTI_LIST)
     : public Cyg_DNode_T<Cyg_Alarm>
-#endif
+
 {
     friend class Cyg_Counter;
     
