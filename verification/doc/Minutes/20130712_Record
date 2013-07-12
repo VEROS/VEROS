@@ -1,0 +1,19 @@
+Done:
+1.wq: statepic-f.pdf
+
+TODO:
+1.gxr: delete macros if not necessary.
+       re-run doxygen on new code
+       construct a process graph for kernel initialization
+2.pxm: re-run programs
+       construct a naming regulation
+       re-organize all the documentation except coq codes
+2.wq: Add a Clock/Counter list to statepic-f.pdf
+      Add legend to the graph
+3.lsp: complete coq code accoring to all
+4.cx: investigate conference and journal about operating system
+      Hot spot in investigation of operation system
+      Possible developing orientation based on our current work
+
+supercalifragilistcexpialidocious
+     
