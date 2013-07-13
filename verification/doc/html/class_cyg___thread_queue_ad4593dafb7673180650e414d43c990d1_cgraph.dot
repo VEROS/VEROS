@@ -1,0 +1,11 @@
+digraph "Cyg_ThreadQueue::dequeue"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_ThreadQueue::dequeue",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_ThreadQueue_Implementation\l::dequeue",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___thread_queue___implementation.html#abb89738971f9e627386c6572c0ad7f45"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_CList_T\< Cyg_Thread\l \>::rem_head",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list___t.html#a919d81cc3a83e3f8f81bf09979b45eef"];
+}

@@ -288,7 +288,6 @@ var searchData=
   ['cygimp_5fthread_5fpriority',['CYGIMP_THREAD_PRIORITY',['../mlqueue_8hxx.html#a8ce2132ae63e165a54a43df7a359b08a',1,'mlqueue.hxx']]],
   ['cygmem_5fregion_5fattr_5fr',['CYGMEM_REGION_ATTR_R',['../cyg__type_8h.html#a471d8eba5e3d8ad5864e6807300377ff',1,'cyg_type.h']]],
   ['cygmem_5fregion_5fattr_5fw',['CYGMEM_REGION_ATTR_W',['../cyg__type_8h.html#a66be98e9e7ee44a1235a723efef0ed0e',1,'cyg_type.h']]],
-  ['cygnum_5fhal_5fisr_5ftable_5fsize',['CYGNUM_HAL_ISR_TABLE_SIZE',['../intr_8hxx.html#a7e4d70531725051a886b8ac15c757a6d',1,'intr.hxx']]],
   ['cygnum_5fkernel_5fcpu_5fmax',['CYGNUM_KERNEL_CPU_MAX',['../smp_8hxx.html#a2a27ec72828cdd9e7a030792e00fa548',1,'smp.hxx']]],
   ['cygnum_5fkernel_5fsched_5fbitmap_5fsize',['CYGNUM_KERNEL_SCHED_BITMAP_SIZE',['../mlqueue_8hxx.html#a46e362b6e3d109caa404a864d4415f11',1,'mlqueue.hxx']]],
   ['cygnum_5fkernel_5fsched_5fpriorities',['CYGNUM_KERNEL_SCHED_PRIORITIES',['../mlqueue_8hxx.html#ad5e27ce24ed96810904d3e0e21843397',1,'mlqueue.hxx']]],

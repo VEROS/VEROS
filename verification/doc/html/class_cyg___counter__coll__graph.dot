@@ -1,0 +1,17 @@
+digraph "Cyg_Counter"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Cyg_Counter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" counter" ,fontname="Helvetica"];
+  Node2 [label="volatile cyg_tick_count",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" increment" ,fontname="Helvetica"];
+  Node3 [label="unsigned cyg_halint32",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" alarm_list" ,fontname="Helvetica"];
+  Node4 [label="Cyg_CList_T\< Cyg_Alarm \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list___t.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Cyg_CList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list.html"];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" head" ,fontname="Helvetica"];
+  Node6 [label="Cyg_DNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___d_node.html"];
+  Node6 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prev\nnext" ,fontname="Helvetica"];
+}

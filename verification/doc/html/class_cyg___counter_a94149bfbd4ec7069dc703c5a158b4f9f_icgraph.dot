@@ -1,0 +1,9 @@
+digraph "Cyg_Counter::tick"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_Counter::tick",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="idle_thread_main",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$thread_8cxx.html#ab41818e0f3d9ad7695412191d8d01f2d"];
+}

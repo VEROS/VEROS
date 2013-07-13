@@ -1,18 +1,16 @@
 <map id="Cyg_Thread::release" name="Cyg_Thread::release">
-<area shape="rect" id="node2" href="$class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026" title="Cyg_Scheduler::lock" alt="" coords="586,716,729,743"/>
-<area shape="rect" id="node6" href="$class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466" title="Cyg_Scheduler::unlock" alt="" coords="374,403,530,429"/>
-<area shape="rect" id="node17" href="$class_cyg___thread.html#a6bec4a51156245d5a0079ae589d1d18c" title="Cyg_Thread::wake" alt="" coords="195,615,325,641"/>
-<area shape="rect" id="node3" href="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20" title="Cyg_Scheduler_Base\l::get_sched_lock" alt="" coords="1056,490,1203,531"/>
-<area shape="rect" id="node5" href="$class_cyg___scheduler___sched_lock.html#ab17790e36a73579ead9df6b1892780c6" title="Cyg_Scheduler_SchedLock\l::inc_sched_lock" alt="" coords="805,709,987,750"/>
-<area shape="rect" id="node4" href="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac" title="Cyg_Scheduler_SchedLock\l::get_sched_lock" alt="" coords="1251,490,1434,531"/>
-<area shape="rect" id="node7" href="$class_cyg___scheduler___sched_lock.html#a917f304e58f2f95467ff25e2ee22d027" title="Cyg_Scheduler_SchedLock\l::set_sched_lock" alt="" coords="805,69,987,110"/>
-<area shape="rect" id="node8" href="$class_cyg___scheduler.html#a529555a4995ebd4ddab69edd0d4f766f" title="Cyg_Scheduler::unlock\l_inner" alt="" coords="579,395,735,437"/>
-<area shape="rect" id="node9" href="$class_cyg___interrupt.html#a094419e490ef551de2675081f96352d8" title="Cyg_Interrupt::call\l_pending_DSRs" alt="" coords="833,395,959,437"/>
-<area shape="rect" id="node10" href="$class_cyg___scheduler___base.html#a6d90dadb5d732756eb2f1acdedb54aa2" title="Cyg_Scheduler_Base\l::clear_need_reschedule" alt="" coords="815,461,977,502"/>
-<area shape="rect" id="node11" href="$class_cyg___interrupt.html#addacff01f6aaa4a82dfac3814d8ed616" title="Cyg_Interrupt::DSRs\l_pending" alt="" coords="825,526,967,567"/>
-<area shape="rect" id="node12" href="$class_cyg___scheduler___base.html#a32d18e404cb32e320a3cc0a2b99a54c3" title="Cyg_Scheduler_Base\l::get_current_thread" alt="" coords="823,643,969,685"/>
-<area shape="rect" id="node13" href="$class_cyg___scheduler___base.html#acf6dbf969ef22dea4f5ece6a31aa6303" title="Cyg_Scheduler_Base\l::get_need_reschedule" alt="" coords="819,134,973,175"/>
-<area shape="rect" id="node14" href="$class_cyg___sched_thread___implementation.html#a25b9b22611b251e02b5850c6e60a748c" title="Cyg_SchedThread_Implementation\l::timeslice_restore" alt="" coords="785,199,1007,241"/>
-<area shape="rect" id="node15" href="$class_cyg___sched_thread___implementation.html#aa7657aa012164cd46db44da20d242274" title="Cyg_SchedThread_Implementation\l::timeslice_save" alt="" coords="785,265,1007,306"/>
-<area shape="rect" id="node16" href="$class_cyg___scheduler___sched_lock.html#a47cf05e000f2d76663b65f2b614c4c95" title="Cyg_Scheduler_SchedLock\l::zero_sched_lock" alt="" coords="805,330,987,371"/>
+<area shape="rect" id="node2" href="$class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026" title="Cyg_Scheduler::lock" alt="" coords="586,67,729,93"/>
+<area shape="rect" id="node6" href="$class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466" title="Cyg_Scheduler::unlock" alt="" coords="374,200,530,227"/>
+<area shape="rect" id="node15" href="$class_cyg___thread.html#a6bec4a51156245d5a0079ae589d1d18c" title="Cyg_Thread::wake" alt="" coords="195,149,325,176"/>
+<area shape="rect" id="node3" href="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20" title="Cyg_Scheduler_Base\l::get_sched_lock" alt="" coords="823,6,969,47"/>
+<area shape="rect" id="node5" href="$class_cyg___scheduler___sched_lock.html#ab17790e36a73579ead9df6b1892780c6" title="Cyg_Scheduler_SchedLock\l::inc_sched_lock" alt="" coords="805,71,987,113"/>
+<area shape="rect" id="node4" href="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac" title="Cyg_Scheduler_SchedLock\l::get_sched_lock" alt="" coords="1057,6,1239,47"/>
+<area shape="rect" id="node7" href="$class_cyg___scheduler___sched_lock.html#a917f304e58f2f95467ff25e2ee22d027" title="Cyg_Scheduler_SchedLock\l::set_sched_lock" alt="" coords="805,529,987,570"/>
+<area shape="rect" id="node8" href="$class_cyg___scheduler.html#a529555a4995ebd4ddab69edd0d4f766f" title="Cyg_Scheduler::unlock\l_inner" alt="" coords="579,262,735,303"/>
+<area shape="rect" id="node9" href="$class_cyg___scheduler___base.html#a6d90dadb5d732756eb2f1acdedb54aa2" title="Cyg_Scheduler_Base\l::clear_need_reschedule" alt="" coords="815,398,977,439"/>
+<area shape="rect" id="node10" href="$class_cyg___scheduler___base.html#a32d18e404cb32e320a3cc0a2b99a54c3" title="Cyg_Scheduler_Base\l::get_current_thread" alt="" coords="823,137,969,178"/>
+<area shape="rect" id="node11" href="$class_cyg___scheduler___base.html#acf6dbf969ef22dea4f5ece6a31aa6303" title="Cyg_Scheduler_Base\l::get_need_reschedule" alt="" coords="819,463,973,505"/>
+<area shape="rect" id="node12" href="$class_cyg___sched_thread___implementation.html#a25b9b22611b251e02b5850c6e60a748c" title="Cyg_SchedThread_Implementation\l::timeslice_restore" alt="" coords="785,202,1007,243"/>
+<area shape="rect" id="node13" href="$class_cyg___sched_thread___implementation.html#aa7657aa012164cd46db44da20d242274" title="Cyg_SchedThread_Implementation\l::timeslice_save" alt="" coords="785,267,1007,309"/>
+<area shape="rect" id="node14" href="$class_cyg___scheduler___sched_lock.html#a47cf05e000f2d76663b65f2b614c4c95" title="Cyg_Scheduler_SchedLock\l::zero_sched_lock" alt="" coords="805,333,987,374"/>
 </map>

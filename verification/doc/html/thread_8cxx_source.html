@@ -276,7 +276,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    CYG_INSTRUMENT_THREAD(CREATE,<span class="keyword">this</span>,0);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    </div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">// Start the thread in suspended state.</span></div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a>               = <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178edae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a>               = <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4ae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="class_cyg___thread.html#a73505b9259232b16e1a50fb35c8ecf56">suspend_count</a>       = 1;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="class_cyg___thread.html#a867b99b3c4c25998f875fdc9e6826c41">wakeup_count</a>        = 0;</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
@@ -393,7 +393,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="cyg__ass_8h.html#aa0f9d4b0f9c4ccdaa1dbeeed821017d1afa96b25c5505e877a3cdd1a3ceae7b7d">cyg_system_test</a>:</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="cyg__ass_8h.html#aa0f9d4b0f9c4ccdaa1dbeeed821017d1a35ea3874f0fa976dc164b2cfd5ee6413">cyg_extreme</a>:</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="cyg__ass_8h.html#aa0f9d4b0f9c4ccdaa1dbeeed821017d1aec08572e59e7d1524b7946868dfb4976">cyg_thorough</a>:</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keywordflow">if</span>( (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178edae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>) &amp;&amp; (<a class="code" href="class_cyg___thread.html#a73505b9259232b16e1a50fb35c8ecf56">suspend_count</a> == 0) ) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <span class="keywordflow">if</span>( (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4ae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>) &amp;&amp; (<a class="code" href="class_cyg___thread.html#a73505b9259232b16e1a50fb35c8ecf56">suspend_count</a> == 0) ) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="cyg__ass_8h.html#aa0f9d4b0f9c4ccdaa1dbeeed821017d1a8295e25b3b6ed32f555e7537c077c55c">cyg_quick</a>:</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="comment">// Check that the stackpointer is within its limits.</span></div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="comment">// Note: This does not check the current stackpointer value</span></div>
@@ -434,11 +434,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <a class="code" href="class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026">Cyg_Scheduler::lock</a>();</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="comment">// If running, remove from run qs</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordflow">if</span> ( current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordflow">if</span> ( current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        Cyg_Scheduler::scheduler.rem_thread(current);</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="comment">// Set the state</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda05407895997815ee033afa622d0908d9">SLEEPING</a>;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a05407895997815ee033afa622d0908d9">SLEEPING</a>;</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="comment">// Unlock the scheduler and switch threads</span></div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <a class="code" href="class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466">Cyg_Scheduler::unlock</a>();</div>
@@ -459,7 +459,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="comment">// Prevent preemption</span></div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <a class="code" href="class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026">Cyg_Scheduler::lock</a>();</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordflow">if</span>( 0 != (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178edaed334d39413cab796498dc296320cacd">SLEEPSET</a>) )</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordflow">if</span>( 0 != (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4aed334d39413cab796498dc296320cacd">SLEEPSET</a>) )</div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    {</div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="comment">// Set the state</span></div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp;= ~SLEEPSET;</div>
@@ -468,7 +468,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="keyword">remove</span>();</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="comment">// If the thread is now runnable, return it to run queue</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            Cyg_Scheduler::scheduler.add_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    }</div>
@@ -501,7 +501,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">if</span> ( 0 == current-&gt;<a class="code" href="class_cyg___thread.html#a867b99b3c4c25998f875fdc9e6826c41">wakeup_count</a> ) {</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <a class="code" href="class_cyg___thread.html#a8cc5fa0bfd7c95f675fa54f2d9b2e058">set_sleep_reason</a>( <a class="code" href="class_cyg___thread.html#acc582b20362cfbdb480d2afc078fa853aea919c1fbeb37dbb11be726db2ba5062">Cyg_Thread::WAIT</a> );</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        current-&gt;<a class="code" href="class_cyg___thread.html#abac0be19a5144b40c5d8d84b185ba8a5">sleep</a>();               <span class="comment">// prepare to sleep</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>;   <span class="comment">// Set the state</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>;   <span class="comment">// Set the state</span></div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    }</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        <span class="comment">// there is a queued wakeup, do not sleep</span></div>
@@ -557,7 +557,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;        {</div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <a class="code" href="class_cyg___thread.html#a8cc5fa0bfd7c95f675fa54f2d9b2e058">set_sleep_reason</a>( <a class="code" href="class_cyg___thread.html#acc582b20362cfbdb480d2afc078fa853a91d5fa2e40be5b4f1f6cdf8d10bcbef2">Cyg_Thread::TIMEOUT</a> );</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            current-&gt;<a class="code" href="class_cyg___thread.html#abac0be19a5144b40c5d8d84b185ba8a5">sleep</a>();               <span class="comment">// prepare to sleep</span></div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>;   <span class="comment">// Set the state</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>;   <span class="comment">// Set the state</span></div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            <a class="code" href="class_cyg___scheduler.html#a62f9df6230a2e9c13bb168597404de5c">Cyg_Scheduler::reschedule</a>();</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    </div>
@@ -600,7 +600,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    <span class="comment">// Prevent preemption</span></div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;    <a class="code" href="class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026">Cyg_Scheduler::lock</a>();</div>
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordflow">if</span> ( 0 == (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>) )    <span class="comment">// already awake, or waiting:</span></div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    <span class="keywordflow">if</span> ( 0 == (<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a2fa106bff80df2d3ab05f62f9f5d9d07">COUNTSLEEP</a>) )    <span class="comment">// already awake, or waiting:</span></div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <a class="code" href="class_cyg___thread.html#a867b99b3c4c25998f875fdc9e6826c41">wakeup_count</a>++;                 <span class="comment">// not in a counted sleep anyway.</span></div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        <a class="code" href="class_cyg___thread.html#a9c4917dfc46d5d8565051c2441327de1">sleep_reason</a> = <a class="code" href="class_cyg___thread.html#acc582b20362cfbdb480d2afc078fa853a9e3a3542b2f118b12775e0a4214dadba">NONE</a>;</div>
@@ -663,11 +663,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;    <span class="comment">// If running, remove from run qs</span></div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        Cyg_Scheduler::scheduler.rem_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;</div>
 <div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;    <span class="comment">// Set the state</span></div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178edae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>;</div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> |= <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4ae5e7dc8e10d9023f776d7103c74e8292">SUSPENDED</a>;</div>
 <div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    </div>
 <div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <span class="comment">// Unlock the scheduler and maybe switch threads</span></div>
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    <a class="code" href="class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466">Cyg_Scheduler::unlock</a>();</div>
@@ -702,7 +702,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp;= ~SUSPENDED;</div>
 <div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;</div>
 <div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        <span class="comment">// Return thread to scheduler if runnable</span></div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;            Cyg_Scheduler::scheduler.add_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    }</div>
 <div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    <span class="keywordflow">else</span></div>
@@ -741,7 +741,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp;= ~SUSPENDED;</div>
 <div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;</div>
 <div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        <span class="comment">// Return thread to scheduler if runnable</span></div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;            Cyg_Scheduler::scheduler.add_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;    }</div>
 <div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;</div>
@@ -850,9 +850,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="comment">// It is possible that we have already been killed by another</span></div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="comment">// thread, in which case we do not want to try and take ourself</span></div>
 <div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="comment">// out of the scheduler again.</span></div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a89831bfc815a07c0e12a0f59052ac902">self</a>-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> != <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a> )</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a89831bfc815a07c0e12a0f59052ac902">self</a>-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> != <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a> )</div>
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    {</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;        <span class="keyword">self</span>-&gt;state = <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a>;</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;        <span class="keyword">self</span>-&gt;state = <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a>;</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;</div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        Cyg_Scheduler::scheduler.rem_thread(<span class="keyword">self</span>);</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    }</div>
@@ -894,8 +894,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="comment">// The thread is not sleeping for any reason, it must be</span></div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;        <span class="comment">// on a run queue.</span></div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        <span class="comment">// We can safely deschedule and set its state.</span></div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> ) Cyg_Scheduler::scheduler.rem_thread(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> = <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a>;</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> ) Cyg_Scheduler::scheduler.rem_thread(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;        <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> = <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a427cd3019e2b84c0af5b5733f3e67ef7">EXITED</a>;</div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;        </div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="class_cyg___thread.html#acc582b20362cfbdb480d2afc078fa853aa4614f52bf9da7778962af9422952d26">DESTRUCT</a>:</div>
@@ -954,9 +954,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    <a class="code" href="class_cyg___thread_queue.html">Cyg_ThreadQueue</a> *<a class="code" href="class_cyg___sched_thread.html#a4a0b754c294d6464223e28d4a5dfe791">queue</a> = <a class="code" href="cyg__type_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;</div>
 <div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    </div>
 <div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="comment">// If running, remove from run qs</span></div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        Cyg_Scheduler::scheduler.rem_thread(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda05407895997815ee033afa622d0908d9">SLEEPING</a> )</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a05407895997815ee033afa622d0908d9">SLEEPING</a> )</div>
 <div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    {</div>
 <div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;        <span class="comment">// Remove thread from current queue.</span></div>
 <div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;        queue = <a class="code" href="class_cyg___sched_thread.html#a44b845948cca89f3957ab7f9d0eea76e">get_current_queue</a>();</div>
@@ -1007,7 +1007,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    Cyg_Scheduler::scheduler.register_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    </div>
 <div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;    <span class="comment">// Return thread to scheduler if runnable</span></div>
-<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="keywordflow">if</span>( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">RUNNING</a> )</div>
 <div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;        Cyg_Scheduler::scheduler.add_thread(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> &amp; SLEEPING )</div>
 <div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    {</div>
@@ -1375,7 +1375,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 2 2013 17:32:32 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 13 2013 14:12:46 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

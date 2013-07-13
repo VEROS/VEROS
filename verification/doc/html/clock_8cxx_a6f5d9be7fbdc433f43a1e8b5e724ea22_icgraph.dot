@@ -1,0 +1,11 @@
+digraph "construct_converter"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="construct_converter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_Clock::get_clock\l_to_other_converter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___clock.html#ad6ff002aea2981b88e6199a0679cc93d"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_Clock::get_other\l_to_clock_converter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___clock.html#aff333d29c31f4d22ebf93e28cce5ebcd"];
+}

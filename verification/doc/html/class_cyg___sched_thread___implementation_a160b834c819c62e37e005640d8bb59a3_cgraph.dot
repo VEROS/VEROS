@@ -1,0 +1,43 @@
+digraph "Cyg_SchedThread_Implementation::rotate_queue"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_SchedThread_Implementation\l::rotate_queue",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_CList::empty",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list.html#aa3a14467bff2cc99f72d1c7139282d17"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_Scheduler::lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#abf33bab81b402f8f58ecb3c775e8a026"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Cyg_Scheduler_SchedLock\l::inc_sched_lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___sched_lock.html#ab17790e36a73579ead9df6b1892780c6"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Cyg_Scheduler_Base\l::get_sched_lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___base.html#a5a5f50e73c8a6deec8feae3799132e20"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Cyg_Scheduler_SchedLock\l::get_sched_lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___sched_lock.html#a5f941d084757c857ef26eaad492265ac"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Cyg_CList::rotate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list.html#a0e3f8908a35f8d596f1d3436f28c9e72"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Cyg_Scheduler_Implementation\l::set_need_reschedule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___implementation.html#a891a2a6e80c1d8c36d1546da91bfb1b8"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Cyg_Scheduler::unlock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466"];
+  Node9 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Cyg_Scheduler::unlock\l_inner",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#a529555a4995ebd4ddab69edd0d4f766f"];
+  Node10 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Cyg_Scheduler_Base\l::get_current_thread",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___base.html#a32d18e404cb32e320a3cc0a2b99a54c3"];
+  Node10 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Cyg_Scheduler_Base\l::get_need_reschedule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___base.html#acf6dbf969ef22dea4f5ece6a31aa6303"];
+  Node10 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="Cyg_SchedThread_Implementation\l::timeslice_save",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___sched_thread___implementation.html#aa7657aa012164cd46db44da20d242274"];
+  Node10 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Cyg_SchedThread_Implementation\l::timeslice_restore",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___sched_thread___implementation.html#a25b9b22611b251e02b5850c6e60a748c"];
+  Node10 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Cyg_Scheduler_Base\l::clear_need_reschedule",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___base.html#a6d90dadb5d732756eb2f1acdedb54aa2"];
+  Node10 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Cyg_Scheduler_SchedLock\l::zero_sched_lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___sched_lock.html#a47cf05e000f2d76663b65f2b614c4c95"];
+  Node10 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Cyg_Scheduler_SchedLock\l::set_sched_lock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___sched_lock.html#a917f304e58f2f95467ff25e2ee22d027"];
+  Node9 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

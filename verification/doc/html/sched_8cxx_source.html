@@ -236,8 +236,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="comment">// threads that get awakened are properly scheduled.</span></div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="comment">//鑻ラ攣瀹屽叏閲婃斁锛屽垯姝ゆ椂闇�灏唒endingDSR鍏ㄩ儴鍞ら啋鎵ц銆�</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">if</span>( new_lock == 0 &amp;&amp; <a class="code" href="class_cyg___interrupt.html#addacff01f6aaa4a82dfac3814d8ed616">Cyg_Interrupt::DSRs_pending</a>() )</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            <a class="code" href="class_cyg___interrupt.html#a094419e490ef551de2675081f96352d8">Cyg_Interrupt::call_pending_DSRs</a>();</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">if</span>( new_lock == 0 &amp;&amp; Cyg_Interrupt::DSRs_pending() )</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            Cyg_Interrupt::call_pending_DSRs();</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor"></span>        <span class="comment">//current锛氳〃绀哄綋鍓嶆鍦ㄨ繍琛岀殑绾跨▼锛屼篃灏辨槸璋冨害鎴栬�瑙﹀彂浜唘nlock_inner()鍑芥暟鐨勭嚎绋�</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="class_cyg___thread.html">Cyg_Thread</a> *current = <a class="code" href="class_cyg___scheduler___base.html#a32d18e404cb32e320a3cc0a2b99a54c3">get_current_thread</a>();</div>
@@ -268,7 +268,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="comment">//涓や釜鏉′欢锛�</span></div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="comment">//褰撳墠绾跨▼杩愯鐘舵�涓嶅啀鏄痳unning</span></div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="comment">//杩欎釜unlock_inner()鏄敱鍏朵粬绾跨▼鎴朿pu寮曡捣鐨�</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">if</span>( current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> != <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> || <a class="code" href="class_cyg___scheduler___base.html#acf6dbf969ef22dea4f5ece6a31aa6303">get_need_reschedule</a>() ) {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">if</span>( current-&gt;<a class="code" href="class_cyg___thread.html#a2941e228512c91a97b6af647559b1d01">state</a> != <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> || <a class="code" href="class_cyg___scheduler___base.html#acf6dbf969ef22dea4f5ece6a31aa6303">get_need_reschedule</a>() ) {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="comment">//杩欏彧鏄竴鍙ユ帶鍒跺彴鎵撳嵃淇℃伅鐢ㄧ殑锛屼箣鍚庝笉鍐嶈В閲娿�</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            CYG_INSTRUMENT_SCHED(RESCHEDULE,0,0);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            </div>
@@ -352,7 +352,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            <span class="comment">// not be run until the _next_ time we release the sched lock.</span></div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="comment">//閿佸凡缁忔竻闆朵簡锛屾鏃惰閲嶆柊妫�煡DSR</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">if</span>( <a class="code" href="class_cyg___interrupt.html#addacff01f6aaa4a82dfac3814d8ed616">Cyg_Interrupt::DSRs_pending</a>() ) {</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">if</span>( Cyg_Interrupt::DSRs_pending() ) {</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <a class="code" href="class_cyg___scheduler___sched_lock.html#ab17790e36a73579ead9df6b1892780c6">inc_sched_lock</a>();   <span class="comment">// reclaim the lock</span></div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                <span class="keywordflow">continue</span>;           <span class="comment">// go back to head of loop</span></div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            }</div>
@@ -707,7 +707,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 2 2013 17:32:32 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 13 2013 14:12:46 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

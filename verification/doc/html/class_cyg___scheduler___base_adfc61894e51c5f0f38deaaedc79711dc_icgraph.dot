@@ -1,0 +1,13 @@
+digraph "Cyg_Scheduler_Base::set_current_thread"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_Scheduler_Base\l::set_current_thread",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_Scheduler::start_cpu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#a206a7cbdee2753ea8198944f749f1bd2"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_Scheduler::start",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#a3e083d831d4fb9542d511099949890bc"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Cyg_Scheduler::thread\l_entry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler.html#a2dfdb7b0a2485dc61e7b6cd92c193f7d"];
+}

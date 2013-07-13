@@ -14,7 +14,6 @@ var searchData=
   ['set_5fthread_5fqueue',['set_thread_queue',['../class_cyg___thread_queue___implementation.html#affdcef5b709aca3bbc892905ac4059c1',1,'Cyg_ThreadQueue_Implementation']]],
   ['set_5ftimer',['set_timer',['../class_cyg___thread.html#a7e92402378d90c942fd050ac77610c05',1,'Cyg_Thread']]],
   ['set_5fvalue',['set_value',['../class_cyg___counter.html#aa1fd2df083c93414dec246f98ce6d798',1,'Cyg_Counter']]],
-  ['set_5fvsr',['set_vsr',['../class_cyg___interrupt.html#a39446b555a13c96847d9fe33936e5d87',1,'Cyg_Interrupt']]],
   ['set_5fwait_5finfo',['set_wait_info',['../class_cyg___thread.html#a3c4b3dc1b800025dcb326c3e24b19581',1,'Cyg_Thread']]],
   ['set_5fwake_5freason',['set_wake_reason',['../class_cyg___thread.html#afe485e806dec2584e082851e1cecffe5',1,'Cyg_Thread']]],
   ['sleep',['sleep',['../class_cyg___thread.html#abac0be19a5144b40c5d8d84b185ba8a5',1,'Cyg_Thread']]],

@@ -21,8 +21,6 @@ var searchData=
   ['get_5fthread_5fswitches',['get_thread_switches',['../class_cyg___scheduler___base.html#ad5961d41e2f6969e8aa2b095f8426dad',1,'Cyg_Scheduler_Base']]],
   ['get_5ftimes',['get_times',['../class_cyg___alarm.html#a67224148d954ded549b8e85a97c0379d',1,'Cyg_Alarm']]],
   ['get_5funique_5fid',['get_unique_id',['../class_cyg___thread.html#a709b20414c2fa70348a319e9cbff44b7',1,'Cyg_Thread']]],
-  ['get_5fvector',['get_vector',['../class_cyg___interrupt.html#aea74400c73af9b801125dcf168dc2dc5',1,'Cyg_Interrupt']]],
-  ['get_5fvsr',['get_vsr',['../class_cyg___interrupt.html#a2ba19a8486c57084344a14913668173d',1,'Cyg_Interrupt']]],
   ['get_5fwait_5finfo',['get_wait_info',['../class_cyg___thread.html#a1c0bc3f5d72b3b0f7a7bdba6263f0c68',1,'Cyg_Thread']]],
   ['get_5fwake_5freason',['get_wake_reason',['../class_cyg___thread.html#a4cd1d05944c0817feec5ac8e5c61d8b0',1,'Cyg_Thread']]]
 ];

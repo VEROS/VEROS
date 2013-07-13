@@ -15,5 +15,5 @@ var searchData=
   ['rotate',['rotate',['../class_cyg___c_list.html#a0e3f8908a35f8d596f1d3436f28c9e72',1,'Cyg_CList']]],
   ['rotate_5fqueue',['rotate_queue',['../class_cyg___sched_thread___implementation.html#a160b834c819c62e37e005640d8bb59a3',1,'Cyg_SchedThread_Implementation::rotate_queue()'],['../class_cyg___thread.html#a096f76683fd0c5b0fdce639d84a421de',1,'Cyg_Thread::rotate_queue()']]],
   ['run_5fqueue',['run_queue',['../class_cyg___scheduler___implementation.html#af7bab6a3e00ec2d2b83e50c0e0176a19',1,'Cyg_Scheduler_Implementation']]],
-  ['running',['RUNNING',['../class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1',1,'Cyg_Thread']]]
+  ['running',['RUNNING',['../class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1',1,'Cyg_Thread']]]
 ];

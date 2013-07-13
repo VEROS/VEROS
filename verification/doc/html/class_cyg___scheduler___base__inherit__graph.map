@@ -1,0 +1,5 @@
+<map id="Cyg_Scheduler_Base" name="Cyg_Scheduler_Base">
+<area shape="rect" id="node3" href="$class_cyg___scheduler___implementation.html" title="Cyg_Scheduler_Implementation" alt="" coords="5,155,211,181"/>
+<area shape="rect" id="node2" href="$class_cyg___scheduler___sched_lock.html" title="Cyg_Scheduler_SchedLock" alt="" coords="17,5,199,32"/>
+<area shape="rect" id="node4" href="$class_cyg___scheduler.html" title="Cyg_Scheduler" alt="" coords="53,229,163,256"/>
+</map>

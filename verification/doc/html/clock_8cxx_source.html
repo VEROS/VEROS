@@ -865,7 +865,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="keyword">class </span>Cyg_RealTimeClock</div>
 <div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    : <span class="keyword">public</span> <a class="code" href="class_cyg___clock.html">Cyg_Clock</a></div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;{</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <a class="code" href="class_cyg___interrupt.html">Cyg_Interrupt</a>       interrupt;</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    Cyg_Interrupt       interrupt;</div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;</div>
 <div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    <span class="keyword">static</span> <a class="code" href="cyg__type_8h.html#a4fa8996675380d0cb0fbc05c4182c652">cyg_uint32</a> isr(cyg_vector vector, <a class="code" href="cyg__type_8h.html#ada96dc738825f416f35be59a592f4c53">CYG_ADDRWORD</a> data);</div>
 <div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;</div>
@@ -940,12 +940,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;</div>
 <div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    HAL_CLOCK_RESET( CYGNUM_HAL_INTERRUPT_RTC, CYGNUM_KERNEL_COUNTERS_RTC_PERIOD );</div>
 <div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;</div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    <a class="code" href="class_cyg___interrupt.html#addd2d5a5c43d05718580aacfb2974939">Cyg_Interrupt::acknowledge_interrupt</a>(CYGNUM_HAL_INTERRUPT_RTC);</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    Cyg_Interrupt::acknowledge_interrupt(CYGNUM_HAL_INTERRUPT_RTC);</div>
 <div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;</div>
 <div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;<span class="preprocessor">#if defined(CYGVAR_KERNEL_COUNTERS_CLOCK_DSR_LATENCY)</span></div>
 <div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="preprocessor"></span>    HAL_CLOCK_READ(&amp;clock_dsr_start);</div>
 <div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;<span class="preprocessor">#endif    </span></div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">return</span> <a class="code" href="class_cyg___interrupt.html#a3555039ee70aa150d16e26f589f9ba22a13ba1c504801b304f526d2b048a8adee">Cyg_Interrupt::CALL_DSR</a>|<a class="code" href="class_cyg___interrupt.html#a3555039ee70aa150d16e26f589f9ba22a1ae62a12781dab828c829ad4ceb01ce8">Cyg_Interrupt::HANDLED</a>;</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="preprocessor"></span>    <span class="keywordflow">return</span> Cyg_Interrupt::CALL_DSR|Cyg_Interrupt::HANDLED;</div>
 <div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;}</div>
 <div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;</div>
 <div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -1002,7 +1002,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 2 2013 17:32:31 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 13 2013 14:12:46 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>

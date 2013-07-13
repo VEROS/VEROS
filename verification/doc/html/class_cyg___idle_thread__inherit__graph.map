@@ -1,0 +1,8 @@
+<map id="Cyg_IdleThread" name="Cyg_IdleThread">
+<area shape="rect" id="node2" href="$class_cyg___thread.html" title="Cyg_Thread" alt="" coords="112,304,203,331"/>
+<area shape="rect" id="node3" href="$class_cyg___hardware_thread.html" title="Cyg_HardwareThread" alt="" coords="5,229,149,256"/>
+<area shape="rect" id="node4" href="$class_cyg___sched_thread.html" title="Cyg_SchedThread" alt="" coords="175,229,303,256"/>
+<area shape="rect" id="node5" href="$class_cyg___sched_thread___implementation.html" title="Cyg_SchedThread_Implementation" alt="" coords="127,155,349,181"/>
+<area shape="rect" id="node6" href="$class_cyg___d_node___t.html" title="Cyg_DNode_T\&lt; Cyg_Thread \&gt;" alt="" coords="139,80,337,107"/>
+<area shape="rect" id="node7" href="$class_cyg___d_node.html" title="Cyg_DNode" alt="" coords="193,5,284,32"/>
+</map>

@@ -1,0 +1,15 @@
+digraph "Cyg_ThreadQueue::remove"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_ThreadQueue::remove",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_ThreadQueue_Implementation\l::remove",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___thread_queue___implementation.html#a5c149fba525e2c584ce264a23ee4f092"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_CList::remove",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list.html#acc2872b42b5e9fcb3a393ea6551bf231"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Cyg_CList::rem_head",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___c_list.html#ae70cdd6b3ab6b83d92612fd17309fcf5"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Cyg_DNode::unlink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___d_node.html#a6e537a727a9ecf9cefaee27058633cdb"];
+}

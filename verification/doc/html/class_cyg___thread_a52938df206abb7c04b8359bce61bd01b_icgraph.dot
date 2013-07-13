@@ -1,0 +1,17 @@
+digraph "Cyg_Thread::get_state"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Cyg_Thread::get_state",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Cyg_Scheduler_Implementation\l::timeslice_cpu",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___implementation.html#ab5c12e3e669b0107ad145c2b9c3c6bbd"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Cyg_Scheduler_Implementation\l::timeslice",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___scheduler___implementation.html#a7009d81e50e2bcd9a9b29ccbaf80f61b"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Cyg_SchedThread_Implementation\l::yield",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___sched_thread___implementation.html#a74789ffbf16253a8a98f285bc16fc5cd"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Cyg_Thread::yield",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_cyg___thread.html#a9e4d6dc7268a1c87fc4875bc0d3e0ba5"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="idle_thread_main",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$thread_8cxx.html#ab41818e0f3d9ad7695412191d8d01f2d"];
+}

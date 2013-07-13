@@ -13,7 +13,6 @@ var searchData=
   ['cyg_5fdnode_5ft_3c_20cyg_5fthread_20_3e',['Cyg_DNode_T&lt; Cyg_Thread &gt;',['../class_cyg___d_node___t.html',1,'']]],
   ['cyg_5fhardwarethread',['Cyg_HardwareThread',['../class_cyg___hardware_thread.html',1,'']]],
   ['cyg_5fidlethread',['Cyg_IdleThread',['../class_cyg___idle_thread.html',1,'']]],
-  ['cyg_5finterrupt',['Cyg_Interrupt',['../class_cyg___interrupt.html',1,'']]],
   ['cyg_5fresolution',['cyg_resolution',['../struct_cyg___clock_1_1cyg__resolution.html',1,'Cyg_Clock']]],
   ['cyg_5fschedthread',['Cyg_SchedThread',['../class_cyg___sched_thread.html',1,'']]],
   ['cyg_5fschedthread_5fimplementation',['Cyg_SchedThread_Implementation',['../class_cyg___sched_thread___implementation.html',1,'']]],

@@ -5,7 +5,5 @@ var searchData=
   ['unlock',['unlock',['../class_cyg___scheduler.html#a362916327f3b75af4b104272f6c9e466',1,'Cyg_Scheduler']]],
   ['unlock_5finner',['unlock_inner',['../class_cyg___scheduler.html#a529555a4995ebd4ddab69edd0d4f766f',1,'Cyg_Scheduler']]],
   ['unlock_5freschedule',['unlock_reschedule',['../class_cyg___scheduler.html#a6e0408a5e6a8cd1b636ae4ab1a64fb31',1,'Cyg_Scheduler']]],
-  ['unlock_5fsimple',['unlock_simple',['../class_cyg___scheduler.html#afc19fee6abe19ddbdfb591f55631ecf0',1,'Cyg_Scheduler']]],
-  ['unmask_5finterrupt',['unmask_interrupt',['../class_cyg___interrupt.html#ad805b20ee8d9099871a72fc8425355df',1,'Cyg_Interrupt']]],
-  ['unmask_5finterrupt_5fintunsafe',['unmask_interrupt_intunsafe',['../class_cyg___interrupt.html#a6c858bb5a2c06062575f646a26480338',1,'Cyg_Interrupt']]]
+  ['unlock_5fsimple',['unlock_simple',['../class_cyg___scheduler.html#afc19fee6abe19ddbdfb591f55631ecf0',1,'Cyg_Scheduler']]]
 ];

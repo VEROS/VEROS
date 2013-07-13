@@ -339,7 +339,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;{</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordflow">if</span>( current_thread[0]-&gt;priority &gt; thread-&gt;<a class="code" href="class_cyg___sched_thread___implementation.html#a3edd55683098753cde4096532f46d2c7">priority</a> ||</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        current_thread[0]-&gt;get_state() != <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        current_thread[0]-&gt;get_state() != <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        need_reschedule[0] = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;}</div>
@@ -441,7 +441,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
 <div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="comment">// Only try to rotate the run queue if the current thread is running.</span></div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <span class="comment">// Otherwise we are going to reschedule anyway.</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="class_cyg___thread.html#a52938df206abb7c04b8359bce61bd01b">get_state</a>() == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="class_cyg___thread.html#a52938df206abb7c04b8359bce61bd01b">get_state</a>() == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        {</div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            <a class="code" href="class_cyg___scheduler.html">Cyg_Scheduler</a> *sched = &amp;Cyg_Scheduler::scheduler;</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;</div>
@@ -521,7 +521,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="comment">// Only do this if this thread is running. If it is not, there</span></div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="comment">// is no point.</span></div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    </div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="class_cyg___thread.html#a52938df206abb7c04b8359bce61bd01b">get_state</a>() == <a class="code" href="class_cyg___thread.html#a6c2ba926528a75675712e70c684178eda7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keywordflow">if</span>( thread-&gt;<a class="code" href="class_cyg___thread.html#a52938df206abb7c04b8359bce61bd01b">get_state</a>() == <a class="code" href="class_cyg___thread.html#a694bf303b88222a4f250870c01eef5c4a7a57fed07d2b991afb456fb270ea53c1">Cyg_Thread::RUNNING</a> )</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    {</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        <span class="comment">// To yield we simply rotate the appropriate</span></div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        <span class="comment">// run queue to the next thread and reschedule.</span></div>
@@ -786,7 +786,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 2 2013 17:32:32 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 13 2013 14:12:46 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.4
 </small></address>
