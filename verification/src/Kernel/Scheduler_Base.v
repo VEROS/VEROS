@@ -10,18 +10,20 @@ Record Scheduler_Base := mksb{
   thread_switches : nat
 }.
 
-(*DO : get_curreent_thread*)
+Definition get_current_thread (sb : Scheduler_Base) : nat := current_thread sb.
 
-(*DO : set_current_thread*)
+Definition set_current_thread (sb : Scheduler_Base)(tid : nat) := 
+  mksb (sched_lock sb) tid (need_reschedule sb) (thread_switches sb).
 
-(*DO : set_need_reschedule*)
+Definition set_need_reschedule sb b := 
+  mksb (sched_lock sb) (current_thread sb) b (thread_switches sb).
 
-(*DO : get_need_reschedule*)
+Definition get_need_reschedule sb := need_reschedule sb.
 
-(*DO : get_sched_lock*)
 Definition get_sched_lock (sb : Scheduler_Base) :=
   (Scheduler_SchedLock.get_sched_lock (sched_lock sb)).
 
-(*DO : clear_need_reschedule*)
+Definition clear_need_reschedule sb :=
+  mksb (sched_lock sb) (current_thread sb) false (thread_switches sb).
 
-(*DO : get_thread_switches*)
+Definition get_thread_switches sb := thread_switches sb.

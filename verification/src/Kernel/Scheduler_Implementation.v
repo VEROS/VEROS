@@ -18,3 +18,5 @@ Record Scheduler_Implementation := mkSI{
   timeslice_count : nat
 
 }.
+
+Definition get_timeslice_count si := timeslice_count si.

@@ -12,7 +12,7 @@ Record Alarm := mkALM{
 Definition Alarm_cstr (uid t : nat) : Alarm := 
   mkALM uid t 0 0 false.
 
-Definition AlarmList := queue Alarm.
+Definition AlarmList := list Alarm.
 
 (*DO : functions operating the list*)
 
