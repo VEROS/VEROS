@@ -12,42 +12,12 @@ Record Alarm := mkALM{
 Definition Alarm_cstr (uid t : nat) : Alarm := 
   mkALM uid t 0 0 false.
 
-Definition AlarmList := list Alarm.
+Definition set_enable a := 
+  mkALM (unique_id a) (counter_id a) (trigger a) (interval a) true.
 
-(*DO : functions operating the list*)
+Variable A : Type.
 
-Infix "::" := cons (at level 60, right associativity) : list_scope.
-Delimit Scope list_scope with list.
+Variable X : A.
 
-Local Open Scope list_scope.
-
-Definition get_head(l : AlarmList) : option Alarm := 
-  match l with
-  |nil => None
-  |a :: _ => Some a
-  end. 
-  
-Fixpoint get_tail(l : AlarmList) : option Alarm :=
-  match l with
-  |nil => None
-  |a :: l' => match l' with
-              |nil => Some a
-              |_ :: _ => get_tail l'
-              end
-  end.            
-
-Definition rem_head(l : AlarmList) : AlarmList :=
-  match l with
-  |nil => nil
-  |_ :: l' => l'
-  end.
-
-Fixpoint rem_tail(l : AlarmList) : AlarmList :=
-  match l with
-  |nil => nil
-  |a :: l' => match l' with
-              |nil => nil
-              |_ :: _ => a :: rem_tail l'
-              end
-  end.
-
+(*call the alarm function, to be replaced with the real function*)
+Definition alarm_call (a : A) : A := a.

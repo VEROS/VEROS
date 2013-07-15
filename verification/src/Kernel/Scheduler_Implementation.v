@@ -20,3 +20,5 @@ Record Scheduler_Implementation := mkSI{
 }.
 
 Definition get_timeslice_count si := timeslice_count si.
+
+Definition set_timeslice_count si count := mkSI (scheduler_base si) (queue_map si) (run_queue si) count.

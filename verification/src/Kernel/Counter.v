@@ -14,13 +14,21 @@ Record Counter := mkcounter{
 
 }.
 
-Print Alarm.
+Print TTL.
+Print ThreadTimerList.
+Print TTL.remove.
+Check TTL.remove.
 
 (*DO : add_alarm*)
 
 (*DO : rem_alarm*)
+Definition rem_alarm c a := 
+  mkcounter c.(unique_counter_id) (TTL.remove (c.(threadtimer_list)) a) (counter c) (increment c). 
 
 (*DO : Counter_cstr*)
+Definition counter_cstr uid tl inc := mkcounter uid tl O inc.
+
+Definition counter_cstr_default uid tl := mkcounter uid tl O (S O).
 
 (*DO : current_value*)
 Definition current_value (c : Counter) := c.(counter).
