@@ -30,4 +30,4 @@ End ThreadTimer_obj.
 (*The cycled double linked list of alarm*)
 Module TTL := CList ThreadTimer_obj.
 
-Definition ThreadTimerList := TTL.CList Alarm.
+Definition ThreadTimerList := TTL.CList ThreadTimer.

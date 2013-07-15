@@ -107,7 +107,7 @@ End CList.
 (* The followings are used for testing *)
 (* Feel free to add test cases for the above functions*)
 
-(*Module M1 <: DNode.
+Module M1 <: DNode.
 
   Definition Obj := nat.
 
@@ -125,5 +125,6 @@ Module M2 := CList M1.
 Import M2.
 
 Eval compute in (to_head (1::2::3::4::nil) 4).
-*)
+
+Eval compute in (remove (1::2::3::4::nil) 4).
 
