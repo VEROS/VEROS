@@ -12,8 +12,14 @@ Record Alarm := mkALM{
 Definition Alarm_cstr (uid t : nat) : Alarm := 
   mkALM uid t 0 0 false.
 
-Definition set_enable a := 
-  mkALM (unique_id a) (counter_id a) (trigger a) (interval a) true.
+Definition set_enable a b := 
+  mkALM (unique_id a) (counter_id a) (trigger a) (interval a) b.
+
+(*TODO: enable*)
+
+(*TODO: disable*)
+
+Definition get_times a := (a.(trigger), a.(interval)).
 
 Variable A : Type.
 
