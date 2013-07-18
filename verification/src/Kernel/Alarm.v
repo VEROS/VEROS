@@ -1,7 +1,7 @@
 Set Implicit Arguments.
 
 Record Alarm := mkALM{
-  unique_id : nat;
+  alarm_id : nat;
   counter_id : nat;
   trigger : nat;
   interval : nat;
@@ -9,11 +9,11 @@ Record Alarm := mkALM{
 }.
 
 (*DO : Alarm construct func, ignore counter alarm data*)
-Definition Alarm_cstr (uid t : nat) : Alarm := 
-  mkALM uid t 0 0 false.
+Definition Alarm_cstr (aid t : nat) : Alarm := 
+  mkALM aid t 0 0 false.
 
 Definition set_enable a b := 
-  mkALM (unique_id a) (counter_id a) (trigger a) (interval a) b.
+  mkALM a.(alarm_id) a.(counter_id) a.(trigger) a.(interval) b.
 
 (*TODO: enable*)
 

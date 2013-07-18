@@ -3,6 +3,7 @@ Set Implicit Arguments.
 Require Import EqNat.
 Require Import SchedThread.
 Require Import DLClist.
+Require Import ThreadTimer.
 
 Inductive ThreadState : Set :=
 | RUNNING : ThreadState
@@ -35,7 +36,7 @@ Record SleepWakeup := mkSW{
 Record Thread := mkThread{
 
   unique_id : nat; 
-  timer_id : nat;
+  timer : ThreadTimer;
   state : ThreadState;
   wait_info : nat;
   sleep_wakeup : SleepWakeup;
@@ -45,7 +46,12 @@ Record Thread := mkThread{
 
 }.
 
+(*Ignored init_context(this) in Thread.cxx line 218
+  Nothing to do for scheduler.register_thread *)
+Definition Thread_cstr tid aid cid p := 
+  mkThread tid (ThreadTimer_cstr aid cid tid) SUSPENDED 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
 
+ 
 
 (********************************************************)
 (*The double linked cycled list of thread*)
