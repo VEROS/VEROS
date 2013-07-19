@@ -44,12 +44,12 @@ Definition timeslice_restore (sti : SchedThread_Implementation) (si : Scheduler_
 *)
 Definition timeslice_reset (r : SchedThread_Implementation) 
   (count : nat) :=
-  mkSTI (priority r) (timeslice_enable r) count.
+  mkSTI r.(priority) r.(timeslice_enable) count.
 
-Definition timeslice_enable_fun (r: SchedThread_Implementation) := 
+Definition SchedTread_Implementation_timeslice_enable (r: SchedThread_Implementation) := 
   set_enable r true.
 
-Definition timeslice_disable_fun (r : SchedThread_Implementation) := 
+Definition SchedTread_Implementation_timeslice_disable (r : SchedThread_Implementation) := 
   set_enable r false.
 
 

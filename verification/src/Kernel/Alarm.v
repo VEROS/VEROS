@@ -15,6 +15,8 @@ Definition Alarm_cstr (aid t : nat) : Alarm :=
 Definition set_enable a b := 
   mkALM a.(alarm_id) a.(counter_id) a.(trigger) a.(interval) b.
 
+(*TODO: Alarm_initialize*)
+
 (*TODO: enable*)
 
 (*TODO: disable*)
