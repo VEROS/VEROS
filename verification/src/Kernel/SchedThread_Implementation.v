@@ -9,7 +9,7 @@ Record SchedThread_Implementation := mkSTI {
   priority : nat;
 
   (*CYGSEM_KERNEL_SCHED_TIMESILEC_ENABLE*)
-  timeslice_enable : bool;
+  timeslice_enabled : bool;
 
   (*CYGSEM_KERNEL_SCHED_TIMESLICE*)
   timeslice_count : nat
@@ -17,13 +17,13 @@ Record SchedThread_Implementation := mkSTI {
 }.
 
 Definition set_priority (r : SchedThread_Implementation) (p : nat) :=
-  mkSTI p (timeslice_enable r) (timeslice_count r).
+  mkSTI p r.(timeslice_enabled) r.(timeslice_count).
 
 Definition set_enable (r : SchedThread_Implementation) (en : bool) :=
-  mkSTI (priority r) en (timeslice_count r).
+  mkSTI r.(priority) en r.(timeslice_count).
 
 Definition set_count (r : SchedThread_Implementation) (c : nat) := 
-  mkSTI (priority r) (timeslice_enable r) c.
+  mkSTI r.(priority) r.(timeslice_enabled) c.
 
 Definition SchedThread_Implementation_cstr (p : nat) :=
   mkSTI p true 0.
@@ -44,12 +44,12 @@ Definition timeslice_restore (sti : SchedThread_Implementation) (si : Scheduler_
 *)
 Definition timeslice_reset (r : SchedThread_Implementation) 
   (count : nat) :=
-  mkSTI r.(priority) r.(timeslice_enable) count.
+  mkSTI r.(priority) r.(timeslice_enabled) count.
 
-Definition SchedTread_Implementation_timeslice_enable (r: SchedThread_Implementation) := 
+Definition timeslice_enable (r: SchedThread_Implementation) := 
   set_enable r true.
 
-Definition SchedTread_Implementation_timeslice_disable (r : SchedThread_Implementation) := 
+Definition timeslice_disable (r : SchedThread_Implementation) := 
   set_enable r false.
 
 
