@@ -39,3 +39,6 @@ Definition set_sched_lock sb n :=
 
 Definition get_sched_lock (sb : Scheduler_Base) :=
   (Scheduler_SchedLock.get_sched_lock sb.(sched_lock)).
+
+Definition Scheduler_Base_cstr := 
+  mksb Scheduler_SchedLock_cstr (Thread_cstr 0 0 0 0) false 0.

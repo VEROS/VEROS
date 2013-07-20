@@ -6,7 +6,7 @@ Record Scheduler_SchedLock := mkss{
 
 }.
 
-Definition Scheduler_SchedLock_cstr sl := mkss sl.
+Definition Scheduler_SchedLock_cstr := mkss 1.
 
 Definition inc_sched_lock ss := mkss (S ss.(sched_lock)).
 
