@@ -14,7 +14,7 @@ Record Scheduler_Implementation := mkSI{
   
   queue_map : array bool PRIORITIES;
 
-  run_queue : list RunQueue;
+  run_queue : array RunQueue PRIORITIES;
 
   timeslice_count : nat
 
