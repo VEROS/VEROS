@@ -15,8 +15,11 @@ Definition get_current_thread (sb : Scheduler_Base) := sb.(current_thread).
 Definition set_current_thread (sb : Scheduler_Base) t := 
   mksb sb.(sched_lock) t sb.(need_reschedule) sb.(thread_switches).
 
-Definition set_need_reschedule sb b := 
-  mksb sb.(sched_lock) sb.(current_thread) b sb.(thread_switches).
+Definition set_need_reschedule sb := 
+  mksb sb.(sched_lock) sb.(current_thread) true sb.(thread_switches).
+
+Definition set_need_reschedule_t sb (t : Thread) := 
+  mksb sb.(sched_lock) sb.(current_thread) true sb.(thread_switches). 
 
 Definition get_need_reschedule sb := sb.(need_reschedule).
 

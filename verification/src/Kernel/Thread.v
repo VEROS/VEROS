@@ -3,7 +3,6 @@ Set Implicit Arguments.
 Require Import EqNat.
 
 Require Import SchedThread.
-Require Import SchedThread_Implementation.
 
 Require Import DLClist.
 Require Import ThreadTimer.
@@ -54,6 +53,9 @@ Record Thread := mkThread{
 
 }.
 
+Definition set_schedthread t ss := 
+  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
+
 (*Ignored init_context(this) in Thread.cxx line 218
   Nothing to do for scheduler.register_thread
   need to add this thread to run_queue in SchedThread*)
@@ -91,7 +93,7 @@ Definition get_wait_info t := t.(wait_info).
 
 (*TODO: set_priority*)
 
-Definition get_priority (t : Thread) : nat := t.(schedthread).(schedthread_imp).(priority).
+Definition get_priority t := SchedThread.get_priority t.(schedthread).
 
 Definition get_current_priority t := get_priority t.
 
@@ -131,6 +133,10 @@ Definition set_sleep_reason_wait t := set_sleep_reason t WAIT.
 
 (*TODO: clear_timer*)
 
+
+Definition timeslice_reset t := 
+  set_schedthread t (SchedThread.timeslice_reset t.(schedthread)).
+
 (********************************************************)
 (*The double linked cycled list of thread*)
 
@@ -146,3 +152,6 @@ End Thread_Obj.
 Module TO := CList Thread_Obj.
 
 Definition RunQueue := TO.CList Thread.
+
+Definition RunQueue_cstr := @nil Thread.
+

@@ -2,39 +2,110 @@ Set Implicit Arguments.
 
 Require Import BitArray.
 Require Import Array.
+Require Import QueueArray.
 
 Require Import Scheduler_Base.
 Require Import Thread.
 
-Definition PRIORITIES := 32.
+Require Import Constant.
+
+Require Import NPeano.
+
+Definition QueueMap := array bool PRIORITIES.
+Definition RunQueueArray := array RunQueue PRIORITIES.
 
 Record Scheduler_Implementation := mkSI{
 
   scheduler_base : Scheduler_Base;
   
-  queue_map : array bool PRIORITIES;
+  queue_map : QueueMap;
 
-  run_queue : array RunQueue PRIORITIES;
+  run_queue_array : RunQueueArray;
 
   timeslice_count : nat
 
 }.
 
+Definition set_scheduler_base si sb := 
+  mkSI sb si.(queue_map) si.(run_queue_array) si.(timeslice_count).
+
+Definition get_current_thread si := Scheduler_Base.get_current_thread si.(scheduler_base).
+
+Definition set_current_thread si t := 
+  set_scheduler_base si (Scheduler_Base.set_current_thread si.(scheduler_base) t).
+
+Definition set_need_reschedule si := 
+  set_scheduler_base si (Scheduler_Base.set_need_reschedule si.(scheduler_base)).
+
+Definition set_need_reschedule_t (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
+set (current := get_current_thread si).
+case_eq (ltb (get_priority t) (get_priority current)); intros h1.
+  exact (set_need_reschedule si).
+  
+  destruct (get_state t) as [ | | | | | ]; [exact (set_need_reschedule si)| | | | |]; exact si.
+Defined.
+
+Definition get_need_reschedule si := Scheduler_Base.get_need_reschedule si.(scheduler_base).
+
+Definition get_sched_lock si := Scheduler_Base.get_sched_lock si.(scheduler_base).
+
+Definition clear_need_reschedule si := 
+  set_scheduler_base si (Scheduler_Base.clear_need_reschedule si.(scheduler_base)).
+
+Definition get_thread_switches si := Scheduler_Base.get_thread_switches si.(scheduler_base).
+
 Definition get_timeslice_count si := si.(timeslice_count).
 
 Definition set_timeslice_count si count := 
-  mkSI si.(scheduler_base) si.(queue_map) si.(run_queue) count.
+  mkSI si.(scheduler_base) si.(queue_map) si.(run_queue_array) count.
 
 (*TODO: set_idle_thread*)
 
-(*TODO: time_slice_cpu*)
+Definition time_slice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
+destruct si.(timeslice_count) as [|]; [|exact si].
+set (t := get_current_thread si).
+destruct (get_state t) as [ | | | | | ].
+  set (index := get_priority t).
+  set (q := nth_q si.(run_queue_array) index).
+  set (q' := TO.rotate q).
+  destruct (Thread_Obj.eq_Obj (TO.get_head q') t) as [ | ].
 
 (*TODO: time_slice*)
 
-Definition CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS := 1.
-
 Definition Scheduler_Implementation_cstr := 
-  mkSI (set_need_reschedule Scheduler_Base_cstr true) (init_0 32) nil 
-       CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS.
+  set_need_reschedule (mkSI (Scheduler_Base_cstr) (init_0 PRIORITIES) 
+       (init PRIORITIES nil) CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS).
 
-(*DO: schedule*)
+Definition schedule si := 
+  TO.get_head (nth_q si.(run_queue_array) (lsb si.(queue_map))).  
+
+Definition add_thread (si : Scheduler_Implementation) (t: Thread) : Scheduler_Implementation.
+set (t' := timeslice_reset t).
+set (index := get_priority t').
+(*construct the updated queue_map*)
+assert (queue_map' : QueueMap). 
+ case_eq (TO.empty (nth_q si.(run_queue_array) index)); intros h.
+    exact (set_1 si.(queue_map) index).
+    exact si.(queue_map).
+(*construct the update run_queue_array_array*)
+assert (run_queue_array' : RunQueueArray).
+  set (array_step1 := remove_t si.(run_queue_array) t').
+  set (queue := nth_q array_step1 index).
+  set (new_queue := TO.add_tail queue t').
+  exact (set_q array_step1 index new_queue).
+(*construct the result*)
+exact (mkSI si.(scheduler_base) queue_map' run_queue_array' si.(timeslice_count)).
+Defined.
+
+Definition rem_thread (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
+set (index := get_priority t).  
+assert (run_queue_array' : RunQueueArray).
+  exact (remove_t si.(run_queue_array) t).
+assert (queue_map' : QueueMap).
+  case_eq (TO.empty (nth_q run_queue_array' index)); intros h.
+    exact (set_0 si.(queue_map) index).
+    exact si.(queue_map).
+exact (mkSI si.(scheduler_base) queue_map' run_queue_array' si.(timeslice_count)).
+Defined.
+
+Definition unique (si : Scheduler_Implementation) := true.

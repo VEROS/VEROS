@@ -42,7 +42,7 @@ Defined.
 
 
 (* Simpl test cases *)
-
+(*
 Require Import Bvector.
 Eval compute in (set_0 [true;false;true] 0).
 
@@ -53,3 +53,4 @@ Eval compute in (init_0 5).
 Eval compute in (nth_b [true;false;true;true;true] 1).
 
 Eval compute in (lsb [false; false; false; true; false]).
+*)

@@ -35,6 +35,12 @@ Module CList (Import M : DNode).
       | _ => false
     end.
   
+  Fixpoint inside (l : CList Obj) (x : Obj) :=
+    match l with
+      | nil => false
+      | y :: l' => if (eq_Obj x y) then true else (inside l' x)
+    end.
+
   Definition add_head (l : CList Obj) (x : Obj) := x :: l.
   
   Definition rem_head (l : CList Obj) :=

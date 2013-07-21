@@ -350,10 +350,7 @@ Cyg_Scheduler_Implementation::timeslice_cpu(void)
     CYG_ASSERT( queue_map != 0, "Run queue empty");
     CYG_ASSERT( queue_map & (1<<CYG_THREAD_MIN_PRIORITY), "Idle thread vanished!!!");
 
-
-#else    
     if( timeslice_count[cpu_this] == 0 )
-#endif
     {
         CYG_INSTRUMENT_SCHED(TIMESLICE,0,0);
 
