@@ -37,10 +37,10 @@ Section AbsTypeArray.
      exact (hd a).
   
      exact (rec (tl a) m).
-   Defined.
+  Defined.
 
-   Definition nth n (a : array ele n) (m : nat) :=
-     nth_rec a (n-m).
+  Definition nth n (a : array ele n) (m : nat) :=
+    nth_rec a (n-m).
 
 End AbsTypeArray.
 
