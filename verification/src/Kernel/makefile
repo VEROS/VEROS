@@ -10,7 +10,7 @@ COQINCLUDES=-I .
 ALLV=$(shell ls *.v)
 ALLVO=$(ALLV:.v=.vo)
 
-all : $(ALLVO)
+all : depend $(ALLVO)
 
 .SUFFIXES: .v .vo
 
@@ -20,7 +20,7 @@ all : $(ALLVO)
 clean:
 	rm -f *~ *.vo *.glob .depend
 
-depend:
+depend: 
 	rm -f .depend
 	$(COQDEP) -c $(COQINCLUDES) *.v > .depend
 
