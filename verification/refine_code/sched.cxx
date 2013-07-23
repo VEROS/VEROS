@@ -125,11 +125,8 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
                           ((get_sched_lock() == new_lock) || (get_sched_lock() == new_lock+1)),
                           "sched_lock not at expected value" );
         
-//#ifdef CYGIMP_KERNEL_INTERRUPTS_DSRS
-        
         // Call any pending DSRs. Do this here to ensure that any
         // threads that get awakened are properly scheduled.
-
         if( new_lock == 0 && Cyg_Interrupt::DSRs_pending() )
             Cyg_Interrupt::call_pending_DSRs();
 
@@ -137,13 +134,6 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
         Cyg_Thread *current = get_current_thread();
 
         CYG_ASSERTCLASS( current, "Bad current thread" );
-
-
-/*ON BUT DON'T CARE
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
-        current->check_stack();
-#endif
-*/
 
         // If the current thread is going to sleep, or someone
         // wants a reschedule, choose another thread to run
@@ -165,11 +155,6 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
 
                 // Count this thread switch
                 thread_switches[CYG_KERNEL_CPU_THIS()]++;
-/*ON BUT DON'T CARE
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
-                next->check_stack(); // before running it
-#endif
-*/
                 current->timeslice_save();
                 
                 // Switch contexts
@@ -210,8 +195,6 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
                                    // by this point
             zero_sched_lock();     // Clear the lock
             HAL_REORDER_BARRIER();
-                
-//#ifdef CYGIMP_KERNEL_INTERRUPTS_DSRS
 
             // Now check whether any DSRs got posted during the thread
             // switch and if so, go around again. Making this test after
@@ -223,13 +206,6 @@ void Cyg_Scheduler::unlock_inner( cyg_ucount32 new_lock )
                 inc_sched_lock();   // reclaim the lock
                 continue;           // go back to head of loop
             }
-
-            // Otherwise the lock is zero, we can return.
-
-//            CYG_POSTCONDITION( get_sched_lock() == 0, "sched_lock not zero" );
-
-
-
         }
         else
         {

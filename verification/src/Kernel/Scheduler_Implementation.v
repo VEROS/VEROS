@@ -61,16 +61,28 @@ Definition set_timeslice_count si count :=
 
 (*TODO: set_idle_thread*)
 
-Definition time_slice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
+Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
 destruct si.(timeslice_count) as [|]; [|exact si].
 set (t := get_current_thread si).
-destruct (get_state t) as [ | | | | | ].
+destruct (get_state t) as [ | | | | | ]; [ |exact si|exact si|exact si|exact si|exact si].
   set (index := get_priority t).
   set (q := nth_q si.(run_queue_array) index).
   set (q' := TO.rotate q).
-  destruct (Thread_Obj.eq_Obj (TO.get_head q') t) as [ | ].
+  set (run_queue_array' := set_q si.(run_queue_array) index q').
+  assert (sh : Scheduler_Base).
+    destruct (TO.get_head q') as [o|]; [|exact si.(scheduler_base)].
+      case_eq (Thread_Obj.eq_Obj o t); intros h. 
+        exact si.(scheduler_base).
+        exact (Scheduler_Base.set_need_reschedule si.(scheduler_base)).
+  exact (mkSI sh si.(queue_map) run_queue_array' CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS).
+Defined.
 
-(*TODO: time_slice*)
+Definition timeslice (si : Scheduler_Implementation) : Scheduler_Implementation.
+destruct si.(timeslice_count) as [|n]; [exact si|].
+  set (si' := set_timeslice_count si n).
+  destruct n as [ | ]; [|exact si'].
+    exact (timeslice_cpu si').
+Defined.
 
 Definition Scheduler_Implementation_cstr := 
   set_need_reschedule (mkSI (Scheduler_Base_cstr) (init_0 PRIORITIES) 
@@ -109,3 +121,12 @@ exact (mkSI si.(scheduler_base) queue_map' run_queue_array' si.(timeslice_count)
 Defined.
 
 Definition unique (si : Scheduler_Implementation) := true.
+
+Definition inc_sched_lock si := 
+  set_scheduler_base si (Scheduler_Base.inc_sched_lock si.(scheduler_base)).
+
+Definition zero_sched_lock si := 
+  set_scheduler_base si (Scheduler_Base.zero_sched_lock si.(scheduler_base)).
+
+Definition set_sched_lock si n := 
+  set_scheduler_base si (Scheduler_Base.set_sched_lock si.(scheduler_base) n).

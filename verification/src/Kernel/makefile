@@ -10,7 +10,7 @@ COQINCLUDES=-I .
 ALLV=$(shell ls *.v)
 ALLVO=$(ALLV:.v=.vo)
 
-all : depend $(ALLVO)
+all : $(ALLVO)
 
 .SUFFIXES: .v .vo
 
