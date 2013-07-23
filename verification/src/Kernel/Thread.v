@@ -137,6 +137,8 @@ Definition set_sleep_reason_wait t := set_sleep_reason t WAIT.
 Definition timeslice_reset t := 
   set_schedthread t (SchedThread.timeslice_reset t.(schedthread)).
 
+Definition addthread t := set_schedthread t (SchedThread.addthread t.(schedthread)).
+
 (********************************************************)
 (*The double linked cycled list of thread*)
 
@@ -154,4 +156,3 @@ Module TO := CList Thread_Obj.
 Definition RunQueue := TO.CList Thread.
 
 Definition RunQueue_cstr := @nil Thread.
-

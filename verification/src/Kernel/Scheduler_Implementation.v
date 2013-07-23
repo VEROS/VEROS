@@ -92,7 +92,7 @@ Definition schedule si :=
   TO.get_head (nth_q si.(run_queue_array) (lsb si.(queue_map))).  
 
 Definition add_thread (si : Scheduler_Implementation) (t: Thread) : Scheduler_Implementation.
-set (t' := timeslice_reset t).
+set (t' := addthread (timeslice_reset t)).
 set (index := get_priority t').
 (*construct the updated queue_map*)
 assert (queue_map' : QueueMap). 
