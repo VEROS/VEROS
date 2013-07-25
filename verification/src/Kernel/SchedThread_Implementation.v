@@ -28,20 +28,12 @@ Definition set_count (r : SchedThread_Implementation) (c : nat) :=
 Definition SchedThread_Implementation_cstr (p : nat) :=
   mkSTI p true 0.
 
-(*TODO: function 'yield'*)
-
-(*TODO : function 'rotate_queue'*)
-
 (*TODO : function 'to_queue_head'*)
 
-(*DO : Definition timeslice_save*)
-(*
-Definition timeslice_save (sti : SchedThread_Implementation) (si : Scheduler_Implementation) := mkSTI (priority r) (timeslice_enable r) (get_timeslice_count si).
-*)
-(*DO : timeslice_restore*)
-(*
-Definition timeslice_restore (sti : SchedThread_Implementation) (si : Scheduler_Implementation) := set_timeslice_count si (timeslice_count).
-*)
+Definition timeslice_save (sti : SchedThread_Implementation) new_count := mkSTI sti.(priority) sti.(timeslice_enabled) new_count.
+
+Definition get_timeslice_count sti := sti.(timeslice_count). 
+
 Definition timeslice_reset (r : SchedThread_Implementation) :=
   mkSTI r.(priority) r.(timeslice_enabled) CYGNUM_KERNEL_SCHED_TIMESLICE_TICKS.
 

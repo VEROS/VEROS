@@ -54,10 +54,16 @@ Definition clear_need_reschedule si :=
 
 Definition get_thread_switches si := Scheduler_Base.get_thread_switches si.(scheduler_base).
 
+Definition set_thread_switches si n := 
+  set_scheduler_base si (Scheduler_Base.set_thread_switches si.(scheduler_base) n).
+
 Definition get_timeslice_count si := si.(timeslice_count).
 
 Definition set_timeslice_count si count := 
   mkSI si.(scheduler_base) si.(queue_map) si.(run_queue_array) count.
+
+Definition set_run_queue si index q := 
+  mkSI si.(scheduler_base) si.(queue_map) (set_q si.(run_queue_array) index q) si.(timeslice_count).
 
 (*TODO: set_idle_thread*)
 
@@ -130,3 +136,22 @@ Definition zero_sched_lock si :=
 
 Definition set_sched_lock si n := 
   set_scheduler_base si (Scheduler_Base.set_sched_lock si.(scheduler_base) n).
+
+(*Step 1: find the thread in si; 
+  Step 2: replace it with new thread which saved the timeslice_count
+  I miss pointers...F**K!!!!!
+*)
+Definition timeslice_save (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
+set (t' := (Thread.timeslice_save t si.(timeslice_count))).
+case_eq (Thread_Obj.eq_Obj t (get_current_thread si)); intros h.
+  exact (set_current_thread si t').
+  
+  set (index := get_priority t).
+  set (new_queue := TO.add_tail (TO.remove (nth_q si.(run_queue_array) index) t) t').
+  exact (mkSI si.(scheduler_base) si.(queue_map) 
+              (set_q si.(run_queue_array) index new_queue) si.(timeslice_count)).
+Defined.
+
+Definition timeslice_restore si t := set_timeslice_count si (Thread.get_timeslice_count t).
+
+

@@ -28,6 +28,9 @@ Definition clear_need_reschedule sb :=
 
 Definition get_thread_switches sb := sb.(thread_switches).
 
+Definition set_thread_switches sb n := 
+  mksb sb.(sched_lock) sb.(current_thread) sb.(need_reschedule) n.
+
 Definition change_sched_lock sb sl :=
   mksb sl sb.(current_thread) sb.(need_reschedule) sb.(thread_switches).
 

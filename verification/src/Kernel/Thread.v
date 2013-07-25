@@ -56,6 +56,11 @@ Record Thread := mkThread{
 Definition set_schedthread t ss := 
   mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
 
+Definition timeslice_save t new_count := 
+  set_schedthread t (SchedThread.timeslice_save t.(schedthread) new_count).
+
+Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthread).
+
 (*Ignored init_context(this) in Thread.cxx line 218
   Nothing to do for scheduler.register_thread
   need to add this thread to run_queue in SchedThread*)
@@ -116,10 +121,6 @@ Definition get_unique_id t := t.(unique_id).
 (*TODO: counted_sleep_delay*)
 
 (*TODO: exit*)
-
-(*TODO: yield*)
-
-(*TODO: rotate_queue*)
 
 (*TODO: self*)
 
