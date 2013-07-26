@@ -1,5 +1,4 @@
 Set Implicit Arguments.
-
 Require Import Array.
 Require Import Thread.
 
@@ -20,4 +19,18 @@ Definition set_q n (ba : array RunQueue n)(m : nat)(q : RunQueue) :=
 Definition remove_t n (ba : array RunQueue n)(t : Thread) : array RunQueue n. 
 set (index := get_priority t).
 exact (set_q ba index (TO.remove (nth_q ba index) t)).
+Defined.
+
+Definition array_get_thread n (ba : array RunQueue n)(tid : nat) : option (nat*nat).
+induction n as [|n' IHn']; [exact None| ].
+  destruct (Thread.get_thread (hd ba) tid) as [a| ].
+    exact (Some a).
+    exact (IHn' (tl ba)).
+Defined.
+
+Definition array_get_thread_t n (ba : array RunQueue n)(tid : nat) : option Thread.
+induction n as [|n' IHn']; [exact None| ].
+  destruct (Thread.get_thread_t (hd ba) tid) as [t| ].
+    exact (Some t).
+    exact (IHn' (tl ba)).
 Defined.

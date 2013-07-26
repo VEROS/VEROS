@@ -1,3 +1,4 @@
+
 Set Implicit Arguments.
 
 Require Import EqNat.
@@ -157,3 +158,22 @@ Module TO := CList Thread_Obj.
 Definition RunQueue := TO.CList Thread.
 
 Definition RunQueue_cstr := @nil Thread.
+
+Print TO.
+Print List.nth.
+
+Definition get_thread (q : RunQueue) (tid : nat) : option (nat*nat).
+induction q as [ |t q' IHq']; [exact None| ].
+  case_eq (beq_nat tid t.(unique_id)); intros h.
+    exact (Some ((get_priority t), 0)).  
+    destruct IHq' as [x| ]. 
+      destruct x as [f s]. exact (Some (f, (S s))).
+      exact None. 
+Defined.
+
+Definition get_thread_t (q : RunQueue) (tid : nat) : option Thread.
+induction q as [ |t q' IHq']; [exact None| ].
+  destruct (beq_nat tid t.(unique_id)) as [ | ].
+    exact (Some t).
+    exact IHq'.
+Defined.
