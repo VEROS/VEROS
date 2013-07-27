@@ -38,6 +38,8 @@ Definition get_thread_switches s := Scheduler_Implementation.get_thread_switches
 
 Definition set_thread_switches s n := mkS (Scheduler_Implementation.set_thread_switches s.(sched_imp) n).
 
+Definition add_thread s t := mkS (Scheduler_Implementation.add_thread s.(sched_imp) t).
+
 Definition unlock_inner (s: Scheduler) (new_lock : nat) : Scheduler.
 (*if new_lock == 0 and there is any DSR pended, call all the DSRs*)
 destruct (get_current_thread s) as [current|]; [|exact s]. 
@@ -117,3 +119,34 @@ destruct (TO.empty queue) as [ | ]; [exact (unlock s')| ].
   exact (unlock (set_need_reschedule (set_run_queue s' priority (TO.rotate queue)))).
 Defined.
 
+Definition update_thread (s : Scheduler)(t : Thread) : Scheduler.
+set(index := get_priority t).
+exact (set_run_queue s index (Thread.update_thread (nth_q s.(sched_imp).(run_queue_array) index) t)).
+Defined.    
+
+Definition resume (s : Scheduler)(t : Thread) : Scheduler.
+set(s' := lock s). assert (s'' : Scheduler).
+destruct (t.(sleepwakeup).(suspend_count)) as [|n]; [exact s'|].
+  set(t' := set_suspend_count t n).  
+  destruct n as [|n']; [|exact (update_thread s' t')].
+    (*state &= ~SUSPENDED*)
+    destruct (get_state t') as [ | | | | | ]; [exact (add_thread s' t')| | | | | ]; exact s'.
+exact (unlock s'').
+Defined.
+
+Definition set_idle_thread (s : Scheduler)(t : Thread) : Scheduler :=
+resume (set_current_thread s t.(unique_id)) t.
+
+Definition get_run_queue s priority : RunQueue := nth_q s.(sched_imp).(run_queue_array) priority.
+
+Definition to_queue_head (s : Scheduler)(t : Thread) : Scheduler.
+set (s' := lock s).
+(*Cyg_ThreadQueue *q = thread->get_current_queue();
+  if(q != NULL)
+    q->to_head(thread)
+*)
+destruct (in_list t) as [ | ]; [|exact (unlock s')].
+  set (index := get_priority t). 
+  set (queue := TO.to_head (get_run_queue s' index) t).
+  exact (unlock (set_need_reschedule (set_run_queue s index queue))).
+Defined.

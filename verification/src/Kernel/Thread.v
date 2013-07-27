@@ -41,6 +41,12 @@ Definition SleepWakeup_set_wake_reason sw wr :=
 Definition SleepWakeup_set_sleep_reason sw sr :=
   mkSW sr NONE sw.(suspend_count) sw.(wakeup_count).
 
+Definition SleepWakeup_set_suspend_count sw sc :=
+  mkSW sw.(sleep_reason) sw.(wake_reason) sc sw.(wakeup_count).
+
+Definition SleepWakeup_set_wakeup_count sw wc :=
+   mkSW sw.(sleep_reason) sw.(wake_reason) sw.(wakeup_count) wc.
+
 Record Thread := mkThread{
 
   unique_id : nat; 
@@ -53,6 +59,12 @@ Record Thread := mkThread{
   schedthread : SchedThread
 
 }.
+
+Definition get_suspend_count t := t.(sleepwakeup).(suspend_count).
+
+Definition set_suspend_count t n := 
+  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
+    (SleepWakeup_set_suspend_count t.(sleepwakeup) n) t.(schedthread).
 
 Definition set_schedthread t ss := 
   mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
@@ -70,7 +82,7 @@ Definition Thread_cstr tid aid cid p :=
 
 (*TODO: reinitialize*)
 
-(*TODO: to_queue_head*)
+(*Defined in Scheduler.v: to_queue_head*)
 
 (*TODO: wake*)
 
@@ -80,7 +92,7 @@ Definition Thread_cstr tid aid cid p :=
 
 (*TODO: suspend*)
 
-(*TODO: resume*)
+(*Defined in Scheduler.v: resume*)
 
 (*TODO: release*)
 
@@ -159,9 +171,6 @@ Definition RunQueue := TO.CList Thread.
 
 Definition RunQueue_cstr := @nil Thread.
 
-Print TO.
-Print List.nth.
-
 Definition get_thread (q : RunQueue) (tid : nat) : option (nat*nat).
 induction q as [ |t q' IHq']; [exact None| ].
   case_eq (beq_nat tid t.(unique_id)); intros h.
@@ -177,3 +186,13 @@ induction q as [ |t q' IHq']; [exact None| ].
     exact (Some t).
     exact IHq'.
 Defined.
+
+Definition update_thread (q : RunQueue) (t : Thread) : RunQueue.
+induction q as [ |t' q' IHq']; [exact nil| ].
+  case (Thread_Obj.eq_Obj t t').
+    exact (cons t q').
+    exact (cons t' IHq').
+Defined.
+
+(*should be next != this*)
+Definition in_list (t : Thread) : bool := true.

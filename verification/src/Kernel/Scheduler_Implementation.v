@@ -67,7 +67,7 @@ Definition set_timeslice_count si count :=
 Definition set_run_queue si index q := 
   mkSI si.(scheduler_base) si.(queue_map) (set_q si.(run_queue_array) index q) si.(timeslice_count).
 
-(*TODO: set_idle_thread*)
+(*Defined in Scheduler: set_idle_thread*)
 
 Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
 destruct si.(timeslice_count) as [|]; [|exact si].
