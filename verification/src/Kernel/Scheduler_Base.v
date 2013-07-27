@@ -5,7 +5,7 @@ Require Import Thread.
 
 Record Scheduler_Base := mksb{
   sched_lock : Scheduler_SchedLock;
-  current_thread : Thread; 
+  current_thread : nat; 
   need_reschedule : bool;
   thread_switches : nat
 }.
@@ -47,4 +47,4 @@ Definition get_sched_lock (sb : Scheduler_Base) :=
   (Scheduler_SchedLock.get_sched_lock sb.(sched_lock)).
 
 Definition Scheduler_Base_cstr := 
-  mksb Scheduler_SchedLock_cstr (Thread_cstr 0 0 0 0) false 0.
+  mksb Scheduler_SchedLock_cstr 0 false 0.

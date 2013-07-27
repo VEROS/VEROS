@@ -29,17 +29,19 @@ Record Scheduler_Implementation := mkSI{
 Definition set_scheduler_base si sb := 
   mkSI sb si.(queue_map) si.(run_queue_array) si.(timeslice_count).
 
-Definition get_current_thread si := Scheduler_Base.get_current_thread si.(scheduler_base).
+Definition get_current_thread si := 
+  array_get_thread_t si.(run_queue_array) (Scheduler_Base.get_current_thread si.(scheduler_base)).
 
-Definition set_current_thread si t := 
-  set_scheduler_base si (Scheduler_Base.set_current_thread si.(scheduler_base) t).
+Definition set_current_thread si tid := 
+  set_scheduler_base si (Scheduler_Base.set_current_thread si.(scheduler_base) tid).
 
 Definition set_need_reschedule si := 
   set_scheduler_base si (Scheduler_Base.set_need_reschedule si.(scheduler_base)).
 
 Definition set_need_reschedule_t (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (current := get_current_thread si).
-case_eq (ltb (get_priority t) (get_priority current)); intros h1.
+destruct current as [current_t| ]; [ |exact si].
+case_eq (ltb (get_priority t) (get_priority current_t)); intros h1.
   exact (set_need_reschedule si).
   
   destruct (get_state t) as [ | | | | | ]; [exact (set_need_reschedule si)| | | | |]; exact si.
@@ -69,7 +71,7 @@ Definition set_run_queue si index q :=
 
 Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
 destruct si.(timeslice_count) as [|]; [|exact si].
-set (t := get_current_thread si).
+destruct (get_current_thread si) as [t| ]; [|exact si].
 destruct (get_state t) as [ | | | | | ]; [ |exact si|exact si|exact si|exact si|exact si].
   set (index := get_priority t).
   set (q := nth_q si.(run_queue_array) index).
@@ -143,9 +145,6 @@ Definition set_sched_lock si n :=
 *)
 Definition timeslice_save (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (t' := (Thread.timeslice_save t si.(timeslice_count))).
-case_eq (Thread_Obj.eq_Obj t (get_current_thread si)); intros h.
-  exact (set_current_thread si t').
-  
   set (index := get_priority t).
   set (new_queue := TO.add_tail (TO.remove (nth_q si.(run_queue_array) index) t) t').
   exact (mkSI si.(scheduler_base) si.(queue_map) 
