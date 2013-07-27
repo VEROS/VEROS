@@ -1,0 +1,14 @@
+Achievements
+1. The current running thread will not be removed from run_queue.
+2. Scheduler schedules through "SWITCH_CONTEXT" by changing PC directly.
+3. unlock_inner is called by 3 functions: unlock, reschedule, unlock_reschedule.
+
+Questions:
+1. Where are unrunnable threads?
+
+TODO:
+1. Answer the question(s) above.
+2. Draw flow charts for:
+    a. call_constructors
+    b. starting of the first running thread.
+    c. process of "yielding", which may happen when a thread completes, yields, uses up its timeslice or interrupted by interrupts.
