@@ -27,11 +27,11 @@ Definition set_interval a n :=
 Definition set_trigger a n :=
   mkALM a.(alarm_id) a.(counter_id) n a.(interval) a.(enabled).
 
-(*TODO: Alarm_initialize*)
+(*Defined in Counter.v: Alarm_initialize*)
 
-(*TODO: enable*)
+(*Defined in Counter.v: enable*)
 
-(*TODO: disable*)
+(*Defined in Counter.v: disable*)
 
 Definition get_times a := (a.(trigger), a.(interval)).
 

@@ -12,10 +12,6 @@ Record ThreadTimer := mkTT{
 Definition ThreadTimer_cstr aid cid thid :=
   mkTT (Alarm_cstr aid cid) thid.
 
-(*TODO: ThreadTimer_enable, encapsulation of Alarm_enable*)
-
-(*TODO: ThreadTimer_disable, encapsulation of Alarm_disable*)
-
 Definition get_timer_id tt := tt.(alarm).(alarm_id).
 
 Definition get_thread_id tt := tt.(thread_id).
@@ -35,10 +31,6 @@ Definition set_enable tt b := set_alarm tt (Alarm.set_enable tt.(alarm) b).
 Definition set_interval tt n := set_alarm tt (Alarm.set_interval tt.(alarm) n).
 
 Definition set_trigger tt n := set_alarm tt (Alarm.set_trigger tt.(alarm) n).
-
-(*TODO: ThreadTimer_initialize, encapsulation of Alarm_initialize*)
-
-(*TODO: ThreadTimer_alarm*)
 
 (****************************************************************)
 (*The list of thread timers, which will be in a clock*)
@@ -66,3 +58,20 @@ TTL.get_Obj ttl ttid.
 
 Definition update_threadtimer (ttl : ThreadTimerList)(tt : ThreadTimer) : ThreadTimerList :=
 TTL.update_Obj ttl tt.
+
+Module ID_Obj <: DNode.
+  
+  Definition Obj := nat.
+  
+  Definition eq_Obj := beq_nat.
+
+  Definition A := nat.
+
+  Definition test_Obj := beq_nat.
+
+End ID_Obj.
+
+Module IL := CList ID_Obj.
+
+Definition IDList := IL.CList nat.
+
