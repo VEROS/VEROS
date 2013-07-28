@@ -50,7 +50,7 @@ Definition SleepWakeup_set_wakeup_count sw wc :=
 Record Thread := mkThread{
 
   unique_id : nat; 
-  timer : ThreadTimer;
+  timer_id : nat;
   state : ThreadState;
   wait_info : nat;
   sleepwakeup : SleepWakeup;
@@ -63,11 +63,11 @@ Record Thread := mkThread{
 Definition get_suspend_count t := t.(sleepwakeup).(suspend_count).
 
 Definition set_suspend_count t n := 
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
+  mkThread t.(unique_id) t.(timer_id) t.(state) t.(wait_info) 
     (SleepWakeup_set_suspend_count t.(sleepwakeup) n) t.(schedthread).
 
 Definition set_schedthread t ss := 
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
+  mkThread t.(unique_id) t.(timer_id) t.(state) t.(wait_info) t.(sleepwakeup) ss.
 
 Definition timeslice_save t new_count := 
   set_schedthread t (SchedThread.timeslice_save t.(schedthread) new_count).
@@ -77,8 +77,8 @@ Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthre
 (*Ignored init_context(this) in Thread.cxx line 218
   Nothing to do for scheduler.register_thread
   need to add this thread to run_queue in SchedThread*)
-Definition Thread_cstr tid aid cid p := 
-  mkThread tid (ThreadTimer_cstr aid cid tid) SUSPENDED 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
+Definition Thread_cstr tid aid p := 
+  mkThread tid aid SUSPENDED 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
 
 (*TODO: reinitialize*)
 
@@ -103,7 +103,7 @@ Definition Thread_cstr tid aid cid p :=
 Definition get_state t := t.(state).
 
 Definition set_wait_info t wi := 
-  mkThread t.(unique_id) t.(timer) t.(state) wi t.(sleepwakeup) t.(schedthread).
+  mkThread t.(unique_id) t.(timer_id) t.(state) wi t.(sleepwakeup) t.(schedthread).
 
 Definition get_wait_info t := t.(wait_info).
 
@@ -118,7 +118,7 @@ Definition get_current_priority t := get_priority t.
 Definition get_sleep_reason t := t.(sleepwakeup).(sleep_reason).
 
 Definition set_wake_reason t wr :=
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
+  mkThread t.(unique_id) t.(timer_id) t.(state) t.(wait_info) 
     (SleepWakeup_set_wake_reason t.(sleepwakeup) wr) t.(schedthread).
 
 Definition set_wake_reason_none t := set_wake_reason t NONE.
@@ -138,7 +138,7 @@ Definition get_unique_id t := t.(unique_id).
 (*TODO: self*)
 
 Definition set_sleep_reason t sr := 
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
+  mkThread t.(unique_id) t.(timer_id) t.(state) t.(wait_info) 
     (SleepWakeup_set_sleep_reason t.(sleepwakeup) sr) t.(schedthread).
 
 Definition set_sleep_reason_wait t := set_sleep_reason t WAIT.
@@ -163,6 +163,10 @@ Module Thread_Obj <: DNode.
   Definition eq_Obj (x y : Thread) :=
     beq_nat x.(unique_id) y.(unique_id).
 
+  Definition A := nat.
+  
+  Definition test_Obj t n := beq_nat t.(unique_id) n.  
+
 End Thread_Obj.
 
 Module TO := CList Thread_Obj.
@@ -180,19 +184,11 @@ induction q as [ |t q' IHq']; [exact None| ].
       exact None. 
 Defined.
 
-Definition get_thread_t (q : RunQueue) (tid : nat) : option Thread.
-induction q as [ |t q' IHq']; [exact None| ].
-  destruct (beq_nat tid t.(unique_id)) as [ | ].
-    exact (Some t).
-    exact IHq'.
-Defined.
+Definition get_thread_t (q : RunQueue) (tid : nat) : option Thread :=
+TO.get_Obj q tid.
 
-Definition update_thread (q : RunQueue) (t : Thread) : RunQueue.
-induction q as [ |t' q' IHq']; [exact nil| ].
-  case (Thread_Obj.eq_Obj t t').
-    exact (cons t q').
-    exact (cons t' IHq').
-Defined.
+Definition update_thread (q : RunQueue) (t : Thread) : RunQueue:=
+TO.update_Obj q t.
 
 (*should be next != this*)
 Definition in_list (t : Thread) : bool := true.

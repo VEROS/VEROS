@@ -49,10 +49,17 @@ Module Clock_obj <: DNode.
 
   Definition eq_Obj (x y : Clock) :=
     beq_nat x.(counter).(unique_counter_id) y.(counter).(unique_counter_id).
+  
+  Definition A := nat.
+  
+  Definition test_Obj x n := beq_nat x.(counter).(unique_counter_id) n.
 
 End Clock_obj.
-
 
 Module CL := CList Clock_obj.
 
 Definition ClockList := CL.CList Clock.
+
+Definition get_clock cl cid := CL.get_Obj cl cid.
+
+Definition udpate_clock cl c :=  CL.update_Obj cl c.

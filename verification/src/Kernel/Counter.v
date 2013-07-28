@@ -1,6 +1,7 @@
 Set Implicit Arguments.
 
 Require Import EqNat.
+Require Import Bool.
 Require Import ThreadTimer.
 Require Import DLClist.
 Require Import NPeano.
@@ -17,9 +18,6 @@ Record Counter := mkCounter{
 Definition set_ttl c ttl :=
   mkCounter c.(unique_counter_id) ttl c.(count) c.(increment).
 
-(*TODO: add_alarm*)
-
-(*DO : rem_alarm*)
 Definition rem_alarm c a := 
   set_ttl c (TTL.remove (c.(threadtimer_list)) a).
 
@@ -50,12 +48,31 @@ Definition get_threadtimer c ttid := ThreadTimer.get_threadtimer c.(threadtimer_
 Definition update_threadtimer c tt := 
   set_threadtimer_list c (ThreadTimer.update_threadtimer c.(threadtimer_list) tt).
 
-Definition synchronize (c : Counter)(ttid : nat) : Counter.
-destruct (get_threadtimer c ttid) as [tt|]; [|exact c]. 
-  set (interval := get_interval tt).
-  destruct (interval) as [ | ]; [exact c|].
-    set (d := (current_value c) + interval - (get_trigger tt)).
-      case (ltb interval d).
-        exact (update_threadtimer c (set_trigger tt (interval * (d-1)/interval))).
-        exact c.
+Definition synchronize (c : Counter)(tt : ThreadTimer) : ThreadTimer. 
+set (interval := get_interval tt).
+destruct (interval) as [ | ]; [exact tt|].
+  set (d := (current_value c) + interval - (get_trigger tt)).
+  case (ltb interval d).
+    exact (set_trigger tt (interval * (d-1)/interval)).
+    exact tt.
 Defined.
+
+Definition add_alarm (c : Counter)(tt : ThreadTimer) : Counter.
+set (tt' := set_enable tt true). assert(tt'' : ThreadTimer).
+destruct (leb (get_trigger tt') c.(count)) as [ | ]; [ |exact tt'].
+  (*TODO: alarm->alarm(alarm, alarm->data)*) 
+  case ((negb (beq_nat (get_interval tt') 0)) && (get_enable tt')). 
+    set (tt1 := set_trigger tt' ((get_trigger tt') + (get_interval tt'))).  
+    exact (synchronize c tt1).    
+     
+    exact (set_enable tt' false).
+exact (set_threadtimer_list c (TTL.add_tail (get_threadtimer_list c) tt'')).
+Defined.
+
+Definition enable (c : Counter)(tt : ThreadTimer) : Counter :=
+(*TODO: lock unlock*)
+if (get_enable tt) then c else add_alarm c (set_enable (synchronize c tt) true).
+
+Definition disable (c : Counter)(tt : ThreadTimer) : Counter :=
+(*TODO: lock unlock*)
+if (get_enable tt) then rem_alarm c tt else c.

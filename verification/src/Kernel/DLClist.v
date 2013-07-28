@@ -9,6 +9,10 @@ Module Type DNode.
 
   Parameter eq_Obj : Obj -> Obj -> bool.
 
+  Parameter A : Type.
+
+  Parameter test_Obj : Obj -> A -> bool.
+
 End DNode.
 
 
@@ -106,6 +110,22 @@ Module CList (Import M : DNode).
           else z :: (insert l' x y)
     end.
 
+  (*Replace x in l with an updated x*)
+  Fixpoint update_Obj (l : CList Obj)(x : Obj) :=
+    match l with
+      | nil => nil
+      | y :: l' =>
+        if (eq_Obj x y) then y :: l'
+        else y :: (update_Obj l' x)
+    end.
+
+  Fixpoint get_Obj (l : CList Obj)(x : A) : option Obj :=
+    match l with
+      | nil => None
+      | y :: l' =>
+        if (test_Obj y x) then (Some y)
+        else (get_Obj l' x)
+    end.
 
 End CList.
 

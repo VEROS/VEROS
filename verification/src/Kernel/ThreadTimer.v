@@ -26,7 +26,11 @@ Definition get_interval tt := Alarm.get_interval tt.(alarm).
 
 Definition get_trigger tt := Alarm.get_trigger tt.(alarm).
 
+Definition get_enable tt := Alarm.get_enable tt.(alarm).
+
 Definition set_alarm tt a := mkTT a tt.(thread_id). 
+
+Definition set_enable tt b := set_alarm tt (Alarm.set_enable tt.(alarm) b).
 
 Definition set_interval tt n := set_alarm tt (Alarm.set_interval tt.(alarm) n).
 
@@ -46,6 +50,10 @@ Module ThreadTimer_obj <: DNode.
   Definition eq_Obj (x y : ThreadTimer) :=
     beq_nat x.(alarm).(alarm_id) y.(alarm).(alarm_id).
 
+  Definition A := nat.
+  
+  Definition test_Obj x n := beq_nat x.(alarm).(alarm_id) n.
+
 End ThreadTimer_obj.
 
 (*The cycled double linked list of alarm*)
@@ -53,16 +61,8 @@ Module TTL := CList ThreadTimer_obj.
 
 Definition ThreadTimerList := TTL.CList ThreadTimer.
 
-Definition get_threadtimer (ttl : ThreadTimerList)(ttid : nat) : option ThreadTimer.
-induction ttl as [|tt ttl' IHttl']; [exact None|].
-  case (beq_nat ttid (get_timer_id tt)).
-    exact (Some tt).  
-    exact IHttl'.
-Defined.
+Definition get_threadtimer (ttl : ThreadTimerList)(ttid : nat) : option ThreadTimer :=
+TTL.get_Obj ttl ttid.
 
-Definition update_threadtimer (ttl : ThreadTimerList)(tt : ThreadTimer) : ThreadTimerList.
-induction ttl as [|tt' ttl' IHttl']; [exact nil|].
-  case (ThreadTimer_obj.eq_Obj tt tt').  
-    exact (cons tt ttl').
-    exact (cons tt' IHttl').
-Defined.
+Definition update_threadtimer (ttl : ThreadTimerList)(tt : ThreadTimer) : ThreadTimerList :=
+TTL.update_Obj ttl tt.
