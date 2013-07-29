@@ -10,6 +10,10 @@ Record Scheduler := mkS {
   sched_imp : Scheduler_Implementation
 }.
 
+Definition get_timeslice_count s := Scheduler_Implementation.get_timeslice_count s.(sched_imp).
+
+Definition set_timeslice_count s n := mkS (Scheduler_Implementation.set_timeslice_count s.(sched_imp) n).
+
 Definition lock s := mkS (Scheduler_Implementation.inc_sched_lock s.(sched_imp)).
 
 Definition get_current_thread s := Scheduler_Implementation.get_current_thread s.(sched_imp).
@@ -39,6 +43,10 @@ Definition get_thread_switches s := Scheduler_Implementation.get_thread_switches
 Definition set_thread_switches s n := mkS (Scheduler_Implementation.set_thread_switches s.(sched_imp) n).
 
 Definition add_thread s t := mkS (Scheduler_Implementation.add_thread s.(sched_imp) t).
+
+Definition update_thread s t := mkS (Scheduler_Implementation.update_thread s.(sched_imp) t).
+
+Definition get_thread s t := Scheduler_Implementation.get_thread s.(sched_imp) t.
 
 Definition unlock_inner (s: Scheduler) (new_lock : nat) : Scheduler.
 (*if new_lock == 0 and there is any DSR pended, call all the DSRs*)
@@ -117,11 +125,6 @@ Definition rotate_queue (s : Scheduler)(priority : nat) : Scheduler.
 set (s' := lock s). set(queue := nth_q s'.(sched_imp).(run_queue_array) priority).
 destruct (TO.empty queue) as [ | ]; [exact (unlock s')| ].
   exact (unlock (set_need_reschedule (set_run_queue s' priority (TO.rotate queue)))).
-Defined.
-
-Definition update_thread (s : Scheduler)(t : Thread) : Scheduler.
-set(index := get_priority t).
-exact (set_run_queue s index (Thread.update_thread (nth_q s.(sched_imp).(run_queue_array) index) t)).
 Defined.    
 
 Definition resume (s : Scheduler)(t : Thread) : Scheduler.

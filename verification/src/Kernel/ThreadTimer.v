@@ -16,6 +16,8 @@ Definition get_timer_id tt := tt.(alarm).(alarm_id).
 
 Definition get_thread_id tt := tt.(thread_id).
 
+Definition get_counter_id tt := tt.(alarm).(counter_id).
+
 Definition get_thread_times tt := get_times tt.(alarm).
 
 Definition get_interval tt := Alarm.get_interval tt.(alarm).
@@ -34,7 +36,7 @@ Definition set_trigger tt n := set_alarm tt (Alarm.set_trigger tt.(alarm) n).
 
 (****************************************************************)
 (*The list of thread timers, which will be in a clock*)
-
+(*
 Module ThreadTimer_obj <: DNode.
 
   Definition Obj := ThreadTimer.
@@ -58,7 +60,7 @@ TTL.get_Obj ttl ttid.
 
 Definition update_threadtimer (ttl : ThreadTimerList)(tt : ThreadTimer) : ThreadTimerList :=
 TTL.update_Obj ttl tt.
-
+*)
 Module ID_Obj <: DNode.
   
   Definition Obj := nat.

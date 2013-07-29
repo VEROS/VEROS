@@ -67,6 +67,16 @@ Definition set_timeslice_count si count :=
 Definition set_run_queue si index q := 
   mkSI si.(scheduler_base) si.(queue_map) (set_q si.(run_queue_array) index q) si.(timeslice_count).
 
+Definition get_thread (si : Scheduler_Implementation)(tid : nat) : option Thread.
+induction si.(run_queue_array) as [|q n' array IHa]; [exact None|].
+  destruct (get_thread_t q tid) as [t'|]; [exact (Some t')|exact IHa].
+Defined.
+  
+Definition update_thread (si : Scheduler_Implementation)(t : Thread) : Scheduler_Implementation.
+set (index := get_priority t).
+exact (set_run_queue si index (Thread.update_thread (nth_q si.(run_queue_array) index) t)).
+Defined.
+
 (*Defined in Scheduler: set_idle_thread*)
 
 Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
@@ -152,5 +162,3 @@ set (t' := (Thread.timeslice_save t si.(timeslice_count))).
 Defined.
 
 Definition timeslice_restore si t := set_timeslice_count si (Thread.get_timeslice_count t).
-
-

@@ -3,6 +3,7 @@ Set Implicit Arguments.
 Require Import EqNat.
 Require Import DLClist.
 Require Import Counter.
+Require Import ThreadTimer.
 
 Record Resolution := mkrl{
 
@@ -25,20 +26,21 @@ Definition set_resolution (c : Clock)(r : Resolution) : Clock := mkclk c.(counte
 
 Definition get_resolution (c : Clock) : Resolution := resolution c.
 
-Definition get_clock_id c := get_counter_id c.(counter).
+Definition get_clock_id c := Counter.get_counter_id c.(counter).
 
-(*TO DO: Clock_add_alarm*)
+Definition current_value c := Counter.current_value c.(counter).
 
-Definition Clock_rem_alarm c a := mkclk (rem_alarm c.(counter) a) c.(resolution). 
+Definition current_value_hi c := Counter.current_value_hi c.(counter).
 
-Definition Clock_current_value c := current_value c.(counter).
+Definition current_value_lo c := Counter.current_value_lo c.(counter). 
 
-Definition Clock_set_value c n := set_value c.(counter) n.
+Definition get_threadtimer_list c := c.(counter).(threadtimer_list).
 
-Definition Clock_current_value_hi c := current_value_hi c.(counter).
+Definition set_counter cl c := mkclk c cl.(resolution).
 
-Definition Clock_current_value_lo c := current_value_lo c.(counter). 
+Definition set_value c n := set_counter c (Counter.set_value c.(counter) n).
 
+Definition set_threadtimer_list c l := set_counter c (Counter.set_threadtimer_list c.(counter) l).
 
 (**************************************************************)
 (*The list of all clocks, including the real_time_clock*)
@@ -62,4 +64,11 @@ Definition ClockList := CL.CList Clock.
 
 Definition get_clock cl cid := CL.get_Obj cl cid.
 
-Definition udpate_clock cl c :=  CL.update_Obj cl c.
+Definition update_clock cl c :=  CL.update_Obj cl c.
+
+Definition find_clock (cl : ClockList)(ttid : nat) : option Clock.
+induction cl as [|c cl' IHcl']; [exact None|].
+  case (IL.inside (get_threadtimer_list c) ttid).
+    exact (Some c).
+    exact IHcl'.
+Defined.
