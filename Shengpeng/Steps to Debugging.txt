@@ -65,7 +65,7 @@ Debug
 	分别配置两台虚拟机，加入串口，分别选择COM1和COM2。启动两台虚拟机。
 	在Ubuntu中，打开终端。
 		sudo chmod o+rw /dev/ttyS0
-		cd lab/cvs-ecos/examples
+		cd /home/dust/cvs_ecos/ecos/examples
 		i386-elf-gdb -nw hello
 			set remotebaud 115200
 			target remote /dev/ttyS0
