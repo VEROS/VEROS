@@ -9,6 +9,7 @@ Require Import Scheduler.
 
 Record Kernel := mkK {
   sh : Scheduler;
+
   cl : ClockList
 }.
 

@@ -176,11 +176,11 @@ End Thread_Obj.
 
 Module TO := CList Thread_Obj.
 
-Definition RunQueue := TO.CList Thread.
+Definition ThreadQueue := TO.CList Thread.
 
-Definition RunQueue_cstr := @nil Thread.
+Definition ThreadQueue_cstr := @nil Thread.
 
-Definition get_thread (q : RunQueue) (tid : nat) : option (nat*nat).
+Definition get_thread (q : ThreadQueue) (tid : nat) : option (nat*nat).
 induction q as [ |t q' IHq']; [exact None| ].
   case_eq (beq_nat tid t.(unique_id)); intros h.
     exact (Some ((get_priority t), 0)).  
@@ -189,10 +189,10 @@ induction q as [ |t q' IHq']; [exact None| ].
       exact None. 
 Defined.
 
-Definition get_thread_t (q : RunQueue) (tid : nat) : option Thread :=
+Definition get_thread_t (q : ThreadQueue) (tid : nat) : option Thread :=
 TO.get_Obj q tid.
 
-Definition update_thread (q : RunQueue) (t : Thread) : RunQueue:=
+Definition update_thread (q : ThreadQueue) (t : Thread) : ThreadQueue:=
 TO.update_Obj q t.
 
 (*should be next != this*)

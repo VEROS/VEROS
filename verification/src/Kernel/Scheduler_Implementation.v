@@ -12,7 +12,7 @@ Require Import Constant.
 Require Import NPeano.
 
 Definition QueueMap := array bool PRIORITIES.
-Definition RunQueueArray := array RunQueue PRIORITIES.
+Definition RunQueueArray := array ThreadQueue PRIORITIES.
 
 Record Scheduler_Implementation := mkSI{
 

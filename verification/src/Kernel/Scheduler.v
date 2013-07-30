@@ -140,7 +140,7 @@ Defined.
 Definition set_idle_thread (s : Scheduler)(t : Thread) : Scheduler :=
 resume (set_current_thread s t.(unique_id)) t.
 
-Definition get_run_queue s priority : RunQueue := nth_q s.(sched_imp).(run_queue_array) priority.
+Definition get_run_queue s priority : ThreadQueue := nth_q s.(sched_imp).(run_queue_array) priority.
 
 Definition to_queue_head (s : Scheduler)(t : Thread) : Scheduler.
 set (s' := lock s).
