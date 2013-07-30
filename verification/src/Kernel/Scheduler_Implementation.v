@@ -22,8 +22,6 @@ Record Scheduler_Implementation := mkSI{
 
   run_queue_array : RunQueueArray;
 
-  suspend_queue : RunQueue;
-
   timeslice_count : nat
 
 }.
