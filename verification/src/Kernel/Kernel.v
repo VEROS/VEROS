@@ -94,3 +94,10 @@ case (get_enable tt).
 set (tt' := (set_interval (set_trigger tt t) i)).
 exact (unlock (add_alarm (update_threadtimer k'' tt') tt')).
 Defined.
+
+(*TODO: tick*)
+(*
+Definition tick (k : Kernel)(c : Clock)(ticks : nat) : Kernel.
+destruct (CL.inside k.(cl) c) as [ | ]; [|exact k].
+  induction ticks as [|n IHn]; [exact k|].
+*)    
