@@ -5,22 +5,29 @@ Require Import NPeano.
 Require Import EqNat.
 Require Import Clock.
 Require Import ThreadTimer.
+Require Import Thread.
 Require Import Scheduler.
 
 Record Kernel := mkK {
   sh : Scheduler;
 
+  lq : ThreadQueue; (*All the lonely threads that are not in any queue at all*)
+
   cl : ClockList
 }.
 
-Definition set_scheduler k sh := mkK sh k.(cl). 
+Definition set_scheduler k sh := mkK sh k.(lq) k.(cl). 
 
 Definition get_timeslice_count k := Scheduler.get_timeslice_count k.(sh).
 
 Definition set_timeslice_count k n := 
   set_scheduler k (Scheduler.set_timeslice_count k.(sh) n).
 
-Definition update_thread k t := set_scheduler k (Scheduler.update_thread k.(sh) t).
+Definition set_lonely_queue k q := mkK k.(sh) q k.(cl).
+
+(*try to update the thread in runqueue or lonely queue, since we don't know where it is*)
+Definition update_thread k t := 
+  set_lonely_queue (set_scheduler k (Scheduler.update_thread k.(sh) t)) (Thread.update_thread k.(lq) t).
 
 Definition update_threadtimer k tt := 
   match (Scheduler.get_thread k.(sh) tt.(thread_id)) with
@@ -29,7 +36,7 @@ Definition update_threadtimer k tt :=
   end.   
 
 Definition update_clock k c :=
-  mkK k.(sh) (Clock.update_clock k.(cl) c).
+  mkK k.(sh) k.(lq) (Clock.update_clock k.(cl) c).
 
 Definition lock k := set_scheduler k (Scheduler.lock k.(sh)).
 
