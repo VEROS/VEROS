@@ -1,0 +1,5 @@
+1. sleep() will remove thread from run_queues.
+2. sleep() caused by Mutex or Semaphore will remove thread from run_queues, and the removed threads will be kept in Mutex.queue or Semaphore.queue.
+3. sleep() caused by Timer will remove thread from run_queues, but the removed thread will not be kept in a queue. Instead, Timer will keep the pointer to the corresponding thread, and timer is registered in rtc.
+
+As a conclusion, there is not a unified queue recording all NOT_RUNNING threads. They are stored separately in there sleep-causers.
