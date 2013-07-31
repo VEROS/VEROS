@@ -15,15 +15,19 @@ Record Kernel := mkK {
 
   lq : ThreadQueue; (*All the lonely threads that are not in any queue at all*)
 
-  cl : ClockList
+  cl : ClockList;
+
+  next_unique_id : nat
 }.
+
+Definition inc_next_unique_id k := mkK k.(sh) k.(lq) k.(cl) (S k.(next_unique_id)).
 
 Definition get_queue_map k := Scheduler.get_queue_map k.(sh).
 
 Definition set_queue_map k qm :=
-  mkK (Scheduler.set_queue_map k.(sh) qm) k.(lq) k.(cl).
+  mkK (Scheduler.set_queue_map k.(sh) qm) k.(lq) k.(cl) k.(next_unique_id).
 
-Definition set_scheduler k sh := mkK sh k.(lq) k.(cl). 
+Definition set_scheduler k sh := mkK sh k.(lq) k.(cl) k.(next_unique_id). 
 
 Definition get_run_queue k index := Scheduler.get_run_queue k.(sh) index.
 
@@ -42,11 +46,28 @@ Definition get_timeslice_count k := Scheduler.get_timeslice_count k.(sh).
 Definition set_timeslice_count k n := 
   set_scheduler k (Scheduler.set_timeslice_count k.(sh) n).
 
-Definition set_lonely_queue k q := mkK k.(sh) q k.(cl).
+Definition set_lonely_queue k q := mkK k.(sh) q k.(cl) k.(next_unique_id).
+
+Definition get_thread k tid :=
+  match (TO.get_Obj k.(lq) tid) with
+    |Some t => Some t
+    |None => match Scheduler.get_thread k.(sh) tid with
+               |Some t => Some t
+               |None => None
+             end
+  end.
 
 (*try to update the thread in runqueue or lonely queue, since we don't know where it is*)
 Definition update_thread k t := 
   set_lonely_queue (set_scheduler k (Scheduler.update_thread k.(sh) t)) (Thread.update_thread k.(lq) t).
+
+Definition replace_thread (k : Kernel)(t t' : Thread) : Kernel.
+(*Mutex : not considered*)
+(*Semaphore : not considered, either!*)
+case (TO.inside k.(lq) t).
+  exact (set_lonely_queue k (Thread.replace_thread k.(lq) t t')).
+  exact (set_scheduler k (Scheduler.replace_thread k.(sh) t t')).
+Defined.    
 
 Definition update_threadtimer k tt := 
   match (Scheduler.get_thread k.(sh) tt.(thread_id)) with
@@ -55,7 +76,7 @@ Definition update_threadtimer k tt :=
   end.   
 
 Definition update_clock k c :=
-  mkK k.(sh) k.(lq) (Clock.update_clock k.(cl) c).
+  mkK k.(sh) k.(lq) (Clock.update_clock k.(cl) c) k.(next_unique_id).
 
 Definition lock k := set_scheduler k (Scheduler.lock k.(sh)).
 
@@ -131,6 +152,8 @@ destruct (CL.inside k.(cl) c) as [ | ]; [|exact k].
   induction ticks as [|n IHn]; [exact k|].
 *)    
 
+(*-------------------------- end of clock ------------------------------*)
+
 (*----------------------- Scheduler & Thread ---------------------------*)
 
 Definition remove (k : Kernel)(t : Thread) : Kernel * Thread.
@@ -176,4 +199,10 @@ destruct (in_list t) as [ | ]; [|exact (unlock k')].
   set (queue := TO.to_head (get_run_queue k' index) t).
   exact (set_need_reschedule_t (set_run_queue k' index queue) t).
 exact (unlock k'').
+Defined.
+
+Definition reinitialize (k : Kernel)(t : Thread) : Kernel.
+set (k' := disable k (get_threadtimer t)).
+destruct (get_thread  k' t.(unique_id)) as [t'| ]; [|exact k'].
+  exact (inc_next_unique_id (replace_thread k' t (Thread.reinitialize_thread t' k'.(next_unique_id)))).  
 Defined.

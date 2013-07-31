@@ -61,6 +61,15 @@ Record Thread := mkThread{
 
 }.
 
+Definition get_priority t := SchedThread.get_priority t.(schedthread).
+
+Definition get_current_priority t := get_priority t.
+
+Definition get_unique_id t := t.(unique_id).
+
+Definition set_unique_id t tid := 
+  mkThread tid t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) t.(schedthread).
+
 Definition get_current_queue t := SchedThread.get_current_queue t.(schedthread). 
 
 Definition set_current_queue t q := 
@@ -72,11 +81,28 @@ Definition get_threadtimer t := t.(timer).
 Definition set_threadtimer t tt := 
   mkThread t.(unique_id) tt t.(state) t.(wait_info) t.(sleepwakeup) t.(schedthread).
 
+Definition set_sleepwakeup t sw :=
+  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) sw t.(schedthread).
+
 Definition get_suspend_count t := t.(sleepwakeup).(suspend_count).
 
 Definition set_suspend_count t n := 
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
-    (SleepWakeup_set_suspend_count t.(sleepwakeup) n) t.(schedthread).
+  set_sleepwakeup t (SleepWakeup_set_suspend_count t.(sleepwakeup) n).
+
+Definition get_wakeup_count t := t.(sleepwakeup).(wakeup_count).
+
+Definition set_wakeup_count t n :=
+  set_sleepwakeup t (SleepWakeup_set_wakeup_count t.(sleepwakeup) n).
+
+Definition get_sleep_reason t := t.(sleepwakeup).(sleep_reason).
+
+Definition set_sleep_reason t sr := 
+  set_sleepwakeup t (SleepWakeup_set_sleep_reason t.(sleepwakeup) sr).
+
+Definition get_wake_reason t := t.(sleepwakeup).(wake_reason).
+
+Definition set_wake_reason t wr :=
+  set_sleepwakeup t (SleepWakeup_set_wake_reason t.(sleepwakeup) wr).
 
 Definition set_schedthread t ss := 
   mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
@@ -94,9 +120,22 @@ Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthre
 Definition Thread_cstr tid aid cid p := 
   mkThread tid (ThreadTimer_cstr aid cid tid) SUSPENDED 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
 
-(*TODO: reinitialize*)
+Definition get_state t := t.(state).
 
-(*Defined in Scheduler.v: to_queue_head*)
+Definition set_state t s :=
+  mkThread t.(unique_id) t.(timer) s t.(wait_info) t.(sleepwakeup) t.(schedthread).
+
+Definition set_wait_info t wi := 
+  mkThread t.(unique_id) t.(timer) t.(state) wi t.(sleepwakeup) t.(schedthread).
+
+Definition get_wait_info t := t.(wait_info).
+
+(*reinitialize : defined in Kernel.v*)
+Definition reinitialize_thread (t : Thread)(new_id : nat) : Thread :=
+set_unique_id (set_wake_reason (set_sleep_reason (set_wakeup_count 
+  (set_suspend_count (set_state t SUSPENDED) 1) 0) NONE) NONE) new_id.
+
+(*to_queue_head : defined in Kernel.v*)
 
 (*TODO: wake*)
 
@@ -106,7 +145,7 @@ Definition Thread_cstr tid aid cid p :=
 
 (*TODO: suspend*)
 
-(*Defined in Scheduler.v: resume*)
+(*resume : defined in Kernel.v*)
 
 (*TODO: release*)
 
@@ -114,32 +153,9 @@ Definition Thread_cstr tid aid cid p :=
 
 (*TODO: force_resume*)
 
-Definition get_state t := t.(state).
-
-Definition set_wait_info t wi := 
-  mkThread t.(unique_id) t.(timer) t.(state) wi t.(sleepwakeup) t.(schedthread).
-
-Definition get_wait_info t := t.(wait_info).
-
 (*TODO: delay*)
 
 (*TODO: set_priority*)
-
-Definition get_priority t := SchedThread.get_priority t.(schedthread).
-
-Definition get_current_priority t := get_priority t.
-
-Definition get_sleep_reason t := t.(sleepwakeup).(sleep_reason).
-
-Definition set_wake_reason t wr :=
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
-    (SleepWakeup_set_wake_reason t.(sleepwakeup) wr) t.(schedthread).
-
-Definition set_wake_reason_none t := set_wake_reason t NONE.
-
-Definition get_wake_reason t := t.(sleepwakeup).(wake_reason).
-
-Definition get_unique_id t := t.(unique_id).
 
 (*TODO: sleep*)
 
@@ -151,16 +167,9 @@ Definition get_unique_id t := t.(unique_id).
 
 (*TODO: self*)
 
-Definition set_sleep_reason t sr := 
-  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) 
-    (SleepWakeup_set_sleep_reason t.(sleepwakeup) sr) t.(schedthread).
-
-Definition set_sleep_reason_wait t := set_sleep_reason t WAIT.
-
 (*TODO: set_timer*)
 
 (*TODO: clear_timer*)
-
 
 Definition timeslice_reset t := 
   set_schedthread t (SchedThread.timeslice_reset t.(schedthread)).
@@ -197,10 +206,14 @@ induction q as [ |t q' IHq']; [exact None| ].
 Defined.
 
 Definition get_thread_t (q : ThreadQueue) (tid : nat) : option Thread :=
-TO.get_Obj q tid.
+  TO.get_Obj q tid.
 
-Definition update_thread (q : ThreadQueue) (t : Thread) : ThreadQueue:=
-TO.update_Obj q t.
+Definition update_thread (q : ThreadQueue) (t : Thread) : ThreadQueue :=
+  TO.update_Obj q t.
 
-(*should be next != this*)
+(*TODO : should be next != this*)
 Definition in_list (t : Thread) : bool := true.
+
+(*replace t with t'*)
+Definition replace_thread (q : ThreadQueue) (t t' : Thread) : ThreadQueue :=
+  TO.remove (TO.insert q t t') t.

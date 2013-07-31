@@ -1,5 +1,6 @@
 Set Implicit Arguments.
 
+Require Import EqNat.
 Require Import BitArray.
 Require Import Array.
 Require Import QueueArray.
@@ -45,9 +46,11 @@ Definition get_current_thread si :=
 Definition set_current_thread si tid := 
   set_scheduler_base si (Scheduler_Base.set_current_thread si.(scheduler_base) tid).
 
+(*set_need_reschedule*)
 Definition set_need_reschedule si := 
   set_scheduler_base si (Scheduler_Base.set_need_reschedule si.(scheduler_base)).
 
+(*set_need_reschedule (thread) *)
 Definition set_need_reschedule_t (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (current := get_current_thread si).
 destruct current as [current_t| ]; [ |exact si].
@@ -82,7 +85,17 @@ set (index := get_priority t).
 exact (set_run_queue si index (Thread.update_thread (nth_q si.(run_queue_array) index) t)).
 Defined.
 
-(*Defined in Scheduler: set_idle_thread*)
+Definition replace_thread (si : Scheduler_Implementation)(t t' : Thread) : Scheduler_Implementation.
+case (beq_nat (get_priority t) (get_priority t')).
+  set (index := get_priority t). 
+  exact (set_run_queue si index (Thread.replace_thread (nth_q si.(run_queue_array) index) t t')).
+
+  exact si.
+Defined.
+
+(*------------------------------------------------------------------------*)
+
+(*set_idle_thread : defined in Kernel.v*)
 
 Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
 destruct si.(timeslice_count) as [|]; [|exact si].
@@ -113,6 +126,8 @@ Definition Scheduler_Implementation_cstr :=
 
 Definition schedule si := 
   TO.get_head (nth_q si.(run_queue_array) (lsb si.(queue_map))).  
+
+(*add_thread : defined in Kernel.v*)
 
 Definition rem_thread (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (index := get_priority t).  

@@ -55,6 +55,8 @@ Definition set_thread_switches s n := mkS (Scheduler_Implementation.set_thread_s
 
 Definition update_thread s t := mkS (Scheduler_Implementation.update_thread s.(sched_imp) t).
 
+Definition replace_thread s t t' := mkS (Scheduler_Implementation.replace_thread s.(sched_imp) t t').
+
 Definition get_thread s t := Scheduler_Implementation.get_thread s.(sched_imp) t.
 
 Definition unlock_inner (s: Scheduler) (new_lock : nat) : Scheduler.

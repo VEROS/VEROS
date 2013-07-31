@@ -33,3 +33,5 @@ Definition timeslice_save st new_count :=
   mkst (SchedThread_Implementation.timeslice_save st.(schedthread_imp) new_count) st.(queue).
 
 Definition get_timeslice_count st := SchedThread_Implementation.get_timeslice_count st.(schedthread_imp).
+
+(*remove : defined in Kernel.v*)
