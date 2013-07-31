@@ -10,6 +10,10 @@ Record Scheduler := mkS {
   sched_imp : Scheduler_Implementation
 }.
 
+Definition get_queue_map s := Scheduler_Implementation.get_queue_map s.(sched_imp).
+
+Definition set_queue_map s qm := mkS (Scheduler_Implementation.set_queue_map s.(sched_imp) qm).
+
 Definition get_timeslice_count s := Scheduler_Implementation.get_timeslice_count s.(sched_imp).
 
 Definition set_timeslice_count s n := mkS (Scheduler_Implementation.set_timeslice_count s.(sched_imp) n).
@@ -23,6 +27,13 @@ Definition set_current_thread s tid := mkS (Scheduler_Implementation.set_current
 Definition get_need_reschedule s := Scheduler_Implementation.get_need_reschedule s.(sched_imp).
 
 Definition set_need_reschedule s := mkS (Scheduler_Implementation.set_need_reschedule s.(sched_imp)).
+
+Definition set_need_reschedule_t s t := mkS (Scheduler_Implementation.set_need_reschedule_t s.(sched_imp) t).
+
+Definition get_run_queue s priority : ThreadQueue := nth_q s.(sched_imp).(run_queue_array) priority.
+
+Definition set_run_queue s index q := 
+  mkS (Scheduler_Implementation.set_run_queue s.(sched_imp) index q).
 
 Definition schedule s := Scheduler_Implementation.schedule s.(sched_imp).
 
@@ -41,8 +52,6 @@ Definition timeslice_restore s t := mkS (Scheduler_Implementation.timeslice_rest
 Definition get_thread_switches s := Scheduler_Implementation.get_thread_switches s.(sched_imp).
 
 Definition set_thread_switches s n := mkS (Scheduler_Implementation.set_thread_switches s.(sched_imp) n).
-
-Definition add_thread s t := mkS (Scheduler_Implementation.add_thread s.(sched_imp) t).
 
 Definition update_thread s t := mkS (Scheduler_Implementation.update_thread s.(sched_imp) t).
 
@@ -106,8 +115,11 @@ destruct (get_sched_lock s') as [ |n].
   exact (set_sched_lock (unlock_inner (set_sched_lock s' 1) O) O).
 Defined.
 
-Definition set_run_queue s index q := 
-  mkS (Scheduler_Implementation.set_run_queue s.(sched_imp) index q).
+Definition rotate_queue (s : Scheduler)(priority : nat) : Scheduler.
+set (s' := lock s). set(queue := nth_q s'.(sched_imp).(run_queue_array) priority).
+destruct (TO.empty queue) as [ | ]; [exact (unlock s')| ].
+  exact (unlock (set_need_reschedule (set_run_queue s' priority (TO.rotate queue)))).
+Defined.    
 
 Definition yield (s : Scheduler) (t : Thread) : Scheduler.
 set (s' := lock s). assert (s'' : Scheduler).
@@ -119,37 +131,4 @@ destruct (get_state t) as [ | | | | | ]; [ |exact s'|exact s'|exact s'|exact s'|
       exact (set_run_queue s' index (TO.add_head (TO.remove queue head) (timeslice_reset head))).
       exact (set_need_reschedule (set_run_queue s' index queue)).
 exact (unlock_reschedule s'').
-Defined.
-
-Definition rotate_queue (s : Scheduler)(priority : nat) : Scheduler.
-set (s' := lock s). set(queue := nth_q s'.(sched_imp).(run_queue_array) priority).
-destruct (TO.empty queue) as [ | ]; [exact (unlock s')| ].
-  exact (unlock (set_need_reschedule (set_run_queue s' priority (TO.rotate queue)))).
-Defined.    
-
-Definition resume (s : Scheduler)(t : Thread) : Scheduler.
-set(s' := lock s). assert (s'' : Scheduler).
-destruct (t.(sleepwakeup).(suspend_count)) as [|n]; [exact s'|].
-  set(t' := set_suspend_count t n).  
-  destruct n as [|n']; [|exact (update_thread s' t')].
-    (*state &= ~SUSPENDED*)
-    destruct (get_state t') as [ | | | | | ]; [exact (add_thread s' t')| | | | | ]; exact s'.
-exact (unlock s'').
-Defined.
-
-Definition set_idle_thread (s : Scheduler)(t : Thread) : Scheduler :=
-resume (set_current_thread s t.(unique_id)) t.
-
-Definition get_run_queue s priority : ThreadQueue := nth_q s.(sched_imp).(run_queue_array) priority.
-
-Definition to_queue_head (s : Scheduler)(t : Thread) : Scheduler.
-set (s' := lock s).
-(*Cyg_ThreadQueue *q = thread->get_current_queue();
-  if(q != NULL)
-    q->to_head(thread)
-*)
-destruct (in_list t) as [ | ]; [|exact (unlock s')].
-  set (index := get_priority t). 
-  set (queue := TO.to_head (get_run_queue s' index) t).
-  exact (unlock (set_need_reschedule (set_run_queue s index queue))).
 Defined.

@@ -7,6 +7,7 @@ Require Import SchedThread.
 
 Require Import DLClist.
 Require Import ThreadTimer.
+Require Import SuspendQueue.
 
 Inductive ThreadState : Set :=
 | RUNNING : ThreadState
@@ -60,6 +61,12 @@ Record Thread := mkThread{
 
 }.
 
+Definition get_current_queue t := SchedThread.get_current_queue t.(schedthread). 
+
+Definition set_current_queue t q := 
+  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) 
+     (SchedThread.set_current_queue t.(schedthread) q).
+
 Definition get_threadtimer t := t.(timer).
 
 Definition set_threadtimer t tt := 
@@ -73,6 +80,8 @@ Definition set_suspend_count t n :=
 
 Definition set_schedthread t ss := 
   mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) ss.
+
+Definition set_queue t sq := set_schedthread t (SchedThread.set_queue t.(schedthread) sq).
 
 Definition timeslice_save t new_count := 
   set_schedthread t (SchedThread.timeslice_save t.(schedthread) new_count).
@@ -155,8 +164,6 @@ Definition set_sleep_reason_wait t := set_sleep_reason t WAIT.
 
 Definition timeslice_reset t := 
   set_schedthread t (SchedThread.timeslice_reset t.(schedthread)).
-
-Definition addthread t := set_schedthread t (SchedThread.addthread t.(schedthread)).
 
 (********************************************************)
 (*The double linked cycled list of thread*)

@@ -26,6 +26,16 @@ Record Scheduler_Implementation := mkSI{
 
 }.
 
+Definition get_queue_map si := si.(queue_map).
+
+Definition set_queue_map si qm := 
+  mkSI si.(scheduler_base) qm si.(run_queue_array) si.(timeslice_count).
+
+Definition get_timeslice_count si := si.(timeslice_count).
+
+Definition set_timeslice_count si count := 
+  mkSI si.(scheduler_base) si.(queue_map) si.(run_queue_array) count.
+
 Definition set_scheduler_base si sb := 
   mkSI sb si.(queue_map) si.(run_queue_array) si.(timeslice_count).
 
@@ -58,11 +68,6 @@ Definition get_thread_switches si := Scheduler_Base.get_thread_switches si.(sche
 
 Definition set_thread_switches si n := 
   set_scheduler_base si (Scheduler_Base.set_thread_switches si.(scheduler_base) n).
-
-Definition get_timeslice_count si := si.(timeslice_count).
-
-Definition set_timeslice_count si count := 
-  mkSI si.(scheduler_base) si.(queue_map) si.(run_queue_array) count.
 
 Definition set_run_queue si index q := 
   mkSI si.(scheduler_base) si.(queue_map) (set_q si.(run_queue_array) index q) si.(timeslice_count).
@@ -108,24 +113,6 @@ Definition Scheduler_Implementation_cstr :=
 
 Definition schedule si := 
   TO.get_head (nth_q si.(run_queue_array) (lsb si.(queue_map))).  
-
-Definition add_thread (si : Scheduler_Implementation) (t: Thread) : Scheduler_Implementation.
-set (t' := addthread (timeslice_reset t)).
-set (index := get_priority t').
-(*construct the updated queue_map*)
-assert (queue_map' : QueueMap). 
- case_eq (TO.empty (nth_q si.(run_queue_array) index)); intros h.
-    exact (set_1 si.(queue_map) index).
-    exact si.(queue_map).
-(*construct the update run_queue_array_array*)
-assert (run_queue_array' : RunQueueArray).
-  set (array_step1 := remove_t si.(run_queue_array) t').
-  set (queue := nth_q array_step1 index).
-  set (new_queue := TO.add_tail queue t').
-  exact (set_q array_step1 index new_queue).
-(*construct the result*)
-exact (mkSI si.(scheduler_base) queue_map' run_queue_array' si.(timeslice_count)).
-Defined.
 
 Definition rem_thread (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (index := get_priority t).  

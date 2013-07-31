@@ -6,7 +6,9 @@ Require Import EqNat.
 Require Import Clock.
 Require Import ThreadTimer.
 Require Import Thread.
+Require Import Scheduler_Implementation.
 Require Import Scheduler.
+Require Import SuspendQueue.
 
 Record Kernel := mkK {
   sh : Scheduler;
@@ -16,7 +18,24 @@ Record Kernel := mkK {
   cl : ClockList
 }.
 
+Definition get_queue_map k := Scheduler.get_queue_map k.(sh).
+
+Definition set_queue_map k qm :=
+  mkK (Scheduler.set_queue_map k.(sh) qm) k.(lq) k.(cl).
+
 Definition set_scheduler k sh := mkK sh k.(lq) k.(cl). 
+
+Definition get_run_queue k index := Scheduler.get_run_queue k.(sh) index.
+
+Definition set_run_queue k index q := set_scheduler k (Scheduler.set_run_queue k.(sh) index q).
+
+Definition set_need_reschedule k := set_scheduler k (Scheduler.set_need_reschedule k.(sh)).
+
+Definition set_need_reschedule_t k t := set_scheduler k (Scheduler.set_need_reschedule_t k.(sh) t).
+
+Definition get_current_thread k := Scheduler.get_current_thread k.(sh).
+
+Definition set_current_thread k tid := set_scheduler k (Scheduler.set_current_thread k.(sh) tid).
 
 Definition get_timeslice_count k := Scheduler.get_timeslice_count k.(sh).
 
@@ -41,6 +60,8 @@ Definition update_clock k c :=
 Definition lock k := set_scheduler k (Scheduler.lock k.(sh)).
 
 Definition unlock k := set_scheduler k (Scheduler.unlock k.(sh)).
+
+(*------------------------------clock------------------------------------*)
 
 Definition synchronize (k : Kernel)(tt : ThreadTimer) : (Kernel * ThreadTimer).
 destruct (get_clock k.(cl) (get_counter_id tt)) as [c|]; [|exact (k, tt)].
@@ -109,3 +130,50 @@ Definition tick (k : Kernel)(c : Clock)(ticks : nat) : Kernel.
 destruct (CL.inside k.(cl) c) as [ | ]; [|exact k].
   induction ticks as [|n IHn]; [exact k|].
 *)    
+
+(*----------------------- Scheduler & Thread ---------------------------*)
+
+Definition remove (k : Kernel)(t : Thread) : Kernel * Thread.
+set (t' := set_current_queue t NULL).
+set (k' := update_thread k t').
+destruct (get_current_queue t) as [n|n| ]; [ | |exact (k, t)].
+  (*Mutex : we don't consider mutex yet*)
+  exact (k', t').
+
+  (*Semaphore : we don't consider semaphore yet*)
+  exact (k', t'). 
+Defined.
+
+Definition add_thread (k : Kernel) (t: Thread) : Kernel.
+set (index := get_priority t). destruct (remove k t) as [k' t'].
+set (queue := get_run_queue k' index).
+assert (queue_map' : QueueMap). 
+ case_eq (TO.empty queue); intros h. 
+    exact (BitArray.set_1 (get_queue_map k') index).
+    exact (get_queue_map k').
+set (k'' := set_run_queue (set_queue_map k' queue_map') index (TO.add_tail queue t')).
+exact (update_thread (set_need_reschedule_t k'' t') (timeslice_reset t')).
+Defined.
+
+Definition resume (k : Kernel)(t : Thread) : Kernel.
+set(k' := lock k). assert (k'' : Kernel).
+destruct (get_suspend_count t) as [|n]; [exact k'|].
+  set(t' := set_suspend_count t n).  
+  destruct n as [|n']; [|exact (update_thread k' t')].
+    (*TODO: state &= ~SUSPENDED*)
+    destruct (get_state t') as [ | | | | | ]; [exact (add_thread k' t')| | | | | ]; exact k'.
+exact (unlock k'').
+Defined.
+
+Definition set_idle_thread (k : Kernel)(t : Thread) : Kernel :=
+resume (set_current_thread k t.(unique_id)) t.
+
+Definition to_queue_head (k : Kernel)(t : Thread) : Kernel.
+set (k' := lock k). assert (k'' : Kernel).
+destruct (get_current_queue t) as [n|n| ]; [exact k'|exact k'| ].
+destruct (in_list t) as [ | ]; [|exact (unlock k')].
+  set (index := get_priority t). 
+  set (queue := TO.to_head (get_run_queue k' index) t).
+  exact (set_need_reschedule_t (set_run_queue k' index queue) t).
+exact (unlock k'').
+Defined.
