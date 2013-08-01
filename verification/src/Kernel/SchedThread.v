@@ -26,8 +26,10 @@ Definition timeslice_disable st :=
 Definition timeslice_reset st :=
   mkst (SchedThread_Implementation.timeslice_reset st.(schedthread_imp)) st.(queue).
 
-Definition get_priority st :=
-  st.(schedthread_imp).(priority). 
+Definition get_priority st := st.(schedthread_imp).(priority). 
+
+Definition set_priority st n := 
+  mkst (SchedThread_Implementation.set_priority st.(schedthread_imp) n) st.(queue).
 
 Definition timeslice_save st new_count := 
   mkst (SchedThread_Implementation.timeslice_save st.(schedthread_imp) new_count) st.(queue).

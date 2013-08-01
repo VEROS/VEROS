@@ -57,7 +57,7 @@ destruct current as [current_t| ]; [ |exact si].
 case_eq (ltb (get_priority t) (get_priority current_t)); intros h1.
   exact (set_need_reschedule si).
   
-  destruct (get_state t) as [ | | | | | ]; [exact (set_need_reschedule si)| | | | |]; exact si.
+  case (thread_check_state t RUNNING) as [ | ]; [exact (set_need_reschedule si)|exact si].
 Defined.
 
 Definition get_need_reschedule si := Scheduler_Base.get_need_reschedule si.(scheduler_base).
@@ -100,7 +100,7 @@ Defined.
 Definition timeslice_cpu (si : Scheduler_Implementation) : Scheduler_Implementation.
 destruct si.(timeslice_count) as [|]; [|exact si].
 destruct (get_current_thread si) as [t| ]; [|exact si].
-destruct (get_state t) as [ | | | | | ]; [ |exact si|exact si|exact si|exact si|exact si].
+destruct (thread_check_state t RUNNING) as [ | ]; [ |exact si].
   set (index := get_priority t).
   set (q := nth_q si.(run_queue_array) index).
   set (q' := TO.rotate q).
@@ -129,6 +129,7 @@ Definition schedule si :=
 
 (*add_thread : defined in Kernel.v*)
 
+(*doesn't change thread*)
 Definition rem_thread (si : Scheduler_Implementation) (t : Thread) : Scheduler_Implementation.
 set (index := get_priority t).  
 assert (run_queue_array' : RunQueueArray).

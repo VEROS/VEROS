@@ -28,7 +28,7 @@ Definition current_value_hi c := c.(count) / (2^32).
 Definition set_value c n := 
   mkCounter c.(unique_counter_id) c.(threadtimer_list) n c.(increment). 
 
-(*TODO : tick*)
+(*tick : defined in Kernel.v*)
 
 Definition get_counter_id c := c.(unique_counter_id).
 

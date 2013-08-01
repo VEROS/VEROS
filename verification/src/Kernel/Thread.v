@@ -1,6 +1,6 @@
-
 Set Implicit Arguments.
 
+Require Import Bool.
 Require Import EqNat.
 
 Require Import SchedThread.
@@ -9,13 +9,79 @@ Require Import DLClist.
 Require Import ThreadTimer.
 Require Import SuspendQueue.
 
-Inductive ThreadState : Set :=
-| RUNNING : ThreadState
-| SLEEPING : ThreadState
-| COUNTSLEEP : ThreadState
-| SUSPENDED : ThreadState
-| CREATING : ThreadState
-| EXITED : ThreadState.
+Inductive ThreadStateConstant : Set :=
+| RUNNING : ThreadStateConstant
+| SLEEPING : ThreadStateConstant
+| COUNTSLEEP : ThreadStateConstant
+| SUSPENDED : ThreadStateConstant
+| CREATING : ThreadStateConstant
+| EXITED : ThreadStateConstant
+| SLEEPSET : ThreadStateConstant.
+
+Record ThreadState := mkTS {
+  running : bool;
+  sleeping : bool;
+  countsleep : bool;
+  suspended : bool;
+  creating : bool;
+  exited : bool
+}.
+
+Definition ThreadState_cstr := mkTS false false false true false false.
+
+Definition check_state ts tsc :=
+  match tsc with
+    |RUNNING => ts.(running)
+    |SLEEPING => ts.(sleeping)
+    |COUNTSLEEP => ts.(countsleep)
+    |SUSPENDED => ts.(suspended)
+    |CREATING => ts.(creating)
+    |EXITED => ts.(exited)
+    |SLEEPSET => ts.(sleeping) || ts.(countsleep)
+  end.
+
+Definition check_state_eq ts tsc := 
+  match tsc with
+    |RUNNING => ts.(running) && (negb (ts.(sleeping) || ts.(countsleep) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited)))
+    |SLEEPING => ts.(sleeping) && (negb (ts.(running) || ts.(countsleep) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited)))
+    |COUNTSLEEP => ts.(countsleep) && (negb (ts.(running) || ts.(sleeping) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited)))
+    |SUSPENDED => ts.(suspended) && (negb (ts.(running) || ts.(sleeping) 
+                            || ts.(countsleep) || ts.(creating) || ts.(exited)))
+    |CREATING => ts.(creating) && (negb (ts.(running) || ts.(sleeping) 
+                            || ts.(countsleep) || ts.(suspended) || ts.(exited)))
+    |EXITED => ts.(exited) && (negb (ts.(running) || ts.(sleeping) 
+                            || ts.(countsleep) || ts.(suspended) || ts.(creating)))
+    |SLEEPSET => (ts.(sleeping) || ts.(countsleep)) && (negb (ts.(running) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited)))
+  end.
+
+Definition alter_state ts tsc b := 
+  match tsc with
+    |RUNNING => mkTS b ts.(sleeping) ts.(countsleep) ts.(suspended) ts.(creating) ts.(exited) 
+    |SLEEPING => mkTS ts.(running) b ts.(countsleep) ts.(suspended) ts.(creating) ts.(exited)
+    |COUNTSLEEP => mkTS ts.(running) ts.(sleeping) b ts.(suspended) ts.(creating) ts.(exited)
+    |SUSPENDED => mkTS ts.(running) ts.(sleeping) ts.(countsleep) b ts.(creating) ts.(exited)
+    |CREATING => mkTS ts.(running) ts.(sleeping) ts.(countsleep) ts.(suspended) b ts.(exited)
+    |EXITED => mkTS ts.(running) ts.(sleeping) ts.(countsleep) ts.(suspended) ts.(creating) b
+    |SLEEPSET => match b with 
+                   |true => ts (*shouln't be*)
+                   |false => mkTS ts.(running) false false ts.(suspended) ts.(creating) ts.(exited)
+                 end
+  end.
+
+Definition alter_state_eq tsc := 
+  match tsc with
+    |RUNNING => mkTS true false false false false false 
+    |SLEEPING => mkTS false true false false false false
+    |COUNTSLEEP => mkTS false false true false false false
+    |SUSPENDED => mkTS false false false true false false
+    |CREATING => mkTS false false false false true false
+    |EXITED => mkTS false false false false false true
+    |SLEEPSET => ThreadState_cstr  (*shouln't be*)
+  end.
 
 Inductive Reason : Set :=
 | NONE : Reason
@@ -26,6 +92,19 @@ Inductive Reason : Set :=
 | DESTRUCT : Reason
 | EXIT : Reason
 | DONE : Reason.
+
+Definition reason_eq r r' :=
+  match r, r' with
+    |NONE, NONE => true
+    |WAIT, WAIT => true
+    |DELAY, DELAY => true
+    |TIMEOUT, TIMEOUT => true
+    |BREAK, BREAK => true
+    |DESTRUCT, DESTRUCT => true
+    |EXIT, EXIT => true
+    |DONE, DONE => true
+    |_, _ => false
+  end.
 
 Record SleepWakeup := mkSW{
 
@@ -62,6 +141,10 @@ Record Thread := mkThread{
 }.
 
 Definition get_priority t := SchedThread.get_priority t.(schedthread).
+
+Definition set_priority t n :=
+  mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup)
+    (SchedThread.set_priority t.(schedthread) n).
 
 Definition get_current_priority t := get_priority t.
 
@@ -118,12 +201,20 @@ Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthre
   Nothing to do for scheduler.register_thread
   need to add this thread to run_queue in SchedThread*)
 Definition Thread_cstr tid aid cid p := 
-  mkThread tid (ThreadTimer_cstr aid cid tid) SUSPENDED 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
+  mkThread tid (ThreadTimer_cstr aid cid tid) ThreadState_cstr 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
 
 Definition get_state t := t.(state).
 
 Definition set_state t s :=
   mkThread t.(unique_id) t.(timer) s t.(wait_info) t.(sleepwakeup) t.(schedthread).
+
+Definition thread_check_state t tsc := check_state (get_state t) tsc.
+
+Definition thread_check_state_eq t tsc := check_state_eq (get_state t) tsc.
+
+Definition thread_alter_state t tsc b := set_state t (alter_state (get_state t) tsc b). 
+
+Definition thread_alter_state_eq t tsc := set_state t (alter_state_eq tsc).
 
 Definition set_wait_info t wi := 
   mkThread t.(unique_id) t.(timer) t.(state) wi t.(sleepwakeup) t.(schedthread).
@@ -133,43 +224,43 @@ Definition get_wait_info t := t.(wait_info).
 (*reinitialize : defined in Kernel.v*)
 Definition reinitialize_thread (t : Thread)(new_id : nat) : Thread :=
 set_unique_id (set_wake_reason (set_sleep_reason (set_wakeup_count 
-  (set_suspend_count (set_state t SUSPENDED) 1) 0) NONE) NONE) new_id.
+  (set_suspend_count (thread_alter_state_eq t SUSPENDED) 1) 0) NONE) NONE) new_id.
 
 (*to_queue_head : defined in Kernel.v*)
 
-(*TODO: wake*)
+(*wake : defined in Kernel.v*)
 
-(*TODO: counted_wake*)
+(*counted_wake : defined in Kernel.v*)
 
-(*TODO: cancel_counted_wake*)
+(*cancel_counted_wake : defined in Kernel.v*)
 
-(*TODO: suspend*)
+(*suspend : defined in Kernel.v*)
 
 (*resume : defined in Kernel.v*)
 
-(*TODO: release*)
+(*release : defined in Kernel.v*)
 
-(*TODO: kill*)
+(*kill : defined in Kernel.v*)
 
-(*TODO: force_resume*)
+(*force_resume : defined in Kernel.v*)
 
-(*TODO: delay*)
+(*delay : defined in Kernel.v*)
 
-(*TODO: set_priority*)
+(*set_priority : defined in kernel.v*)
 
-(*TODO: sleep*)
+(*sleep : defined in Kernel.v*)
 
-(*TODO: counted_sleep*)
+(*counted_sleep : defined in Kernel.v*)
 
-(*TODO: counted_sleep_delay*)
+(*counted_sleep_delay : defined in kernel.v*)
 
-(*TODO: exit*)
+(*exit : defined in Kernel.v*)
 
-(*TODO: self*)
+(*self : defined in Kernel.v*)
 
-(*TODO: set_timer*)
+(*set_timer : defined in kernel.v*)
 
-(*TODO: clear_timer*)
+(*clear_timer : defined in Kernel.v*)
 
 Definition timeslice_reset t := 
   set_schedthread t (SchedThread.timeslice_reset t.(schedthread)).
@@ -210,9 +301,6 @@ Definition get_thread_t (q : ThreadQueue) (tid : nat) : option Thread :=
 
 Definition update_thread (q : ThreadQueue) (t : Thread) : ThreadQueue :=
   TO.update_Obj q t.
-
-(*TODO : should be next != this*)
-Definition in_list (t : Thread) : bool := true.
 
 (*replace t with t'*)
 Definition replace_thread (q : ThreadQueue) (t t' : Thread) : ThreadQueue :=

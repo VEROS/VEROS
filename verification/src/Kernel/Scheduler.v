@@ -70,7 +70,7 @@ assert (s' : Scheduler). destruct (get_need_reschedule s) as [ | ]; [ |exact s].
       (*HAL_THREAD_SWITCH_CONTEXT( &current->stack_ptr, &next->stack_ptr );*)
       set (s_tmp3 := set_current_thread s_tmp2 current.(unique_id)).
       exact (timeslice_restore s_tmp3 current).
-  destruct (get_state current) as [ | | | | | ]; [exact s| | | | | ]; exact (clear_need_reschedule s'').
+  destruct (thread_check_state current RUNNING) as [ | ]; [exact s|exact (clear_need_reschedule s'')].
 destruct new_lock as [ | ].
   exact (zero_sched_lock s'). (*if( Cyg_Interrupt::DSRs_pending() ) {
                                   inc_sched_lock();   // reclaim the lock
@@ -125,7 +125,7 @@ Defined.
 
 Definition yield (s : Scheduler) (t : Thread) : Scheduler.
 set (s' := lock s). assert (s'' : Scheduler).
-destruct (get_state t) as [ | | | | | ]; [ |exact s'|exact s'|exact s'|exact s'|exact s'].
+destruct (thread_check_state t RUNNING) as [ | ]; [ |exact s'].
   set (index := get_priority t).
   set (queue := TO.rotate (nth_q s'.(sched_imp).(run_queue_array) index)).
   destruct (TO.get_head queue) as [head| ]; [ |exact (set_run_queue s' index queue)].
@@ -134,3 +134,5 @@ destruct (get_state t) as [ | | | | | ]; [ |exact s'|exact s'|exact s'|exact s'|
       exact (set_need_reschedule (set_run_queue s' index queue)).
 exact (unlock_reschedule s'').
 Defined.
+
+Definition rem_thread  s t := mkS (Scheduler_Implementation.rem_thread s.(sched_imp) t).
