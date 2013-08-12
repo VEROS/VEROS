@@ -302,7 +302,7 @@ Definition clear_timer (k : Kernel) :=
   end.
 
 Definition exit (k : Kernel) : Kernel.
-set (k' := clear_timer (unlock k)). assert (k'' : Kernel). 
+set (k' := clear_timer (lock k)). assert (k'' : Kernel). 
 destruct (self k') as [t|]; [|exact k'].
   case (thread_check_state_eq t EXITED).
     exact k'.

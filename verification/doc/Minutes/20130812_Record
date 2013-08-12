@@ -10,4 +10,5 @@ TODO:
 3. GXR & PXM: first thread exit, no DSR can be executed?
 4. LSP: Clock list to realtime clock
 5. GXR & PXM: interrupt mechanism in detail
-6. LSP: Thread_hardware_implementation included. 
+6. LSP: Thread_hardware_implementation included.
+7. git repositry organization and naming regulation. 
