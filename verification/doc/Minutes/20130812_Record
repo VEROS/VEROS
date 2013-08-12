@@ -1,0 +1,13 @@
+DONE:
+1. Guo Xinrui introduced the starting process of Ecos after booting.
+
+TODO:
+1. GXR & PXM: Study the user program by Fan.
+   a. kapi
+   b. mutex & semaphore
+   c. program structure.
+2. PXM: unlockinner.svg insert conditions before executing DSR. Change arrows; insert tick in the DSR
+3. GXR & PXM: first thread exit, no DSR can be executed?
+4. LSP: Clock list to realtime clock
+5. GXR & PXM: interrupt mechanism in detail
+6. LSP: Thread_hardware_implementation included. 
