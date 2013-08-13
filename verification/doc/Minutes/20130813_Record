@@ -1,0 +1,10 @@
+Done:
+If an interrupt comes during executing one dsr, say it's named D1. D1 is taken away from the dsr. And after
+interrupt_end, another thread will attend to the rest dsrs pending. and D1 will wait until the thread calling
+it is scheduled back to current again.
+
+GXR : is there a lock() before isr? no
+
+TODO:
+GXR & PXM : why kernel has to check schedlock before executing dsr?
+LSP : tick, compute the largest ((counter - alarm.trigger) / interval) to take the effect of rescan.
