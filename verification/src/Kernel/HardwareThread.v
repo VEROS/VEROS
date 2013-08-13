@@ -12,7 +12,10 @@ Record HardwareThread := mkHT {
 
   stack_ptr : ADDRESS;
   
-  entry_point : thread_entry
+  entry_point : thread_entry;
 
-  entry_data : ADDRESS;
-}
+  entry_data : ADDRESS
+
+  (*HAL_SavedRegisters*)
+}.
+

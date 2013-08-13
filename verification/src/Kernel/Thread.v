@@ -19,7 +19,6 @@ Inductive ThreadStateConstant : Set :=
 | SLEEPSET : ThreadStateConstant.
 
 Record ThreadState := mkTS {
-  running : bool;
   sleeping : bool;
   countsleep : bool;
   suspended : bool;
@@ -27,11 +26,12 @@ Record ThreadState := mkTS {
   exited : bool
 }.
 
-Definition ThreadState_cstr := mkTS false false false true false false.
+Definition ThreadState_cstr := mkTS false false true false false.
 
 Definition check_state ts tsc :=
   match tsc with
-    |RUNNING => ts.(running)
+    |RUNNING => negb (ts.(sleeping) || ts.(countsleep) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited))
     |SLEEPING => ts.(sleeping)
     |COUNTSLEEP => ts.(countsleep)
     |SUSPENDED => ts.(suspended)
@@ -42,44 +42,46 @@ Definition check_state ts tsc :=
 
 Definition check_state_eq ts tsc := 
   match tsc with
-    |RUNNING => ts.(running) && (negb (ts.(sleeping) || ts.(countsleep) 
+    |RUNNING => negb (ts.(sleeping) || ts.(countsleep) 
+                            || ts.(suspended) || ts.(creating) || ts.(exited))
+    |SLEEPING => ts.(sleeping) && (negb (ts.(countsleep) 
                             || ts.(suspended) || ts.(creating) || ts.(exited)))
-    |SLEEPING => ts.(sleeping) && (negb (ts.(running) || ts.(countsleep) 
+    |COUNTSLEEP => ts.(countsleep) && (negb (ts.(sleeping) 
                             || ts.(suspended) || ts.(creating) || ts.(exited)))
-    |COUNTSLEEP => ts.(countsleep) && (negb (ts.(running) || ts.(sleeping) 
-                            || ts.(suspended) || ts.(creating) || ts.(exited)))
-    |SUSPENDED => ts.(suspended) && (negb (ts.(running) || ts.(sleeping) 
+    |SUSPENDED => ts.(suspended) && (negb (ts.(sleeping) 
                             || ts.(countsleep) || ts.(creating) || ts.(exited)))
-    |CREATING => ts.(creating) && (negb (ts.(running) || ts.(sleeping) 
+    |CREATING => ts.(creating) && (negb (ts.(sleeping) 
                             || ts.(countsleep) || ts.(suspended) || ts.(exited)))
-    |EXITED => ts.(exited) && (negb (ts.(running) || ts.(sleeping) 
+    |EXITED => ts.(exited) && (negb (ts.(sleeping) 
                             || ts.(countsleep) || ts.(suspended) || ts.(creating)))
-    |SLEEPSET => (ts.(sleeping) || ts.(countsleep)) && (negb (ts.(running) 
-                            || ts.(suspended) || ts.(creating) || ts.(exited)))
+    |SLEEPSET => (ts.(sleeping) || ts.(countsleep)) && (ts.(suspended) || ts.(creating) || ts.(exited))
   end.
 
 Definition alter_state ts tsc b := 
   match tsc with
-    |RUNNING => mkTS b ts.(sleeping) ts.(countsleep) ts.(suspended) ts.(creating) ts.(exited) 
-    |SLEEPING => mkTS ts.(running) b ts.(countsleep) ts.(suspended) ts.(creating) ts.(exited)
-    |COUNTSLEEP => mkTS ts.(running) ts.(sleeping) b ts.(suspended) ts.(creating) ts.(exited)
-    |SUSPENDED => mkTS ts.(running) ts.(sleeping) ts.(countsleep) b ts.(creating) ts.(exited)
-    |CREATING => mkTS ts.(running) ts.(sleeping) ts.(countsleep) ts.(suspended) b ts.(exited)
-    |EXITED => mkTS ts.(running) ts.(sleeping) ts.(countsleep) ts.(suspended) ts.(creating) b
+    |RUNNING => match b with 
+                  |true => mkTS false false false false false
+                  |false => ts (*shouldn't be*)
+                end
+    |SLEEPING => mkTS b ts.(countsleep) ts.(suspended) ts.(creating) ts.(exited)
+    |COUNTSLEEP => mkTS ts.(sleeping) b ts.(suspended) ts.(creating) ts.(exited)
+    |SUSPENDED => mkTS ts.(sleeping) ts.(countsleep) b ts.(creating) ts.(exited)
+    |CREATING => mkTS ts.(sleeping) ts.(countsleep) ts.(suspended) b ts.(exited)
+    |EXITED => mkTS ts.(sleeping) ts.(countsleep) ts.(suspended) ts.(creating) b
     |SLEEPSET => match b with 
                    |true => ts (*shouln't be*)
-                   |false => mkTS ts.(running) false false ts.(suspended) ts.(creating) ts.(exited)
+                   |false => mkTS false false ts.(suspended) ts.(creating) ts.(exited)
                  end
   end.
 
 Definition alter_state_eq tsc := 
   match tsc with
-    |RUNNING => mkTS true false false false false false 
-    |SLEEPING => mkTS false true false false false false
-    |COUNTSLEEP => mkTS false false true false false false
-    |SUSPENDED => mkTS false false false true false false
-    |CREATING => mkTS false false false false true false
-    |EXITED => mkTS false false false false false true
+    |RUNNING => mkTS false false false false false 
+    |SLEEPING => mkTS true false false false false
+    |COUNTSLEEP => mkTS false true false false false
+    |SUSPENDED => mkTS false false true false false
+    |CREATING => mkTS false false false true false
+    |EXITED => mkTS false false false false true
     |SLEEPSET => ThreadState_cstr  (*shouln't be*)
   end.
 

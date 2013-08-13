@@ -17,7 +17,7 @@ Record Kernel := mkK {
 
   lq : ThreadQueue; (*All the lonely threads that are not in any queue at all*)
 
-  cl : ClockList;
+  cl : Clock; (*realtime_clock*)
 
   next_unique_id : nat
 }.
@@ -81,10 +81,10 @@ Definition update_threadtimer k tt :=
     |None => k
   end.   
 
-Definition get_clock k cid := Clock.get_clock k.(cl) cid.
+Definition get_clock k := k.(cl).
 
-Definition update_clock k c :=
-  mkK k.(sh) k.(lq) (Clock.update_clock k.(cl) c) k.(next_unique_id).
+Definition set_clock k c :=
+  mkK k.(sh) k.(lq) c k.(next_unique_id).
 
 Definition lock k := set_scheduler k (Scheduler.lock k.(sh)).
 
@@ -93,64 +93,61 @@ Definition unlock k := set_scheduler k (Scheduler.unlock k.(sh)).
 (*------------------------------clock------------------------------------*)
 
 Definition synchronize (k : Kernel)(tt : ThreadTimer) : (Kernel * ThreadTimer).
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact (k, tt)].
-  set (interval := get_interval tt).
-  destruct interval as [ | ]; [exact (k, tt)|].
-    set (d := (current_value c) + interval - (get_trigger tt)).
-      case (ltb interval d).
-        set(tt' := set_trigger tt (interval * (d-1)/interval)).
-        exact ((update_threadtimer k tt'), tt').
-
-        exact (k, tt).
+set(c := get_clock k).
+set (interval := get_interval tt).
+destruct interval as [ | ]; [exact (k, tt)|].
+set (d := (current_value c) + interval - (get_trigger tt)).
+case (ltb interval d).
+  -set(tt' := set_trigger tt (interval * (d-1)/interval)).
+   exact ((update_threadtimer k tt'), tt').
+  -exact (k, tt).
 Defined.
 
 Definition add_alarm (k : Kernel)(tt : ThreadTimer) : Kernel.
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact k].
-  set (tt' := set_enable tt true).
-  set (c' := set_threadtimer_list c (IL.add_tail (get_threadtimer_list c) (get_timer_id tt))).
-  case (leb (get_trigger tt') (current_value c)).
-  (*TO_DO: alarm->alarm(alarm, alarm->data)*)
-    case ((negb (beq_nat (get_interval tt') 0)) && (get_enable tt')). 
-      set (tt'' := set_trigger tt' ((get_trigger tt') + (get_interval tt'))).
-      exact (update_clock (fst (synchronize k tt'')) c').
-     
-      exact (update_threadtimer k (set_enable tt' false)).
-  exact (update_clock (update_threadtimer k tt') c').
+set(c := get_clock k).
+set (tt' := set_enable tt true).
+set (c' := set_threadtimer_list c (IL.add_tail (get_threadtimer_list c) (get_timer_id tt))).
+case (leb (get_trigger tt') (current_value c)).
+(*TODO: alarm->alarm(alarm, alarm->data)*)
+  -case ((negb (beq_nat (get_interval tt') 0)) && (get_enable tt')). 
+    +set (tt'' := set_trigger tt' ((get_trigger tt') + (get_interval tt'))).
+     exact (set_clock (fst (synchronize k tt'')) c').     
+    +exact (update_threadtimer k (set_enable tt' false)).
+  -exact (set_clock (update_threadtimer k tt') c').
 Defined.
 
 Definition enable (k : Kernel)(tt : ThreadTimer) : Kernel.
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact k].
+set(c := get_clock k).
 set (k' := lock k). assert (k'' : Kernel).
-case (get_enable tt). 
-  exact k'.
-
-  destruct (synchronize k tt) as [ker tt']. exact (add_alarm ker tt').
-exact (unlock k'').
+-case (get_enable tt). 
+  +exact k'.
+  +destruct (synchronize k tt) as [ker tt']. exact (add_alarm ker tt').
+-exact (unlock k'').
 Defined.
 
 Definition rem_alarm (k : Kernel)(tt : ThreadTimer) : Kernel.
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact k].
-  set (c':= set_threadtimer_list c (IL.remove (get_threadtimer_list c) (get_timer_id tt))).
-  exact (update_clock (update_threadtimer k (set_enable tt false)) c').
+set(c := get_clock k).
+set (c':= set_threadtimer_list c (IL.remove (get_threadtimer_list c) (get_timer_id tt))).
+exact (set_clock (update_threadtimer k (set_enable tt false)) c').
 Defined.
 
 Definition disable (k : Kernel)(tt : ThreadTimer) : Kernel.
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact k].
+set(c := get_clock k).
 set (k' := lock k). assert (k'' : Kernel).
-case (get_enable tt). 
-  exact (rem_alarm k' tt). 
-  exact k'.
-exact (unlock k'').
+-case (get_enable tt). 
+  +exact (rem_alarm k' tt). 
+  +exact k'.
+-exact (unlock k'').
 Defined.
 
 Definition initialize (k : Kernel)(tt : ThreadTimer)(t i : nat) : Kernel.
-destruct (get_clock k (get_counter_id tt)) as [c|]; [|exact k].
+set(c := get_clock k).
 set (k' := lock k). assert (k'' : Kernel).
-case (get_enable tt). 
-  exact (rem_alarm k' tt).
-  exact k'.
-set (tt' := (set_interval (set_trigger tt t) i)).
-exact (unlock (add_alarm (update_threadtimer k'' tt') tt')).
+-case (get_enable tt). 
+  +exact (rem_alarm k' tt).
+  +exact k'.
+-set (tt' := (set_interval (set_trigger tt t) i)).
+ exact (unlock (add_alarm (update_threadtimer k'' tt') tt')).
 Defined.
 
 (*TODO: tick*)
@@ -394,28 +391,27 @@ Defined.
 Definition counted_sleep_delay (k : Kernel)(delay : nat) : Kernel. 
 destruct (get_current_thread k) as [current|]; [|exact k].
 set (k' := lock k). assert (k'' : Kernel).
-destruct (get_wakeup_count current) as [|n].
-  destruct (get_clock k' realtime_clock_id) as [clock|]; [|exact k].
-  set (k_0 := set_timer k' ((current_value clock) + delay) TIMEOUT).
-  destruct (get_thread k_0 (get_unique_id current)) as [t|]; [|exact k].
-  assert (k_NONE : Kernel).
-  case (reason_eq (get_wake_reason t) NONE).
-    set (t_0 := set_sleep_reason t TIMEOUT).
-    exact (clear_timer (reschedule 
-      (update_thread (sleep (update_thread k_0 t_0)) (thread_alter_state t_0 COUNTSLEEP true)))). 
-
-    exact k_0.
-  exact k_NONE.
-  exact (update_thread k' (set_wakeup_count current n)).
-set (k_unlock := unlock k'').
-destruct (get_thread k_unlock (get_unique_id current)) as [t|]; [|exact k].
-destruct (get_wake_reason t) as [ | | | | | | | ]; 
+-destruct (get_wakeup_count current) as [|n].
+  +set(clock := get_clock k').
+   set (k_0 := set_timer k' ((current_value clock) + delay) TIMEOUT).
+   destruct (get_thread k_0 (get_unique_id current)) as [t|]; [|exact k].
+   assert (k_NONE : Kernel).
+    *case (reason_eq (get_wake_reason t) NONE).
+      set (t_0 := set_sleep_reason t TIMEOUT).
+      exact (clear_timer (reschedule (update_thread (sleep (update_thread k_0 t_0)) 
+                                            (thread_alter_state t_0 COUNTSLEEP true)))). 
+      exact k_0.
+    *exact k_NONE.
+  +exact (update_thread k' (set_wakeup_count current n)).
+-set (k_unlock := unlock k'').
+ destruct (get_thread k_unlock (get_unique_id current)) as [t|]; [|exact k].
+ destruct (get_wake_reason t) as [ | | | | | | | ]; 
    [ | | | | |exact (exit k_unlock)|exact (exit k_unlock)| ]; exact k_unlock.
 Defined.
 
 Definition delay (k : Kernel)(t: Thread)(delay : nat) : Kernel.
 set (k' := sleep (lock k)). 
-destruct (get_clock k' realtime_clock_id) as [clock|]; [|exact k].
+set(clock := get_clock k').
 set (k'' := clear_timer (unlock (set_timer k' ((current_value clock) + delay) DELAY))).
 destruct (get_thread k'' (get_unique_id t)) as [t'|]; [|exact k].
 destruct (get_wake_reason t') as [ | | | | | | | ]; 
