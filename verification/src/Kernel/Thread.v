@@ -304,6 +304,14 @@ Definition get_thread_t (q : ThreadQueue) (tid : nat) : option Thread :=
 Definition update_thread (q : ThreadQueue) (t : Thread) : ThreadQueue :=
   TO.update_Obj q t.
 
-(*replace t with t'*)
+(*replace t with t', t and t' have different unique_id*)
 Definition replace_thread (q : ThreadQueue) (t t' : Thread) : ThreadQueue :=
   TO.remove (TO.insert q t t') t.
+
+Definition get_threadtimer_by_id (q : ThreadQueue) (ttid : nat) : option ThreadTimer.
+induction q as [|t q' IHq'].
+-exact None.
+-destruct (beq_nat (get_timer_id (get_threadtimer t)) ttid).
+  +exact (Some (get_threadtimer t)).
+  +exact IHq'.
+Defined.
