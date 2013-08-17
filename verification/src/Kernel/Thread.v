@@ -176,7 +176,7 @@ Definition set_suspend_count t n :=
 
 Definition get_wakeup_count t := t.(sleepwakeup).(wakeup_count).
 
-Definition set_wakeup_count t n :=
+Definition set_wakeup_count (t : Thread) n : Thread :=
   set_sleepwakeup t (SleepWakeup_set_wakeup_count t.(sleepwakeup) n).
 
 Definition get_sleep_reason t := t.(sleepwakeup).(sleep_reason).
