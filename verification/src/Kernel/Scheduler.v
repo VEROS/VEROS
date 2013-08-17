@@ -59,6 +59,8 @@ Definition replace_thread s t t' := mkS (Scheduler_Implementation.replace_thread
 
 Definition get_thread s t := Scheduler_Implementation.get_thread s.(sched_imp) t.
 
+Definition get_threadtimer_by_id s t := Scheduler_Implementation.get_threadtimer_by_id s.(sched_imp) t.
+
 Definition unlock_inner (s: Scheduler) (new_lock : nat) : Scheduler.
 (*if new_lock == 0 and there is any DSR pended, call all the DSRs*)
 destruct (get_current_thread s) as [current|]; [|exact s]. 

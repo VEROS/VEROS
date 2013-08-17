@@ -42,6 +42,8 @@ Definition set_value c n := set_counter c (Counter.set_value c.(counter) n).
 
 Definition set_threadtimer_list c l := set_counter c (Counter.set_threadtimer_list c.(counter) l).
 
+Definition inc_clock cl := set_counter cl (Counter.inc_counter cl.(counter)). 
+
 (**************************************************************)
 (*The list of all clocks, including the real_time_clock*)
 

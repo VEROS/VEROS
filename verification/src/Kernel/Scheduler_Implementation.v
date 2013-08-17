@@ -6,6 +6,7 @@ Require Import Array.
 Require Import QueueArray.
 
 Require Import Scheduler_Base.
+Require Import ThreadTimer.
 Require Import Thread.
 
 Require Import Constant.
@@ -78,6 +79,11 @@ Definition set_run_queue si index q :=
 Definition get_thread (si : Scheduler_Implementation)(tid : nat) : option Thread.
 induction si.(run_queue_array) as [|q n' array IHa]; [exact None|].
   destruct (get_thread_t q tid) as [t'|]; [exact (Some t')|exact IHa].
+Defined.
+
+Definition get_threadtimer_by_id (si : Scheduler_Implementation)(ttid : nat) : option ThreadTimer.
+induction si.(run_queue_array) as [|q n' array IHa]; [exact None|].
+destruct (Thread.get_threadtimer_by_id q ttid) as [tt|]; [exact (Some tt)|exact IHa].
 Defined.
   
 Definition update_thread (si : Scheduler_Implementation)(t : Thread) : Scheduler_Implementation.
