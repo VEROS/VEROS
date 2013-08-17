@@ -293,7 +293,8 @@ case (thread_check_state t COUNTSLEEP).
 exact (unlock k'').
 Defined.
 
-Definition cancel_counted_wake k t := unlock (update_thread (lock k) (set_wakeup_count t 0)).
+Definition cancel_counted_wake (k : Kernel) t : Kernel := 
+  unlock (update_thread (lock k) (set_wakeup_count t 0)).
 
 Definition suspend (k : Kernel)(t : Thread) : Kernel.
 set (t' := set_suspend_count t (S (get_suspend_count t))).
