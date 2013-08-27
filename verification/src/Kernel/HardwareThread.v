@@ -1,11 +1,11 @@
 Set Implicit Arguments.
 
-(*Add LoadPath "../HAL.
-Require Import environment."*)
+(*Add LoadPath "../HAL".
+Require Import environment.
+*)
+Require Import "../HAL/Environment".
 
-Require Import "../HAL/environment".
-
-Print environment.
+Print Environment.
 
 Definition thread_entry := nat.
 
