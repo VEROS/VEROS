@@ -6,7 +6,7 @@ Date: May 24, 2013
 
 Require Import Bool.
 Require Import EqNat.
-Require Import constants.
+Require Import Constants.
 
 Section CPU.
 
