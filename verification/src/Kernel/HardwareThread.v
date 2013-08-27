@@ -1,5 +1,7 @@
 Set Implicit Arguments.
 
+Require Import /usr/dust/veros/HAL/environment
+
 Definition thread_entry := nat.
 
 Definition ADDRESS := nat.
