@@ -1,6 +1,11 @@
 Set Implicit Arguments.
 
-Require Import /usr/dust/veros/HAL/environment
+(*Add LoadPath "../HAL.
+Require Import environment."*)
+
+Require Import "../HAL/environment".
+
+Print environment.
 
 Definition thread_entry := nat.
 
