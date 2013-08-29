@@ -173,20 +173,20 @@ inline void Cyg_HardwareThread::attach_stack(CYG_ADDRESS s_base, cyg_uint32 s_si
     stack_limit = s_base;
 
     
-#ifdef HAL_THREAD_ATTACH_STACK
+//#ifdef HAL_THREAD_ATTACH_STACK (not found in ecos.ecc)
 
     HAL_THREAD_ATTACH_STACK(stack_ptr, stack_base, stack_size);
-    
+/*    
 #else
 
     stack_ptr = stack_base + stack_size;
 
 #endif
-
-//I don't know where this macro come from...But it seems irrelevant.
-#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
+*/
+//I don't know where this macro comes from...But it seems irrelevant.
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
     check_stack();
-#endif
+//#endif
 }
 
 // -------------------------------------------------------------------------
@@ -200,16 +200,17 @@ inline Cyg_HardwareThread::Cyg_HardwareThread(
 {
     entry_point = e_point;
     entry_data  = e_data;
-#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT
+
+//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
     saved_context = 0;
-#endif
+//#endif
     
     attach_stack( s_base, s_size );
 };
 
 // -------------------------------------------------------------------------
 
-#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT
+//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
 
 // Return the current saved state for this thread.
 inline HAL_SavedRegisters *Cyg_HardwareThread::get_saved_context()
@@ -225,7 +226,7 @@ inline void Cyg_HardwareThread::set_saved_context(HAL_SavedRegisters *ctx)
     saved_context = ctx;
 }
 
-#endif
+//#endif
 
 // -------------------------------------------------------------------------
 // (declare this inline before its first use)
@@ -277,7 +278,7 @@ inline CYG_ADDRWORD Cyg_HardwareThread::get_entry_data()
 // Allocate some memory at the lower end of the stack
 // by moving the stack limit pointer.
 
-#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
+//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT //(There is no such macro)
 
 
     
@@ -287,7 +288,7 @@ Cyg_HardwareThread::get_stack_limit()
     return stack_limit;
 }
 
-#endif    
+//#endif    
 
 //==========================================================================
 // Inlines for Cyg_Thread class
@@ -322,7 +323,7 @@ Cyg_Thread::to_queue_head( void )
 
 // -------------------------------------------------------------------------
 
-#ifdef CYGIMP_THREAD_PRIORITY
+//#ifdef CYGIMP_THREAD_PRIORITY //(There has to be priority support, but I didn't find this macro.)
 
 inline cyg_priority Cyg_Thread::get_priority()
 {
@@ -346,7 +347,7 @@ inline cyg_priority Cyg_Thread::get_current_priority()
     return priority;
 }
 
-#endif
+//#endif
 
 // -------------------------------------------------------------------------
 
