@@ -169,24 +169,24 @@ inline void Cyg_HardwareThread::attach_stack(CYG_ADDRESS s_base, cyg_uint32 s_si
 
     stack_base = s_base;
     stack_size = s_size;
-//#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
+#ifdef CYGFUN_KERNEL_THREADS_STACK_LIMIT
     stack_limit = s_base;
 
-    
-//#ifdef HAL_THREAD_ATTACH_STACK (not found in ecos.ecc)
+    //not found in source code, so should be else    
+#ifdef HAL_THREAD_ATTACH_STACK //not found in ecos.ecc
 
     HAL_THREAD_ATTACH_STACK(stack_ptr, stack_base, stack_size);
-/*    
+    
 #else
 
     stack_ptr = stack_base + stack_size;
 
 #endif
-*/
+
 //I don't know where this macro comes from...But it seems irrelevant.
-//#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
+#ifdef CYGFUN_KERNEL_THREADS_STACK_CHECKING
     check_stack();
-//#endif
+#endif
 }
 
 // -------------------------------------------------------------------------
@@ -201,16 +201,16 @@ inline Cyg_HardwareThread::Cyg_HardwareThread(
     entry_point = e_point;
     entry_data  = e_data;
 
-//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
+#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
     saved_context = 0;
-//#endif
+#endif
     
     attach_stack( s_base, s_size );
 };
 
 // -------------------------------------------------------------------------
 
-//#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
+#ifdef CYGDBG_KERNEL_DEBUG_GDB_THREAD_SUPPORT (although irrelavent, it's on)
 
 // Return the current saved state for this thread.
 inline HAL_SavedRegisters *Cyg_HardwareThread::get_saved_context()
@@ -226,7 +226,7 @@ inline void Cyg_HardwareThread::set_saved_context(HAL_SavedRegisters *ctx)
     saved_context = ctx;
 }
 
-//#endif
+#endif
 
 // -------------------------------------------------------------------------
 // (declare this inline before its first use)

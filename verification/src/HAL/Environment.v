@@ -72,7 +72,7 @@ Variable Object : Type.
 
 Variable hal_vsr_table : nat -> VSR.
 
-Record State : Type := mkST {
+Record HardState : Type := mkHST {
   regs : HAL_SavedRegisters;
   TList : nat -> Thread;
   hal_isr_handlers : nat -> ISR;
@@ -82,21 +82,21 @@ Record State : Type := mkST {
   contextPtr : nat -> HAL_SavedRegisters
 }.
 
-Definition CYGARC_HAL_GET_PC_REG (s: State) : nat :=
+Definition CYGARC_HAL_GET_PC_REG (s: HardState) : nat :=
   get_pc (regs s).
 
-Definition HAL_THREAD_LOAD_CONTEXT (tspptr : nat)(s : State) : State :=
+Definition HAL_THREAD_LOAD_CONTEXT (tspptr : nat)(s : HardState) : HardState :=
   match s with
-  mkST _ l h d o c => (mkST (c tspptr) l h d o c)
+  mkHST _ l h d o c => (mkHST (c tspptr) l h d o c)
   end.
 
 Definition update_contexPtr (fspptr: nat)(r : HAL_SavedRegisters)(c : nat -> HAL_SavedRegisters) 
 : nat -> HAL_SavedRegisters :=
   fun(n : nat) => if (beq_nat n fspptr) then r else c n. 
 
-Definition HAL_THREAD_SWITCH_CONTEXT (fspptr : nat)(tspptr : nat)(s: State) : State :=
+Definition HAL_THREAD_SWITCH_CONTEXT (fspptr : nat)(tspptr : nat)(s: HardState) : HardState :=
   match s with
-  mkST r l h d o c => (mkST (c tspptr) l h d o (update_contexPtr fspptr r c))
+  mkHST r l h d o c => (mkHST (c tspptr) l h d o (update_contexPtr fspptr r c))
   end.
 
 (*Not clear about the behavior yet, neet to check*)
