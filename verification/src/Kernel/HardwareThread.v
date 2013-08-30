@@ -22,7 +22,7 @@ Definition CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE := 0.
 
 Record ThreadRegisters := mkTR {
   basepri : nat;
-  reg : Register->nat
+  reg : CoreRegister
   (*LR is not included, so r14 should be 0*)
 }.
 
@@ -95,27 +95,22 @@ Definition set_stack ht st :=
 (*We don't use pointer here so only unique_id will suffice*)
 Definition init_context ht uid :=
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) (Some (mkTR 0 (fun (r : Register) => match r with 
-                                                     |r0  => uid
-                                                     |r1  => 0 (*should be 0x11110000*)
-                                                     |r11 => 0 (*entry_point in the first element*)
-                                                     |r13 => 0 (*only 1 element yet*)
-                                                     |r15 => ht.(entry_point)
-                                                     |_ => 0
-                                                   end)))
+       ht.(entry_data) (Some (mkTR 0 (mkCR uid 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ht.(entry_point))))
        (cons ht.(entry_point) nil).
 
-(*TODO: switch_context*)
+(*underlying operation, should be capsuled in some higher level*)
+Definition switch_context (hs : HardState)(ht : HardwareThread) : HardState.
+Admitted.
 
 Definition attach_stack ht s_base s_size :=
   match ht with
-  |mkHT _ _ _ _ ep ed sc => mkHT s_base s_size s_base (s_base + s_size) ep ed sc
+  |mkHT _ _ _ _ ep ed sc st => mkHT s_base s_size s_base (s_base + s_size) ep ed sc st
   end. 
 
 Definition HardwareThread_cstr e_point e_data s_size s_base :=
-  attach_stack (mkHT 0 0 0 0 e_point e_data None) s_base s_size.
+  attach_stack (mkHT 0 0 0 0 e_point e_data None nil) s_base s_size.
 
-(*TODO: detach_stack*)
+(*TODO: detach_stack, no definition found*)
 
 (*TODO: prepare_exception*)
 

@@ -10,24 +10,25 @@ Require Import Constants.
 
 Section CPU.
 
-  Inductive Register : Type :=
-    |r0 : Register
-    |r1 : Register
-    |r2 : Register
-    |r3 : Register
-    |r4 : Register
-    |r5 : Register
-    |r6 : Register
-    |r7 : Register
-    |r8 : Register
-    |r9 : Register
-    |r10 : Register
-    |r11 : Register
-    |r12 : Register
-    |r13 : Register  (*sp*)
-    |r14 : Register  (*lr*)
-    |r15 : Register. (*pc*)
-  
+  Record CoreRegister := mkCR {
+    r0 : nat;
+    r1 : nat;
+    r2 : nat;
+    r3 : nat;
+    r4 : nat;
+    r5 : nat;
+    r6 : nat;
+    r7 : nat;
+    r8 : nat;
+    r9 : nat;
+    r10 : nat;
+    r11 : nat;
+    r12 : nat;
+    r13 : nat; (*sp*)
+    r14 : nat; (*lr*)
+    r15 : nat (*pc*)
+  }.  
+
   Record APSR : Type := mkAPSR {
     N : bool; (*Negative*)
     Z : bool; (*Zero*)
@@ -48,18 +49,15 @@ Section CPU.
   }.
   
   Record HAL_SavedRegisters : Type := mkSR {
-    reg : Register -> nat;
+    core : CoreRegister;
     psr : PSR;
     vector : nat;
     basepri : nat;
     xlr : nat
   }.
 
-  Variable HAL_LSBIT_INDEX : Register -> nat.
-  Variable HAL_MSBIT_INDEX : Register -> nat.
-
   Definition get_pc (r : HAL_SavedRegisters) : nat :=
-    (reg r r15).
+    r.(core).(r15).
   
 End CPU.
 
