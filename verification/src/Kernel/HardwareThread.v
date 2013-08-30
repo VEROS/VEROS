@@ -9,82 +9,101 @@ Require Import NPeano.
 
 Definition thread_entry := nat.
 
-Definition ADDRESS := nat.
-
 Definition CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE := 0.
 
 (*  We implement a thread stack based on list of nat. 
- *  stack_base would be the list. 
- *  stack_ptr would be the last element of the list.
+ *  stack_base points to the first element of the list. 
+ *  stack_ptr points to the last element of the list.
  *  stack_size would be the length of the list.
- *  saved_context points to the first element of HAL_savedRegisters in the list.
+ *  saved_context is the HAL_SavedRegisters, which is in stack originally, but took
+ *  out and stored separately.
+ *  By "points to", I mean "be the index of"...
  *)
 
+Record ThreadRegisters := mkTR {
+  basepri : nat;
+  reg : Register->nat
+  (*LR is not included, so r14 should be 0*)
+}.
+
 Record HardwareThread := mkHT {
-  stack_base : ADDRESS;
+  stack_base : nat;
   stack_size : nat;
 
-  stack_limit : ADDRESS;
+  stack_limit : nat;
 
-  stack_ptr : ADDRESS;
+  stack_ptr : nat;
   
-  entry_point : thread_entry;
+  entry_point : thread_entry; (*pointer to the function*)
 
-  entry_data : ADDRESS;
+  entry_data : nat; (*pointer to the data*)
 
-  (*It was a pointer in thread.inl, with value 0 indicating that it points some real context*)
-  saved_context : option HAL_SavedRegisters 
+  (* value not 0 indicating that it points some real context*)
+  saved_context : option ThreadRegisters; 
+  
+  stack : list nat
 }.
 
 Definition get_stack_base ht := ht.(stack_base) - CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE.
 
 Definition set_stack_base ht sb := 
   mkHT sb ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) ht.(saved_context).
+       ht.(entry_data) ht.(saved_context) ht.(stack).
 
 Definition get_stack_size ht := ht.(stack_size) + 2 * CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE.
 
 Definition set_stack_size ht ss :=
   mkHT ht.(stack_base) ss ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) ht.(saved_context).
+       ht.(entry_data) ht.(saved_context) ht.(stack).
 
 Definition get_stack_limit ht := ht.(stack_limit).
 
 Definition set_stack_limit ht sl :=
   mkHT ht.(stack_base) ht.(stack_size) sl ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) ht.(saved_context).
+       ht.(entry_data) ht.(saved_context) ht.(stack).
 
 Definition get_stack_ptr ht := ht.(stack_ptr).
 
 Definition set_stack_ptr ht sp :=
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) sp ht.(entry_point) 
-       ht.(entry_data) ht.(saved_context).
+       ht.(entry_data) ht.(saved_context) ht.(stack).
 
 Definition get_entry_point ht := ht.(entry_point).
 
 Definition set_entry_point ht ep := 
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ep 
-       ht.(entry_data) ht.(saved_context).
+       ht.(entry_data) ht.(saved_context) ht.(stack).
 
 Definition get_entry_data ht := ht.(entry_data).
 
 Definition set_entry_data ht ed := 
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ed ht.(saved_context).
+       ed ht.(saved_context) ht.(stack).
 
 Definition get_saved_context ht := ht.(saved_context).
 
 Definition set_saved_context ht regs := 
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) regs.
+       ht.(entry_data) regs ht.(stack).
+
+Definition get_stack ht := ht.(stack).
+
+Definition set_stack ht st :=  
+  mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
+       ht.(entry_data) ht.(saved_context) st.
 
 (*We don't use pointer here so only unique_id will suffice*)
-Definition init_context (ht : HardwareThread)(uid : nat) : HardwareThread.
-Print "/".
-set (__sp := ht.(stack_ptr) / 8 * 8).
-set (__ep := __sp - 4).  
-set (__sp' := (__sp - 4) / 16 * 16).
-Admitted.
+Definition init_context ht uid :=
+  mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
+       ht.(entry_data) (Some (mkTR 0 (fun (r : Register) => match r with 
+                                                     |r0  => uid
+                                                     |r1  => 0 (*should be 0x11110000*)
+                                                     |r11 => 0 (*entry_point in the first element*)
+                                                     |r13 => 0 (*only 1 element yet*)
+                                                     |r15 => ht.(entry_point)
+                                                     |_ => 0
+                                                   end)))
+       (cons ht.(entry_point) nil).
 
 (*TODO: switch_context*)
 
