@@ -13,6 +13,13 @@ Definition ADDRESS := nat.
 
 Definition CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE := 0.
 
+(*  We implement a thread stack based on list of nat. 
+ *  stack_base would be the list. 
+ *  stack_ptr would be the last element of the list.
+ *  stack_size would be the length of the list.
+ *  saved_context points to the first element of HAL_savedRegisters in the list.
+ *)
+
 Record HardwareThread := mkHT {
   stack_base : ADDRESS;
   stack_size : nat;
