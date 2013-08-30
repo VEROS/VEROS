@@ -241,6 +241,8 @@ inline cyg_uint16 Cyg_Thread::get_unique_id()
 
 inline void Cyg_HardwareThread::init_context(Cyg_Thread *thread)
 {
+
+  //not found, not define then.
 #ifdef CYGPKG_INFRA_DEBUG
     cyg_uint32 threadid = thread->get_unique_id()*0x01010000;
 #else

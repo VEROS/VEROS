@@ -5,6 +5,7 @@ Require Import Environment.
 *)
 Require Import "../HAL/Constants".
 Require Import "../HAL/Environment".
+Require Import NPeano.
 
 Definition thread_entry := nat.
 
@@ -70,7 +71,13 @@ Definition set_saved_context ht regs :=
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
        ht.(entry_data) regs.
 
-(*TODO: init_context*)
+(*We don't use pointer here so only unique_id will suffice*)
+Definition init_context (ht : HardwareThread)(uid : nat) : HardwareThread.
+Print "/".
+set (__sp := ht.(stack_ptr) / 8 * 8).
+set (__ep := __sp - 4).  
+set (__sp' := (__sp - 4) / 16 * 16).
+Admitted.
 
 (*TODO: switch_context*)
 
