@@ -151,6 +151,8 @@ Record Thread := mkThread{
   hardware : HardwareThread
 }.
 
+(*---------------------------get & set fields-----------------------*)
+
 Definition get_priority t := SchedThread.get_priority t.(schedthread).
 
 Definition set_priority t n :=
@@ -208,11 +210,6 @@ Definition timeslice_save t new_count :=
 
 Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthread).
 
-Definition Thread_cstr tid aid cid p e_point e_data s_size s_base : Thread := 
-  mkThread tid (ThreadTimer_cstr aid cid tid) ThreadState_cstr 
-           0 (mkSW NONE NONE 1 0) (SchedThread_cstr p)
-           (init_context (HardwareThread_cstr e_point e_data s_size s_base) tid).
-
 Definition get_state t := t.(state).
 
 Definition set_state t s :=
@@ -235,6 +232,28 @@ Definition get_hardware_thread t := t.(hardware).
 
 Definition set_hardware_thread t ht :=
   mkThread t.(unique_id) t.(timer) t.(state) t.(wait_info) t.(sleepwakeup) t.(schedthread) ht.
+
+Definition get_stack_ptr t := HardwareThread.get_stack_ptr t.(hardware).
+
+Definition set_stack_ptr t ptr := 
+  set_hardware_thread t (HardwareThread.set_stack_ptr t.(hardware) ptr).
+
+Definition get_core_register t n := HardwareThread.get_core_register t.(hardware) n.
+
+Definition set_core_register t n v := 
+  set_hardware_thread t (HardwareThread.set_core_register t.(hardware) n v).  
+
+Definition get_basepri t := HardwareThread.get_basepri t.(hardware).
+
+Definition set_basepri t n := 
+  set_hardware_thread t (HardwareThread.set_basepri t.(hardware) n).
+
+(*---------------------------get & set fields end-----------------------*)
+
+Definition Thread_cstr tid aid cid p e_point e_data s_size s_base : Thread := 
+  mkThread tid (ThreadTimer_cstr aid cid tid) ThreadState_cstr 
+           0 (mkSW NONE NONE 1 0) (SchedThread_cstr p)
+           (init_context (HardwareThread_cstr e_point e_data s_size s_base) tid).
 
 (*reinitialize : defined in Kernel.v*)
 Definition reinitialize_thread (t : Thread)(new_id : nat) : Thread :=
