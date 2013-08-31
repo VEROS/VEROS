@@ -102,42 +102,24 @@ Section CPU.
   Definition set_core hs n v := 
     mkSR (set_core_register hs.(core) n v) hs.(psr) hs.(vector) hs.(basepri) hs.(xlr).
   
+  Definition get_psr hs := hs.(psr).
+
   Definition set_psr hs npsr :=
     mkSR hs.(core) npsr hs.(vector) hs.(basepri) hs.(xlr).
+
+  Definition get_vector hs := hs.(vector).
 
   Definition set_vector hs vec :=
     mkSR hs.(core) hs.(psr) vec hs.(basepri) hs.(xlr).
 
+  Definition get_basepri hs := hs.(basepri).
+
   Definition set_basepri hs n := 
     mkSR hs.(core) hs.(psr) hs.(vector) n hs.(xlr).
 
+  Definition get_xlr hs := hs.(xlr).
+
   Definition set_xlr hs n :=
     mkSR hs.(core) hs.(psr) hs.(vector) hs.(basepri) n.
-
-  Definition get_pc (r : HAL_SavedRegisters) : nat :=
-    r.(core).(r15).
   
 End CPU.
-
-(*Assumed Defintiions*)
-Variable Thread : Type.
-Variable VSR : Type.
-Variable ISR : Type.
-Variable Data : Type.
-Variable Object : Type.
-
-Variable hal_vsr_table : nat -> VSR.
-
-Record HardState : Type := mkHST {
-  regs : HAL_SavedRegisters;
-  TList : nat -> Thread;
-  hal_isr_handlers : nat -> ISR;
-  hal_isr_Data : nat -> Data;
-  hal_isr_Object : nat -> Object
-}.
-
-Definition set_regs hs nr :=
-  mkHST nr hs.(TList) hs.(hal_isr_handlers) hs.(hal_isr_Data) hs.(hal_isr_Object).
-
-Definition CYGARC_HAL_GET_PC_REG (s: HardState) : nat :=
-  get_pc (regs s).
