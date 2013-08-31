@@ -1,10 +1,7 @@
 Set Implicit Arguments.
 
-(*Add LoadPath "../HAL".
+Add LoadPath "../HAL".
 Require Import Environment.
-*)
-Require Import "../HAL/Constants".
-Require Import "../HAL/Environment".
 Require Import NPeano.
 
 Definition thread_entry := nat.
@@ -19,12 +16,22 @@ Definition CYGNUM_KERNEL_THREADS_STACK_CHECK_DATA_SIZE := 0.
  *  out and stored separately.
  *  By "points to", I mean "be the index of"...
  *)
+Section ThreadRegisterSec. 
 
-Record ThreadRegisters := mkTR {
-  basepri : nat;
-  reg : CoreRegister
+  Record ThreadRegisters := mkTR {
+    core : CoreRegister;
+    basepri : nat
   (*LR is not included, so r14 should be 0*)
-}.
+  }.
+
+  Definition get_core_register_tr tr n := Environment.get_core_register tr.(core) n.
+
+  Definition set_core_register_tr tr n v : ThreadRegisters := 
+    mkTR (Environment.set_core_register tr.(core) n v) tr.(basepri).
+
+  Definition set_basepri_tr tr n := mkTR tr.(core) n.
+
+End ThreadRegisterSec.
 
 Record HardwareThread := mkHT {
   stack_base : nat;
@@ -38,8 +45,8 @@ Record HardwareThread := mkHT {
 
   entry_data : nat; (*pointer to the data*)
 
-  (* value not 0 indicating that it points some real context*)
-  saved_context : option ThreadRegisters; 
+  (* There shouldn't be a thread without a context *)
+  saved_context : ThreadRegisters; 
   
   stack : list nat
 }.
@@ -92,13 +99,22 @@ Definition set_stack ht st :=
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
        ht.(entry_data) ht.(saved_context) st.
 
+Definition get_core_register ht n := get_core_register_tr ht.(saved_context) n.   
+
+Definition set_core_register ht n v : HardwareThread := 
+  set_saved_context ht (set_core_register_tr ht.(saved_context) n v).
+
+Definition get_basepri ht := ht.(saved_context).(basepri).  
+
+Definition set_basepri ht n := 
+  set_saved_context ht (set_basepri_tr ht.(saved_context) n).
+
 (*We don't use pointer here so only unique_id will suffice*)
-Definition init_context ht uid :=
+Definition init_context ht uid : HardwareThread :=
   mkHT ht.(stack_base) ht.(stack_size) ht.(stack_limit) ht.(stack_ptr) ht.(entry_point) 
-       ht.(entry_data) (Some (mkTR 0 (mkCR uid 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ht.(entry_point))))
+       ht.(entry_data) (mkTR (mkCR uid 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ht.(entry_point)) 0)
        (cons ht.(entry_point) nil).
 
-(*underlying operation, should be capsuled in some higher level*)
 (*TODO: switch_context (hs : HardState)(ht1 ht2 : HardwareThread) : HardState * HardwareThread.
 *)
 
@@ -108,7 +124,9 @@ Definition attach_stack ht s_base s_size :=
   end. 
 
 Definition HardwareThread_cstr e_point e_data s_size s_base :=
-  attach_stack (mkHT 0 0 0 0 e_point e_data None nil) s_base s_size.
+  attach_stack (mkHT 0 0 0 0 e_point e_data 
+                     (mkTR (mkCR 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0) 0) nil) 
+               s_base s_size.
 
 (*TODO: detach_stack, no definition found*)
 

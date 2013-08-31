@@ -1,5 +1,7 @@
 Set Implicit Arguments.
 
+Add LoadPath "../HAL".
+
 Require Import Bool.
 Require Import NPeano.
 Require Import EqNat.
