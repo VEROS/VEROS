@@ -99,8 +99,8 @@ Definition init_context ht uid :=
        (cons ht.(entry_point) nil).
 
 (*underlying operation, should be capsuled in some higher level*)
-Definition switch_context (hs : HardState)(ht : HardwareThread) : HardState.
-Admitted.
+(*TODO: switch_context (hs : HardState)(ht1 ht2 : HardwareThread) : HardState * HardwareThread.
+*)
 
 Definition attach_stack ht s_base s_size :=
   match ht with

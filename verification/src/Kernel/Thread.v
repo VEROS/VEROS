@@ -138,8 +138,8 @@ Record Thread := mkThread{
   sleepwakeup : SleepWakeup;
 
   (*Inherited from SchedThread_Implementation*)
-  schedthread : SchedThread
-
+  schedthread : SchedThread;
+  hardware : HardwareThread
 }.
 
 Definition get_priority t := SchedThread.get_priority t.(schedthread).
@@ -200,8 +200,7 @@ Definition timeslice_save t new_count :=
 Definition get_timeslice_count t := SchedThread.get_timeslice_count t.(schedthread).
 
 (*Ignored init_context(this) in Thread.cxx line 218
-  Nothing to do for scheduler.register_thread
-  need to add this thread to run_queue in SchedThread*)
+  Nothing to do for scheduler.register_thread*)
 Definition Thread_cstr tid aid cid p := 
   mkThread tid (ThreadTimer_cstr aid cid tid) ThreadState_cstr 0 (mkSW NONE NONE 1 0) (SchedThread_cstr p).
 
