@@ -238,15 +238,13 @@ Definition get_stack_ptr t := HardwareThread.get_stack_ptr t.(hardware).
 Definition set_stack_ptr t ptr := 
   set_hardware_thread t (HardwareThread.set_stack_ptr t.(hardware) ptr).
 
-Definition get_core_register t n := HardwareThread.get_core_register t.(hardware) n.
+Definition push t n := 
+  set_hardware_thread t (HardwareThread.push t.(hardware) n).
 
-Definition set_core_register t n v := 
-  set_hardware_thread t (HardwareThread.set_core_register t.(hardware) n v).  
-
-Definition get_basepri t := HardwareThread.get_basepri t.(hardware).
-
-Definition set_basepri t n := 
-  set_hardware_thread t (HardwareThread.set_basepri t.(hardware) n).
+Definition pop (t : Thread) : Thread * nat.
+destruct (HardwareThread.pop t.(hardware)) as [ht n].
+exact (set_hardware_thread t ht, n).
+Defined.
 
 (*---------------------------get & set fields end-----------------------*)
 
