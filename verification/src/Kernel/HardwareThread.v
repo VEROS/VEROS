@@ -112,8 +112,8 @@ Definition HardwareThread_cstr e_point e_data s_size s_base :=
   attach_stack (mkHT 0 0 0 0 e_point e_data 0 nil) 
                s_base s_size.
 
-(*TODO: detach_stack, no definition found*)
+(*detach_stack, no definition found*)
 
-(*TODO: prepare_exception*)
+(*prepare_exception, no definition found*)
 
-(*TODO: thread_entry*)
+(*thread_entry, cannot get done, since don't know how to handle function pointers yet*)
