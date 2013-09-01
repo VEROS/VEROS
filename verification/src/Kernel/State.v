@@ -51,6 +51,8 @@ set (p1 := pop (get_regs s') t 2).
 set (p2 := pop (fst p1) (snd p1) 3).
 set (p3 := pop (fst p2) (snd p2) 4).
 set (rs := Environment.set_basepri (fst p3) (Environment.get_core (fst p3) 3)).
+
+(*pop into r0-r12*)
 set (p4 := pop rs (snd p3) 0).
 set (p5 := pop (fst p4) (snd p4) 1).
 set (p6 := pop (fst p5) (snd p5) 2).
@@ -64,7 +66,9 @@ set (p13 := pop (fst p12) (snd p12) 9).
 set (p14 := pop (fst p13) (snd p13) 10).
 set (p15 := pop (fst p14) (snd p14) 11).
 set (p16 := pop (fst p15) (snd p15) 12).
+
 set (p17 := pop (fst p16) (snd p16) 15). (*pop into pc*)
+
 (*All the poping is done, now we need to update the state*)
 exact (update_thread (set_regs s' (fst p17)) (snd p17)).
 Defined.
