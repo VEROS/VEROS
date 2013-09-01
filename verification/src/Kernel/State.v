@@ -35,6 +35,26 @@ destruct (Thread.pop t) as [t' n].
 exact (Environment.set_core rs regIndex n, t').
 Defined.
 
+(*r0 1, just pop into r0; r1 2, pop into r1 and r2*)
+Fixpoint pop_many (rs : HAL_SavedRegisters)(t : Thread)(regIndex range : nat) 
+  : (HAL_SavedRegisters * Thread).
+induction range as [|n].
+-exact (rs, t).
+-destruct (pop rs t regIndex) as [rs' t']. 
+ exact (pop_many rs' t' (S regIndex) n).
+Defined.
+
+(*push some register, t specifies the stack and regIndex specifies the destined register*)
+Definition push (rs : HAL_SavedRegisters)(t : Thread)(regIndex : nat) : Thread :=
+  Thread.push t (Environment.get_core rs regIndex).
+
+(*r0 1, just push r0; r1 2, push r2, and then push r1, attention to the order*)
+Fixpoint push_many (rs : HAL_SavedRegisters)(t : Thread)(regIndex range : nat) : Thread.
+induction range as [|n].
+-exact t.
+-exact (push_many rs (push rs t (regIndex + n)) regIndex n).
+Defined.
+
 Definition update_thread s t := 
   set_kernel s (Kernel.update_thread s.(kernel) t).
 
@@ -47,30 +67,26 @@ Definition thread_load_context (s : State)(t : Thread) : State.
  *which is zero, since it's the head of the list always. sp is useless here.
  *)
 set (s' := set_core_register s 13 0). 
-set (p1 := pop (get_regs s') t 2).
-set (p2 := pop (fst p1) (snd p1) 3).
-set (p3 := pop (fst p2) (snd p2) 4).
-set (rs := Environment.set_basepri (fst p3) (Environment.get_core (fst p3) 3)).
+set (p1 := pop_many (get_regs s') t 2 3).
+set (rs := Environment.set_basepri (fst p1) (Environment.get_core (fst p1) 3)).
 
 (*pop into r0-r12*)
-set (p4 := pop rs (snd p3) 0).
-set (p5 := pop (fst p4) (snd p4) 1).
-set (p6 := pop (fst p5) (snd p5) 2).
-set (p7 := pop (fst p6) (snd p6) 3).
-set (p8 := pop (fst p7) (snd p7) 4).
-set (p9 := pop (fst p8) (snd p8) 5).
-set (p10 := pop (fst p9) (snd p9) 6).
-set (p11 := pop (fst p10) (snd p10) 7).
-set (p12 := pop (fst p11) (snd p11) 8).
-set (p13 := pop (fst p12) (snd p12) 9).
-set (p14 := pop (fst p13) (snd p13) 10).
-set (p15 := pop (fst p14) (snd p14) 11).
-set (p16 := pop (fst p15) (snd p15) 12).
-
-set (p17 := pop (fst p16) (snd p16) 15). (*pop into pc*)
+set (p2 := pop_many rs (snd p1) 0 13).
+set (p3 := pop (fst p2) (snd p2) 15). (*pop into pc*)
 
 (*All the poping is done, now we need to update the state*)
-exact (update_thread (set_regs s' (fst p17)) (snd p17)).
+exact (update_thread (set_regs s' (fst p3)) (snd p3)).
 Defined.
 
 Definition thread_switch_context (s : State) (to from : Thread) : State.
+set (rs := get_regs s).
+set (t1 := push rs from 14). (*push lr*)
+set (t2 := push_many rs t1 0 13). (*push r0-r12, in reverse order*)
+set (rs1 := Environment.set_core rs 2 2)  .
+set (rs2 := Environment.set_core rs1 3 (Environment.get_basepri rs1)).
+set (rs3 := Environment.set_core rs2 4 (Environment.get_core rs2 13)).
+set (t3 := push_many rs3 t2 2 3).
+set (t4 := Thread.set_stack_ptr t3 (Environment.get_core rs3 13)).
+set (s' := update_thread (set_regs s rs3) t4).
+exact (thread_load_context s' to).
+Defined.
