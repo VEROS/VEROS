@@ -1,0 +1,5 @@
+TODO:
+gxr: When does Ecos enable interrupts?
+     Ask about the function of flushing into FPGA & later configuration bin
+
+lsp: Ask He Fei & Liu Han for the automata-model.

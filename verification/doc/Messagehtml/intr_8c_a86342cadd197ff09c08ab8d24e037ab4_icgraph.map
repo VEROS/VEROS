@@ -1,6 +1,0 @@
-<map id="standup_thread" name="standup_thread">
-<area shape="rect" id="node2" href="$intr_8h.html#a6f406ab9b036c3961afa8d4231cb39b9" title="timeout_interrupt_dsr" alt="" coords="165,5,309,32"/>
-<area shape="rect" id="node3" href="$main_8h.html#ab258d7e522013e1c90ecd1f5533c652b" title="exti_thread" alt="" coords="358,5,445,32"/>
-<area shape="rect" id="node4" href="$main_8h.html#aca8521e252bce29709dc6950c0ed9f5a" title="start_thread" alt="" coords="493,5,584,32"/>
-<area shape="rect" id="node5" href="$main_8h.html#a609ae72f6fd7f833796fd46c7e6cbcd1" title="cyg_start" alt="" coords="633,5,709,32"/>
-</map>
