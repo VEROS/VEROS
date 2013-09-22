@@ -32,14 +32,6 @@ induction n as [|n rec].
 
 Defined.
 
- 
-
- 
- 
-
- 
-
-
 
 (* Simpl test cases *)
 (*
