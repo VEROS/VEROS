@@ -1,0 +1,22 @@
+Done
+
+GXR : EXTI one input only for each port. So there is no re-mapping needed.
+      For EXTI9_5 EXTI15_10, the handler does need to check which EXTI exactly.
+      Inside interrupt handler, user must call HAL_INTERRUPT_ACKNOWLEDGE to clear the
+      interrupt bit in certain register.
+      Location of VSR, start up from RAM, unkown from code in hal_misc.c.
+
+      23 & 40 change the default exception handler to our self defined handler so that
+      we can avoid the three exception machanism.
+
+CX ：MQX interrupt machasim introduction.
+     Static & dynamic interrupt.
+     Kernel & user isr. user isr can be interrupted and be scheduled.
+     Check slides maded by CX for details.
+
+Todo
+
+Coding the interrupt. Use the development board for debugging.
+Testing the time consuming in interrupt handling using the development board.
+
+Learn about how to use development board.
