@@ -1,0 +1,4 @@
+1、注意运行消息数据时，要把宏MVBPROJ_BUILD_DEVICES_LIST_BLOCKED和宏MVBPROJ_ARBITRATION_BLOCKED都屏蔽掉！！！因为用到了相应的功能！
+2、修改了build_list_of_devices_scan函数，并注释掉了在没有主权转移功能的情况下不需要调用该函数的地方。
+2、该算法通过记录事件轮询时扫描到得有消息能力的设备的地址，事件仲裁时只轮询这些地址。
+3、算法采用双向链表，进一步优化了内存，采用一个结构体，结构体内有3个BYTE，第一个和第二个用来存储pre和next的低八位地址，第三个BYTE的高4位用来存储pre的高4位，第三个BYTE的低4位用来存储next的高4位，

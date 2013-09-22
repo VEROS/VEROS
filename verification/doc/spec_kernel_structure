@@ -16,7 +16,7 @@ Cyg_Scheduler: scheduler
     static volatile cyg_ucount32(unsigned int)     thread_switches[CYGNUM_KERNEL_CPU_MAX];                // Count of number of thread switches
     
     /*继承自Cyg_Scheduler_SchedLock
-    static volatile cyg_ucount32(unsigned int) sched                             // lock counter
+    static volatile cyg_ucount32(unsigned int) sched_lock                             // lock counter
 }
 
 当CYGNUM_KERNEL_CPU_MAX==1时， 简化版的

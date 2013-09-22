@@ -1,0 +1,8 @@
+digraph "MVB_DEVICE_STATUS"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{MVB_DEVICE_STATUS\n|+ dnr\l+ frc\l+ erd\l+ rld\l+ lat\l+ cs3\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +md\n+ser\n+sdd\n+sp\n+cs0\n+ssd\n+cs1\n+ba\n+gw\n+cs2\n..." ,arrowhead="odiamond",fontname="Helvetica"];
+  Node2 [label="{MVB_DEF_BITFIELD16\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

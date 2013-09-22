@@ -1,0 +1,12 @@
+<map id="sfprocess_handle" name="sfprocess_handle">
+<area shape="rect" id="node2" href="$ba_8c.html#ab7de23243adc9054422cb861faa57751" title="ba_context_process" alt="" coords="176,56,315,83"/>
+<area shape="rect" id="node3" href="$ba_8c.html#a04bc998099da29360db90b196ed06300" title="devices_scan" alt="" coords="385,5,485,32"/>
+<area shape="rect" id="node5" href="$ba_8c.html#abb829620999e7a6f9e5949d9eff4558f" title="mastership_transfer" alt="" coords="367,56,503,83"/>
+<area shape="rect" id="node6" href="$ba_8c.html#a124c552540ce823cd468a10910e4243a" title="md_context_process" alt="" coords="363,107,506,133"/>
+<area shape="rect" id="node4" href="$ba_8c.html#a1a50e9da599c69524b0f3fac023a2944" title="build_list_of_devices_scan" alt="" coords="555,5,730,32"/>
+<area shape="rect" id="node7" href="$_message_data_8c.html#afa93ee57f40577acfb18dd5ac8ec8edd" title="bsp_handler" alt="" coords="597,56,689,83"/>
+<area shape="rect" id="node9" href="$_message_data_8c.html#a29f990e885d1aa0473a05071093694ce" title="collision_handler" alt="" coords="583,107,702,133"/>
+<area shape="rect" id="node10" href="$_message_data_8c.html#a0d459c3562670f880fd5b66da70ba9a3" title="slaveframe_handler" alt="" coords="577,157,709,184"/>
+<area shape="rect" id="node11" href="$_message_data_8c.html#a9ab7faaba03c0ecc58e4b7440bd9a3e0" title="timeout_handler" alt="" coords="585,208,700,235"/>
+<area shape="rect" id="node8" href="$_message_data_8c.html#a3d904b77966b7cdbb55e56721ef49207" title="send_read_request" alt="" coords="779,132,911,159"/>
+</map>

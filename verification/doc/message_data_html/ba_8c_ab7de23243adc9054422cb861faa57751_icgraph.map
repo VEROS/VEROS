@@ -1,0 +1,10 @@
+<map id="ba_context_process" name="ba_context_process">
+<area shape="rect" id="node2" href="$intr_8h.html#ad5e256e7a554789732563483e1b12ebf" title="sfprocess_handle" alt="" coords="201,11,324,37"/>
+<area shape="rect" id="node7" href="$intr_8h.html#ae7e3dad68fd89b9bdf1418229460ae71" title="supervisory_interrupt\l_handle" alt="" coords="192,66,333,107"/>
+<area shape="rect" id="node9" href="$intr_8h.html#a6f406ab9b036c3961afa8d4231cb39b9" title="timeout_interrupt_dsr" alt="" coords="391,157,535,184"/>
+<area shape="rect" id="node3" href="$intr_8h.html#a2063af322dfa54ca2cdc14522c79a89a" title="slaveframe_interrupt_isr" alt="" coords="383,5,542,32"/>
+<area shape="rect" id="node4" href="$main_8h.html#ab258d7e522013e1c90ecd1f5533c652b" title="exti_thread" alt="" coords="593,81,679,108"/>
+<area shape="rect" id="node5" href="$main_8h.html#aca8521e252bce29709dc6950c0ed9f5a" title="start_thread" alt="" coords="728,81,819,108"/>
+<area shape="rect" id="node6" href="$main_8h.html#a609ae72f6fd7f833796fd46c7e6cbcd1" title="cyg_start" alt="" coords="867,81,943,108"/>
+<area shape="rect" id="node8" href="$intr_8h.html#a3c04a717c9a14bbc7bee8116752c3cb4" title="supervisory_interrupt_isr" alt="" coords="381,107,544,133"/>
+</map>

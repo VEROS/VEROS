@@ -1,0 +1,8 @@
+digraph "HAL_CORTEXM_GDB_Registers"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{HAL_CORTEXM_GDB_Registers\n|+ f7\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +f0\n+f1\n+f2\n+f3\n+f4\n+fps\n+f5\n+gpr\n+ps\n+f6\n..." ,arrowhead="odiamond",fontname="Helvetica"];
+  Node2 [label="{cyg_uint32\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

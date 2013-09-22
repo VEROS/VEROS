@@ -1,0 +1,9 @@
+digraph "collision_handler"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="collision_handler",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="send_read_request",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_message_data_8c.html#a3d904b77966b7cdbb55e56721ef49207"];
+}

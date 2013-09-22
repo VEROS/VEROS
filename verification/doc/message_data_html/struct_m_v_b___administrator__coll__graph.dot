@@ -1,0 +1,12 @@
+digraph "MVB_Administrator"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{MVB_Administrator\n|+ configuration_version\l+ macro_cycles\l+ basic_period\l+ devices_scan_strategy\l+ periodic_list_offset\l+ bus_administrators\l_list_offset\l+ devices_scan_list_offset\l+ end_list_offset\l+ cycle_lists_offsets\l+ cycle_lists_size\l+ split_lists_offsets\l+ split_64\l+ split_512\l+ split_1024\l+ device_scan_list_count1\l|}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node2 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +split_128\n+split_32\n+split_16\n+split_2\n+split_256\n+reserved1\n+split_4\n+split_8\n+device_scan\l_list_count0\n+bus_id\n..." ,arrowhead="odiamond",fontname="Helvetica"];
+  Node2 [label="{char\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +macrocycles_per_turn\n+checkword0\n+reserved_list_offset\n+event_poll_strategy\n+reserved2\n+t_reply_max\n+reserved3\n+reserved4\n+known_devices\l_list_offset\n+reserved5\n..." ,arrowhead="odiamond",fontname="Helvetica"];
+  Node3 [label="{unsigned short\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node4 -> Node1 [color="grey25",fontsize="10",style="solid",label=" +known_devices_list\n+bus_administrators\l_list\n+cycle_lists" ,arrowhead="odiamond",fontname="Helvetica"];
+  Node4 [label="{unsigned short *\n||}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

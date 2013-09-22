@@ -1,0 +1,5 @@
+<map id="sync_interrupt_dsr" name="sync_interrupt_dsr">
+<area shape="rect" id="node2" href="$main_8h.html#ab258d7e522013e1c90ecd1f5533c652b" title="exti_thread" alt="" coords="185,5,271,32"/>
+<area shape="rect" id="node3" href="$main_8h.html#aca8521e252bce29709dc6950c0ed9f5a" title="start_thread" alt="" coords="320,5,411,32"/>
+<area shape="rect" id="node4" href="$main_8h.html#a609ae72f6fd7f833796fd46c7e6cbcd1" title="cyg_start" alt="" coords="459,5,535,32"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="ba_init" name="ba_init">
+<area shape="rect" id="node2" href="$init_8h.html#a76b2dff9ed65cafb66fc9e15bde5b032" title="create_structure" alt="" coords="510,5,626,32"/>
+<area shape="rect" id="node5" href="$intr_8h.html#ab584a16083147d1ba0a6313eb9724efe" title="mfprocess_handle" alt="" coords="115,56,242,83"/>
+<area shape="rect" id="node8" href="$intr_8h.html#a96bbb9097dfbb9f41ab925a781070d40" title="standup_alarm" alt="" coords="125,107,232,133"/>
+<area shape="rect" id="node3" href="$main_8h.html#aca8521e252bce29709dc6950c0ed9f5a" title="start_thread" alt="" coords="824,31,915,57"/>
+<area shape="rect" id="node4" href="$main_8h.html#a609ae72f6fd7f833796fd46c7e6cbcd1" title="cyg_start" alt="" coords="963,31,1039,57"/>
+<area shape="rect" id="node6" href="$intr_8h.html#ae2564c163a8bfeb59cee6db969ed9bb3" title="mainframe_interrupt_isr" alt="" coords="291,56,448,83"/>
+<area shape="rect" id="node7" href="$main_8h.html#ab258d7e522013e1c90ecd1f5533c652b" title="exti_thread" alt="" coords="689,56,775,83"/>
+<area shape="rect" id="node9" href="$intr_8h.html#a86342cadd197ff09c08ab8d24e037ab4" title="standup_thread" alt="" coords="314,107,425,133"/>
+<area shape="rect" id="node10" href="$intr_8h.html#a6f406ab9b036c3961afa8d4231cb39b9" title="timeout_interrupt_dsr" alt="" coords="496,107,640,133"/>
+</map>

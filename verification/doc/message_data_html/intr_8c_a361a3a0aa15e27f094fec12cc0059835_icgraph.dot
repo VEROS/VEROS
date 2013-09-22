@@ -1,0 +1,13 @@
+digraph "supervisory_interrupt_dsr"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="supervisory_interrupt_dsr",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="exti_thread",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8h.html#ab258d7e522013e1c90ecd1f5533c652b"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="start_thread",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8h.html#aca8521e252bce29709dc6950c0ed9f5a"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="cyg_start",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8h.html#a609ae72f6fd7f833796fd46c7e6cbcd1"];
+}
