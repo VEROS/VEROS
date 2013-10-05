@@ -190,6 +190,15 @@ Inductive Device_scan_strategy :=
 |DEVICES_SCAN_STRATEGY_ENUM_KNOWN : Device_scan_strategy
 |DEVICES_SCAN_STRATEGY_ENUM_ALL : Device_scan_strategy.
 
+(* three enums defined in hal.h *)
+Inductive Frame_checkbit :=
+  |MAIN_FRAME : Frame_checkbit
+  |SLAVE_FRAME : Frame_checkbit.
+
+Inductive Sync_checkbit :=
+  |SYNC_STATUS : Sync_checkbit
+  |SYNC_ADDRESS : Sync_checkbit.
+
 Record Ports_Configuration := mkPC{
                                   nr_ports : nat;
 
@@ -431,9 +440,9 @@ Record Ba := mkBa{
 
 Record Intr := mkIntr{
                  wait_for_ba : bool;
-                 frame_checkbit : cyg_uint32;
-                 sync_checkbit : cyg_uint32;
-                 sync_interrupt_flag : cyg_uint32;
+                 frame_checkbit : Frame_checkbit;
+                 sync_checkbit : Sync_checkbit;
+                 sync_interrupt_flag : bool;
 
                  current_mf : UNSIGNED16;
                  last_mf : UNSIGNED16;
@@ -484,6 +493,18 @@ Record Init := mkInit{
                    this_addr : nat
                  }.
 
+Definition init_set_mvb_device_status i m :=
+  match i with
+      mkInit a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14
+             => mkInit a0 a1 a2 a3 a4 a5 m a7 a8 a9 a10 a11 a12 a13 a14
+  end.
+
+Definition init_set_mvb_device_status_16 i m :=
+  match i with
+      mkInit a0 a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14
+             => mkInit a0 a1 a2 a3 a4 a5 a6 m a8 a9 a10 a11 a12 a13 a14
+  end.
+
 (******************************* Main ********************************)
 
 Definition STACK_SIZE := 256.
@@ -507,3 +528,28 @@ Record State := mkState{
                     init : Init;
                     main : Main
                   }.
+
+Definition set_message s m :=
+  mkState m s.(ba_state) s.(intr) s.(init) s.(main).
+
+Definition set_ba s b :=
+  mkState s.(message_data) b s.(intr) s.(init) s.(main).
+
+Definition set_intr s i :=
+  mkState s.(message_data) s.(ba_state) i s.(init) s.(main).
+
+Definition set_init s i :=
+  mkState s.(message_data) s.(ba_state) s.(intr) i s.(main).
+
+Definition set_main s m :=
+  mkState s.(message_data) s.(ba_state) s.(intr) s.(init) m.
+
+Definition get_frame_checkbit s := s.(intr).(frame_checkbit).
+
+Definition get_mvb_device_status s := s.(init).(mvb_device_status).
+
+Definition set_mvb_device_status s m :=
+  set_init s (init_set_mvb_device_status s.(init) m).
+
+Definition set_mvb_device_status_16 s m :=
+  set_init s (init_set_mvb_device_status_16 s.(init) m).
