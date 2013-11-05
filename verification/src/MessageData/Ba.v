@@ -11,7 +11,6 @@ Require Import State.
 
 Definition MVB_SIZEOF_STRUCT_MVB_ADMINISTRATOR_KDL := 2.
 
-
 Definition Inc_ba_context_devices_scan_j (a : State) : State :=
   set_ba_context_devices_scan_j a (S (get_ba_context_devices_scan_j a)).
 
@@ -135,10 +134,6 @@ Definition devices_scan(a : State)(sf_f_code : UNSIGNED8)(sf_content_16 : UNSIGN
     *exact (RS_CODE_DEVICE_SCAN_OK, a3).
 Defined.
 
-Definition mastership_transfer(a : State)(sf_f_code : UNSIGNED8)(sf_content_16 : UNSIGNED16)
-           (vector : UNSIGNED8) : RS_CODE_DEVICE_SCAN * State.
-  Admitted.
-
 Definition ba_context_process(a : State)(sf_f_code : UNSIGNED8)
            (sf_content_16 : UNSIGNED16)(vector : UNSIGNED8) : State.
   destruct (get_ba_context a) as [ | | | ]; [exact a| | |exact a].
@@ -148,8 +143,20 @@ Definition ba_context_process(a : State)(sf_f_code : UNSIGNED8)
     (* RS_CODE_DEVICE_SCAN_FIN *)
     exact (set_ba_context (snd temp) BA_CONTEXT_MESSAGE_ARBITRATION).
   -(* BA_CONTEXT_MASTERSHIP_TRANSFER *)
-    exact (snd (mastership_transfer a sf_f_code sf_content_16 vector)).
+    exact a.
 Defined.
 
+Definition BA_MAX_BASIC_PERIOD := 1024.
+Definition MVBPROJ_DEFAULT_SCAN_UNIT := 1.
+
 Definition supervisory_interrupt_handle (a : State) : State.
-  Admitted.
+  set(a1 := set_bp_number a ((get_bp_number a) + 1)).
+
+  assert (a2 : State).
+  -destruct (beq_nat (get_bp_number a1) BA_MAX_BASIC_PERIOD).
+   +set (a3 := set_ba_context a1 BA_CONTEXT_DEVICES_SCAN).
+    exact (set_bp_number a3 0).
+   +set (a3 := set_device_scan_unit a1 MVBPROJ_DEFAULT_SCAN_UNIT).
+    exact (set_ba_context a3 BA_CONTEXT_MESSAGE_ARBITRATION).
+  -exact (ba_context_process a2 0 (natToUNSIGNED16 0) EXTI_SUPERVISORY_INT_VECTOR).
+Defined.

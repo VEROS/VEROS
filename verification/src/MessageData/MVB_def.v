@@ -1143,6 +1143,11 @@ Inductive Ba_context :=
 
 Definition BA_ADMIN_BAL_SIZE := 64 + 1.
 
+Inductive Master_transfer :=
+  |BA_CONTEXT_MASTERSHIP_TRANSFER_NULL : Master_transfer
+  |BA_CONTEXT_MASTERSHIP_TRANSFER_DEVICE_STATUS : Master_transfer
+  |BA_CONTEXT_MASTERSHIP_TRANSFER_OFFER_MASTERSHIP : Master_transfer.
+
 Record Ba := mkBa{
                  bp_number : nat; (* init as 0 *)
                  ba_context : Ba_context; (* should be UNSIGNED8 *)
@@ -1152,8 +1157,8 @@ Record Ba := mkBa{
                  ba_context_devices_scan_i : UNSIGNED8;
                  ba_context_devices_scan_j : UNSIGNED8;
                  ba_context_devices_scan_address : nat;
-                 ba_context_mastership_transfer_address : UNSIGNED16;
-                 ba_context_mastership_transfer_act : UNSIGNED8;
+                 ba_context_mastership_transfer_address : nat;
+                 ba_context_mastership_transfer_act : Master_transfer;
 
                  (* should be a pointer of MVB_ADMINISTRATOR
                   * No use really. Ignore it.
