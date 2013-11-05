@@ -52,7 +52,17 @@ Definition errorfram_interrupt_dsr (a : State)(vector : nat)
 Defined.
 
 Definition mfprocess_handle (a : State)(vector : nat) : State.
-  Admitted.
+  set (a1 := set_sync_interrupt_flag a true).
+  set (F_CODE := FRAME_F_CODE (get_current_mf a1)).
+  destruct F_CODE; [exact a1|exact a1|exact a1|exact a1|exact a1|exact a1
+                    |exact a1|exact a1| |exact a1|exact a1|exact a1|exact a1
+                    |exact a1|exact a1|exact a1].
+  destruct ((get_ba a1)
+               && (beq_UNSIGNED16
+                     (FRAME_ADDRESS (get_current_mf a1))
+                     (natToUNSIGNED16 (get_this_addr a1))));
+    [exact (ba_init a1 true)|exact a1].
+Defined.
 
 Definition mainframe_interrupt_isr (a : State)(vector : nat)
            (data : nat) : cyg_uint32 * State.
@@ -71,7 +81,11 @@ Definition main_interrupt_dsr (a : State)(vector : nat)
            (count : nat)(data : nat) : State := a.
 
 Definition sfprocess_handle (a : State)(vector : nat) : State.
-  Admitted.
+  set (a1 := set_sync_interrupt_flag a true).
+  destruct (get_cs3 a1); [|exact a1].
+  exact (ba_context_process a1 (F_CODEToUNSIGNED8 (FRAME_F_CODE (get_current_mf a1)))
+                            (get_current_sf a1) vector).
+Defined.
 
 Definition slaveframe_interrupt_isr (a : State)(vector : nat)
            (data : nat) : cyg_uint32 * State.
@@ -88,7 +102,14 @@ Definition sync_interrupt_isr (a : State)(vector : nat)
 Defined.
 
 Definition syncprocess_handle (a : State) : State.
-  Admitted.
+  destruct (get_sync_checkbit a).
+  -set (a1 := set_sync_interrupt_flag a false).
+   (*mvb_arm_receive_sync gets a new status here*)
+   exact a1.
+  -set (a1 := set_sync_interrupt_flag a false).
+   (*mvb_arm_receive_sync gets a new content here*)
+   exact a1.
+Defined.
 
 Definition sync_interrupt_dsr (a : State)(vector : nat)
            (count : nat)(data : nat) : State.

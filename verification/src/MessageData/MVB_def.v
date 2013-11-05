@@ -10,24 +10,23 @@ Definition char := nat.
 
 (********************************* MVB_def *********************************)
 (* F_code mapping *)
-Definition FRAME_F_CODE_0 := 0.
-Definition FRAME_F_CODE_1 := 1.
-Definition FRAME_F_CODE_2 := 2.
-Definition FRAME_F_CODE_3 := 3.
-Definition FRAME_F_CODE_4 := 4.
-Definition FRAME_F_CODE_5 := 5.
-Definition FRAME_F_CODE_6 := 6.
-Definition FRAME_F_CODE_7 := 7.
-Definition FRAME_F_CODE_8 := 8.
-Definition FRAME_F_CODE_9 := 9.
-Definition FRAME_F_CODE_10 := 10.
-Definition FRAME_F_CODE_11 := 11.
-Definition FRAME_F_CODE_12 := 12.
-Definition FRAME_F_CODE_13 := 13.
-Definition FRAME_F_CODE_14 := 14.
-Definition FRAME_F_CODE_15 := 15.
-Definition FRAME_F_CODE content := content / (2 ^ 12).
-Definition FRAME_ADDRESS content :=  content mod (2 ^ 12).
+Inductive FRAME_F_CODE_CONST :=
+  |FRAME_F_CODE_0 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_1 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_2 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_3 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_4 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_5 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_6 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_7 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_8 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_9 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_10 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_11 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_12 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_13 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_14 : FRAME_F_CODE_CONST
+  |FRAME_F_CODE_15 : FRAME_F_CODE_CONST.
 
 (* BA states *)
 Inductive BA_STATE :=
@@ -1064,7 +1063,7 @@ Definition cyg_thread := Thread.Thread.
 Definition cyg_handle_t := nat. (* should be pointers, actually *)
 
 Definition MVB_ADMINISTRATOR := Admin_Module.MVB_Administrator.
-Definition cyg_uint16 := MVB_ADMINISTRATOR. (* They are the same, for there is only 16 bits. *)
+Definition cyg_uint16 := nat. (* They are the same, for there is only 16 bits. *)
 Definition cyg_alarm := Alarm.Alarm.
 Definition cyg_tick_count_t := nat.
 
@@ -1736,4 +1735,19 @@ Definition natToBITSET16 (n : nat) : BITSET16.
   Admitted.
 
 Definition beq_UNSIGNED16 (n m : UNSIGNED16) : bool.
+  Admitted.
+
+Definition natToUNSIGNED16 (n : nat) : UNSIGNED16.
+  Admitted.
+
+Definition UNSIGNED16ToNat (n : UNSIGNED16) : nat.
+  Admitted.
+
+Definition FRAME_F_CODE (n : UNSIGNED16) : FRAME_F_CODE_CONST.
+  Admitted.
+
+Definition FRAME_ADDRESS (frame : UNSIGNED16) : UNSIGNED16.
+Admitted.
+
+Definition F_CODEToUNSIGNED8 (n : FRAME_F_CODE_CONST) : UNSIGNED8.
   Admitted.

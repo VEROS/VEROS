@@ -11,6 +11,25 @@ Require Import State.
 
 Definition MVB_SIZEOF_STRUCT_MVB_ADMINISTRATOR_KDL := 2.
 
+
+Definition Inc_ba_context_devices_scan_j (a : State) : State :=
+  set_ba_context_devices_scan_j a (S (get_ba_context_devices_scan_j a)).
+
+Definition Inc_ba_context_devices_scan_i (a : State) : State :=
+  set_ba_context_devices_scan_i a (S (get_ba_context_devices_scan_i a)).
+
+Fixpoint ba_init_aux (a : State)(n : nat)(count : nat) : State.
+  destruct n as [|n']; [exact a|].
+  destruct (leb count (get_ba_context_devices_scan_i a)).
+  -exact (set_ba_context_devices_scan_i a 0).
+  -set (address := Array.nth BA_ADMIN_BAL_SIZE (get_devices_list a)
+                             (BA_ADMIN_BAL_SIZE - n' - 1)).
+   set (a1 := Inc_ba_context_devices_scan_i a).
+   destruct (beq_nat address (get_ba_context_devices_scan_address a1)).
+   +exact a1.
+   +exact (ba_init_aux a1 n' count).
+Defined.
+
 (* device_list is a function to replace the stupid fucking list of shit *)
 Definition ba_init (a : State)(b : bool) : State.
   set(a1 := set_cs3 a true).
@@ -33,9 +52,10 @@ Definition ba_init (a : State)(b : bool) : State.
                   )
      ).
   set(count := (reserved_offset - known_offset) / 2).
-  (* TODO *)
-  exact a5.
-Admitted.
+  set(a6 := ba_init_aux a5 BA_ADMIN_BAL_SIZE count).
+  destruct (get_ba_context_devices_scan_i a6) as [|n']; [exact a6|].
+  exact (set_ba_context_devices_scan_i a6 n').
+Defined.
 
 Inductive RS_CODE_DEVICE_SCAN := RS_CODE_DEVICE_SCAN_OK | RS_CODE_DEVICE_SCAN_FIN.
 
@@ -59,17 +79,6 @@ Definition build_list_of_devices_scan (a : State)(address : UNSIGNED16)
   (* TODO *)
   exact a.
 Admitted.
-
-Definition FRAME_ADDRESS (frame : UNSIGNED16) : UNSIGNED16.
-  (* TODO *)
-  exact frame.
-Admitted.
-
-Definition Inc_ba_context_devices_scan_j (a : State) : State :=
-  set_ba_context_devices_scan_j a (S (get_ba_context_devices_scan_j a)).
-
-Definition Inc_ba_context_devices_scan_i (a : State) : State :=
-  set_ba_context_devices_scan_i a (S (get_ba_context_devices_scan_i a)).
 
 Definition Inc_ba_context_devices_scan_address (a : State) : State :=
   set_ba_context_devices_scan_address a (S (get_ba_context_devices_scan_address a)).
