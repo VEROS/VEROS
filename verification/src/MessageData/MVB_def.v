@@ -3,6 +3,7 @@ Set Implicit Arguments.
 Add LoadPath "../Kernel".
 
 Require Import NPeano.
+Require Import EqNat.
 Require Import Array.
 Import Vector.
 
@@ -1739,20 +1740,20 @@ Definition CYG_ISR_CALL_DSR := 2.
 Definition natToBITSET16 (n : nat) : BITSET16.
   Admitted.
 
-Definition beq_UNSIGNED16 (n m : UNSIGNED16) : bool.
-  Admitted.
-
 Definition natToUNSIGNED16 (n : nat) : UNSIGNED16.
   Admitted.
 
 Definition UNSIGNED16ToNat (n : UNSIGNED16) : nat.
   Admitted.
 
+Definition beq_UNSIGNED16 (n m : UNSIGNED16) : bool.
+  Admitted.
+
 Definition FRAME_F_CODE (n : UNSIGNED16) : FRAME_F_CODE_CONST.
   Admitted.
 
 Definition FRAME_ADDRESS (frame : UNSIGNED16) : UNSIGNED16.
-Admitted.
+  Admitted.
 
 Definition F_CODEToUNSIGNED8 (n : FRAME_F_CODE_CONST) : UNSIGNED8.
   Admitted.
