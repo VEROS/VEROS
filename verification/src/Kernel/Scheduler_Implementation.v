@@ -1,5 +1,7 @@
 Set Implicit Arguments.
 
+Add LoadPath "../HAL".
+
 Require Import EqNat.
 Require Import BitArray.
 Require Import Array.

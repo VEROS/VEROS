@@ -6,28 +6,70 @@ Date: May 24, 2013
 
 Require Import Bool.
 Require Import EqNat.
-Require Import Constants.
 
 Section CPU.
 
-  Inductive Register : Type :=
-    |r0 : Register
-    |r1 : Register
-    |r2 : Register
-    |r3 : Register
-    |r4 : Register
-    |r5 : Register
-    |r6 : Register
-    |r7 : Register
-    |r8 : Register
-    |r9 : Register
-    |r10 : Register
-    |r11 : Register
-    |r12 : Register
-    |r13 : Register  (*sp*)
-    |r14 : Register  (*lr*)
-    |r15 : Register. (*pc*)
-  
+  Record CoreRegister := mkCR {
+    r0 : nat;
+    r1 : nat;
+    r2 : nat;
+    r3 : nat;
+    r4 : nat;
+    r5 : nat;
+    r6 : nat;
+    r7 : nat;
+    r8 : nat;
+    r9 : nat;
+    r10 : nat;
+    r11 : nat;
+    r12 : nat;
+    r13 : nat; (*sp*)
+    r14 : nat; (*lr*)
+    r15 : nat (*pc*)
+  }.  
+
+  Definition get_core_register cr n :=
+    match n with
+      |0 => cr.(r0)
+      |1 => cr.(r1)
+      |2 => cr.(r2)
+      |3 => cr.(r3)
+      |4 => cr.(r4)
+      |5 => cr.(r5)
+      |6 => cr.(r6)
+      |7 => cr.(r7)
+      |8 => cr.(r8)
+      |9 => cr.(r9)
+      |10 => cr.(r10)
+      |11 => cr.(r11)
+      |12 => cr.(r12)
+      |13 => cr.(r13)
+      |14 => cr.(r14)
+      |_ => cr.(r15)               
+    end.
+
+  Definition set_core_register cr n v :=
+    match cr with mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 =>
+                    match n with
+                      |0 => mkCR v s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |1 => mkCR s0 v s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |2 => mkCR s0 s1 v s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |3 => mkCR s0 s1 s2 v s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |4 => mkCR s0 s1 s2 s3 v s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |5 => mkCR s0 s1 s2 s3 s4 v s6 s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |6 => mkCR s0 s1 s2 s3 s4 s5 v s7 s8 s9 s10 s11 s12 s13 s14 s15
+                      |7 => mkCR s0 s1 s2 s3 s4 s5 s6 v s8 s9 s10 s11 s12 s13 s14 s15
+                      |8 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 v s9 s10 s11 s12 s13 s14 s15
+                      |9 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 v s10 s11 s12 s13 s14 s15
+                      |10 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 v s11 s12 s13 s14 s15
+                      |11 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 v s12 s13 s14 s15
+                      |12 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 v s13 s14 s15
+                      |13 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 v s14 s15
+                      |14 => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 v s15
+                      |_  => mkCR s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 v
+                    end
+    end.
+
   Record APSR : Type := mkAPSR {
     N : bool; (*Negative*)
     Z : bool; (*Zero*)
@@ -48,56 +90,36 @@ Section CPU.
   }.
   
   Record HAL_SavedRegisters : Type := mkSR {
-    reg : Register -> nat;
+    core : CoreRegister;
     psr : PSR;
     vector : nat;
     basepri : nat;
     xlr : nat
   }.
 
-  Variable HAL_LSBIT_INDEX : Register -> nat.
-  Variable HAL_MSBIT_INDEX : Register -> nat.
+  Definition get_core hs n := get_core_register hs.(core) n.
 
-  Definition get_pc (r : HAL_SavedRegisters) : nat :=
-    (reg r r15).
+  Definition set_core hs n v := 
+    mkSR (set_core_register hs.(core) n v) hs.(psr) hs.(vector) hs.(basepri) hs.(xlr).
+  
+  Definition get_psr hs := hs.(psr).
+
+  Definition set_psr hs npsr :=
+    mkSR hs.(core) npsr hs.(vector) hs.(basepri) hs.(xlr).
+
+  Definition get_vector hs := hs.(vector).
+
+  Definition set_vector hs vec :=
+    mkSR hs.(core) hs.(psr) vec hs.(basepri) hs.(xlr).
+
+  Definition get_basepri hs := hs.(basepri).
+
+  Definition set_basepri hs n := 
+    mkSR hs.(core) hs.(psr) hs.(vector) n hs.(xlr).
+
+  Definition get_xlr hs := hs.(xlr).
+
+  Definition set_xlr hs n :=
+    mkSR hs.(core) hs.(psr) hs.(vector) hs.(basepri) n.
   
 End CPU.
-
-(*Assumed Defintiions*)
-Variable Thread : Type.
-Variable VSR : Type.
-Variable ISR : Type.
-Variable Data : Type.
-Variable Object : Type.
-
-Variable hal_vsr_table : nat -> VSR.
-
-Record HardState : Type := mkHST {
-  regs : HAL_SavedRegisters;
-  TList : nat -> Thread;
-  hal_isr_handlers : nat -> ISR;
-  hal_isr_Data : nat -> Data;
-  hal_isr_Object : nat -> Object;
-
-  contextPtr : nat -> HAL_SavedRegisters
-}.
-
-Definition CYGARC_HAL_GET_PC_REG (s: HardState) : nat :=
-  get_pc (regs s).
-
-Definition HAL_THREAD_LOAD_CONTEXT (tspptr : nat)(s : HardState) : HardState :=
-  match s with
-  mkHST _ l h d o c => (mkHST (c tspptr) l h d o c)
-  end.
-
-Definition update_contexPtr (fspptr: nat)(r : HAL_SavedRegisters)(c : nat -> HAL_SavedRegisters) 
-: nat -> HAL_SavedRegisters :=
-  fun(n : nat) => if (beq_nat n fspptr) then r else c n. 
-
-Definition HAL_THREAD_SWITCH_CONTEXT (fspptr : nat)(tspptr : nat)(s: HardState) : HardState :=
-  match s with
-  mkHST r l h d o c => (mkHST (c tspptr) l h d o (update_contexPtr fspptr r c))
-  end.
-
-(*Not clear about the behavior yet, neet to check*)
-Variable HAL_THREAD_INIT_CONTEXT : nat -> nat -> nat-> nat -> HAL_SavedRegisters.

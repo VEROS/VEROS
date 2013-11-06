@@ -1,5 +1,7 @@
 Set Implicit Arguments.
 
+Add LoadPath "../HAL".
+
 Require Import Scheduler_Implementation.
 Require Import Thread.
 Require Import NPeano.
